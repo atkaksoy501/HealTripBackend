@@ -1,4 +1,4 @@
-# codeWizards
+# HealTripBackend
 
 Yüklenecek uygulamalar:
 - VSCode -> Frontend için
