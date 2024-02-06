@@ -30,4 +30,6 @@ username:
 password:
 **karamTeam07.**
 
-Her hafta Cuma günü akşam saat 20.00 toplantı.
+**Her hafta Cuma günü akşam saat 20.00 toplantı.**
+
+**Commitlerimizi main branch üstüne yapmayalım. Ayrı branchlere yapalım.**
