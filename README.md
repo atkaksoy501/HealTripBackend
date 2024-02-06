@@ -32,4 +32,4 @@ password:
 
 **Her hafta Cuma günü akşam saat 20.00 toplantı.**
 
-**Commitlerimizi main branch üstüne yapmayalım. Ayrı branchlere yapalım.**
+**Commitlerimizi main branch üstüne yapmayalım. Kendi ismimizdeki ayrı branchlere yapalım. Daha sonra dev branche mergeleriz. Pull yaparken dev branchinden yapalım.**
