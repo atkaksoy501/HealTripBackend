@@ -41,7 +41,8 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE address (
     address_id int4 NOT NULL,
     country varchar NOT NULL,
-    city varchar NOT NULL
+    city varchar NOT NULL,
+    address_detail varchar NOT NULL
 );
 
 CREATE TABLE booking (
