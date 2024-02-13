@@ -37,6 +37,8 @@ DROP TABLE IF EXISTS hotel_organizer CASCADE;
 DROP TABLE IF EXISTS patient CASCADE;
 DROP TABLE IF EXISTS retreat CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS hospital_image CASCADE;
+DROP TABLE IF EXISTS hotel_image CASCADE;
 
 CREATE TABLE address (
     address_id int4 NOT NULL,
@@ -54,7 +56,7 @@ CREATE TABLE booking (
     start_date timestamp NOT NULL,
     end_date timestamp NOT NULL,
     booking_date timestamp NOT NULL,
-    status int4 NOT NULL,
+    status varchar NOT NULL,
     retreat_id int4 NOT NULL
 );
 
@@ -68,7 +70,8 @@ CREATE TABLE doctor (
     hospital_id int4 NOT NULL,
     department_id int4 NOT NULL,
     experience_year int4 NOT NULL,
-    doctor_name varchar NOT NULL
+    doctor_name varchar NOT NULL,
+    doctor_image varchar NOT NULL
 );
 
 CREATE TABLE feedback (
@@ -129,6 +132,18 @@ CREATE TABLE "user" (
     user_role varchar NOT NULL
 );
 
+CREATE TABLE hospital_image (
+    hospital_image_id int4 NOT NULL,
+    hospital_id int4 NOT NULL,
+    image varchar NOT NULL
+);
+
+CREATE TABLE hotel_image (
+    hotel_image_id int4 NOT NULL,
+    hotel_id int4 NOT NULL,
+    image varchar NOT NULL
+);
+
 ALTER TABLE ONLY address
     ADD CONSTRAINT pk_address PRIMARY KEY (address_id);
 
@@ -164,6 +179,12 @@ ALTER TABLE ONLY retreat
 
 ALTER TABLE ONLY "user"
     ADD CONSTRAINT pk_user PRIMARY KEY (user_id);
+
+ALTER TABLE ONLY hospital_image
+    ADD CONSTRAINT pk_hospital_image PRIMARY KEY (hospital_image_id);
+
+ALTER TABLE ONLY hotel_image
+    ADD CONSTRAINT pk_hotel_image PRIMARY KEY (hotel_image_id);
 
 ALTER TABLE ONLY booking
     ADD CONSTRAINT fk_booking_patient FOREIGN KEY (patient_id) REFERENCES patient;
@@ -203,5 +224,11 @@ ALTER TABLE ONLY hotel_organizer
 
 ALTER TABLE ONLY retreat
     ADD CONSTRAINT fk_retreat_department FOREIGN KEY (department_id) REFERENCES department;
+
+ALTER TABLE ONLY hospital_image
+    ADD CONSTRAINT fk_hospital_image_hospital FOREIGN KEY (hospital_id) REFERENCES hospital;
+
+ALTER TABLE ONLY hotel_image
+    ADD CONSTRAINT fk_hotel_image_hotel FOREIGN KEY (hotel_id) REFERENCES hotel;
 
 
