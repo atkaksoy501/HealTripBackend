@@ -1,11 +1,10 @@
 package codewizards.heal_trip;
 
-import codewizards.heal_trip.dataAccess.UserDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
+@SpringBootApplication
 public class HealTripApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HealTripApplication.class, args);
