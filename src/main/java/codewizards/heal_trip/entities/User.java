@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@Entity
-@Table(name="user")
+@Table(name="users")
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class User {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int user_id;
 
@@ -31,4 +32,14 @@ public class User {
 
     @Column(name = "user_role")
     private String user_role;
+
+    public User(String first_name, String last_name, String email, String phone_number, String user_password, String user_role) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.user_password = user_password;
+        this.user_role = user_role;
+    }
+
 }
