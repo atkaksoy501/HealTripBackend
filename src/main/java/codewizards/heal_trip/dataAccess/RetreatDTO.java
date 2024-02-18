@@ -1,0 +1,4 @@
+package codewizards.heal_trip.dataAccess;
+
+public class RetreatDTO {
+}
