@@ -13,13 +13,19 @@ public class UserService implements IUserService{
 
     @Autowired
     public UserService(UserDTO userDTO) {
-        super();
         this.userDTO = userDTO;
     }
 
     @Override
     public void registerUser(String firstName, String lastName, String email, String phone_number, String user_password, String user_role) {
-        this.userDTO.save(new User(firstName, lastName, email, phone_number, user_password, user_role));
+        User newUser = new User();
+        newUser.setFirst_name(firstName);
+        newUser.setLast_name(lastName);
+        newUser.setEmail(email);
+        newUser.setPhone_number(phone_number);
+        newUser.setUser_password(user_password);
+        newUser.setUser_role(user_role);
+        userDTO.save(newUser);
     }
 
 }
