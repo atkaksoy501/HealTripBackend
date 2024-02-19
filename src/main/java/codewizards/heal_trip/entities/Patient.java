@@ -9,10 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name="patient")
 @Entity
-public class Patient {
-    @Id
-    @Column(name = "patient_id")
-    private int patient_id;
+public class Patient extends User{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_id_generator")
+//    @SequenceGenerator(name="patient_id_generator", sequenceName = "patient_id_seq", allocationSize=1)
+//    @Column(name = "patient_id")
+//    private int patient_id;
 
     @Column(name = "birth_year")
     private int birth_year;
