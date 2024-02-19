@@ -41,14 +41,14 @@ DROP TABLE IF EXISTS hospital_image CASCADE;
 DROP TABLE IF EXISTS hotel_image CASCADE;
 
 CREATE TABLE address (
-    address_id int4 NOT NULL,
+    address_id int4 GENERATED ALWAYS AS IDENTITY,
     country varchar NOT NULL,
     city varchar NOT NULL,
     address_detail varchar NOT NULL
 );
 
 CREATE TABLE booking (
-    booking_id int4 NOT NULL,
+    booking_id int4 GENERATED ALWAYS AS IDENTITY,
     patient_id int4 NOT NULL,
     hospital_id int4 NOT NULL,
     hotel_id int4,
@@ -61,12 +61,12 @@ CREATE TABLE booking (
 );
 
 CREATE TABLE department (
-    department_id int4 NOT NULL,
+    department_id int4 GENERATED ALWAYS AS IDENTITY,
     department_name varchar NOT NULL
 );
 
 CREATE TABLE doctor (
-    doctor_id int4 NOT NULL,
+    doctor_id int4 GENERATED ALWAYS AS IDENTITY,
     hospital_id int4 NOT NULL,
     department_id int4 NOT NULL,
     experience_year int4 NOT NULL,
@@ -75,14 +75,14 @@ CREATE TABLE doctor (
 );
 
 CREATE TABLE feedback (
-    feedback_id int4 NOT NULL,
+    feedback_id int4 GENERATED ALWAYS AS IDENTITY,
     booking_id int4 NOT NULL,
     comment varchar NOT NULL,
     rating int4 NOT NULL
 );
 
 CREATE TABLE hospital (
-    hospital_id int4 NOT NULL,
+    hospital_id int4 GENERATED ALWAYS AS IDENTITY,
     bed_capacity int4 NOT NULL,
     hospital_name varchar NOT NULL,
     address_id int4 NOT NULL,
@@ -90,12 +90,12 @@ CREATE TABLE hospital (
 );
 
 CREATE TABLE hospital_organizer (
-    hospital_organizer_id int4 NOT NULL,
+    hospital_organizer_id int4 GENERATED ALWAYS AS IDENTITY,
     hospital_id int4 NOT NULL
 );
 
 CREATE TABLE hotel (
-    hotel_id int4 NOT NULL,
+    hotel_id int4 GENERATED ALWAYS AS IDENTITY,
     hotel_name varchar NOT NULL,
     address_id int4 NOT NULL,
     contact_phone varchar NOT NULL,
@@ -103,27 +103,19 @@ CREATE TABLE hotel (
 );
 
 CREATE TABLE hotel_organizer (
-    hotel_organizer_id int4 NOT NULL,
+    hotel_organizer_id int4 GENERATED ALWAYS AS IDENTITY,
     hotel_id int4 NOT NULL
 );
 
-CREATE TABLE patient (
-    patient_id int4 NOT NULL,
-    birth_year int4 NOT NULL,
-    gender bpchar NOT NULL,
-    patient_height int4 NOT NULL,
-    patient_weight int4 NOT NULL
-);
-
 CREATE TABLE retreat (
-    retreat_id int4 NOT NULL,
+    retreat_id int4 GENERATED ALWAYS AS IDENTITY,
     retreat_name varchar NOT NULL,
     department_id int4 NOT NULL,
     description varchar NOT NULL
 );
 
 CREATE TABLE "user" (
-    user_id int4 NOT NULL,
+    user_id int4 GENERATED ALWAYS AS IDENTITY,
     first_name varchar NOT NULL,
     last_name varchar NOT NULL,
     email varchar NOT NULL,
@@ -132,14 +124,21 @@ CREATE TABLE "user" (
     user_role varchar NOT NULL
 );
 
+CREATE TABLE patient (
+    birth_year int4 NOT NULL,
+    gender bpchar NOT NULL,
+    patient_height int4 NOT NULL,
+    patient_weight int4 NOT NULL
+) INHERITS (users);
+
 CREATE TABLE hospital_image (
-    hospital_image_id int4 NOT NULL,
+    hospital_image_id int4 GENERATED ALWAYS AS IDENTITY,
     hospital_id int4 NOT NULL,
     image varchar NOT NULL
 );
 
 CREATE TABLE hotel_image (
-    hotel_image_id int4 NOT NULL,
+    hotel_image_id int4 GENERATED ALWAYS AS IDENTITY,
     hotel_id int4 NOT NULL,
     image varchar NOT NULL
 );
@@ -171,8 +170,6 @@ ALTER TABLE ONLY hotel
 ALTER TABLE ONLY hotel_organizer
     ADD CONSTRAINT pk_hotel_organizer PRIMARY KEY (hotel_organizer_id);
 
-ALTER TABLE ONLY patient
-    ADD CONSTRAINT pk_patient PRIMARY KEY (patient_id);
 
 ALTER TABLE ONLY retreat
     ADD CONSTRAINT pk_retreat PRIMARY KEY (retreat_id);
@@ -186,9 +183,7 @@ ALTER TABLE ONLY hospital_image
 ALTER TABLE ONLY hotel_image
     ADD CONSTRAINT pk_hotel_image PRIMARY KEY (hotel_image_id);
 
-ALTER TABLE ONLY booking
-    ADD CONSTRAINT fk_booking_patient FOREIGN KEY (patient_id) REFERENCES patient;
-
+--add fk for booking patient
 ALTER TABLE ONLY booking
     ADD CONSTRAINT fk_booking_hospital FOREIGN KEY (hospital_id) REFERENCES hospital;
 
