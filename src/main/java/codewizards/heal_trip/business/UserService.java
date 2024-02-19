@@ -1,5 +1,6 @@
 package codewizards.heal_trip.business;
 
+import codewizards.heal_trip.dataAccess.PatientDTO;
 import codewizards.heal_trip.dataAccess.UserDTO;
 import codewizards.heal_trip.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,12 @@ import org.springframework.stereotype.Service;
 public class UserService implements IUserService{
 
     private UserDTO userDTO;
+    private PatientDTO patientDTO;
 
     @Autowired
-    public UserService(UserDTO userDTO) {
+    public UserService(UserDTO userDTO, PatientDTO patientDTO) {
         this.userDTO = userDTO;
+        this.patientDTO = patientDTO;
     }
 
     @Override
