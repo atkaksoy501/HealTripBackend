@@ -122,14 +122,15 @@ CREATE TABLE retreat (
     description varchar NOT NULL
 );
 
-CREATE TABLE "user" (
+CREATE TABLE users (
     user_id int4 NOT NULL,
     first_name varchar NOT NULL,
     last_name varchar NOT NULL,
     email varchar NOT NULL,
     phone_number varchar NOT NULL,
     user_password varchar NOT NULL,
-    user_role varchar NOT NULL
+    user_role varchar NOT NULL,
+    active boolean NOT NULL
 );
 
 CREATE TABLE hospital_image (
@@ -177,7 +178,7 @@ ALTER TABLE ONLY patient
 ALTER TABLE ONLY retreat
     ADD CONSTRAINT pk_retreat PRIMARY KEY (retreat_id);
 
-ALTER TABLE ONLY "user"
+ALTER TABLE ONLY users
     ADD CONSTRAINT pk_user PRIMARY KEY (user_id);
 
 ALTER TABLE ONLY hospital_image

@@ -2,9 +2,9 @@ INSERT INTO address (address_id, country, city, address_detail) VALUES (1, 'Turk
 INSERT INTO address (address_id, country, city, address_detail) VALUES (2, 'Turkey', 'Antalya', 'Lara');
 INSERT INTO address (address_id, country, city, address_detail) VALUES (3, 'Turkey', 'Antalya', 'Kemer');
 
-INSERT INTO "user" (user_id, first_name, last_name, email, phone_number, user_password, user_role) VALUES (1, 'Ali', 'Veli', 'abc@abc.com', '123456789', '123456', 'patient');
-INSERT INTO "user" (user_id, first_name, last_name, email, phone_number, user_password, user_role) VALUES (2, 'Ayşe', 'Fatma', 'abcd@abc.com', '123456789', '123456', 'hotel_organizer');
-INSERT INTO "user" (user_id, first_name, last_name, email, phone_number, user_password, user_role) VALUES (3, 'Mehmet', 'Osman', 'xxx@xxx.com', '123456789', '123456', 'hospital_organizer');
+INSERT INTO users (user_id, first_name, last_name, email, phone_number, user_password, user_role, active) VALUES (1, 'Ali', 'Veli', 'abc@abc.com', '123456789', '123456', 'patient', true);
+INSERT INTO users (user_id, first_name, last_name, email, phone_number, user_password, user_role, active) VALUES (2, 'Ayşe', 'Fatma', 'abcd@abc.com', '123456789', '123456', 'hotel_organizer', true);
+INSERT INTO users (user_id, first_name, last_name, email, phone_number, user_password, user_role, active) VALUES (3, 'Mehmet', 'Osman', 'xxx@xxx.com', '123456789', '123456', 'hospital_organizer', true);
 
 INSERT INTO department (department_id, department_name) VALUES (1, 'Cardiology');
 INSERT INTO department (department_id, department_name) VALUES (2, 'Dermatology');
