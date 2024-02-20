@@ -114,7 +114,7 @@ CREATE TABLE retreat (
     description varchar NOT NULL
 );
 
-CREATE TABLE "user" (
+CREATE TABLE users (
     user_id int4 GENERATED ALWAYS AS IDENTITY,
     first_name varchar NOT NULL,
     last_name varchar NOT NULL,
@@ -174,7 +174,7 @@ ALTER TABLE ONLY hotel_organizer
 ALTER TABLE ONLY retreat
     ADD CONSTRAINT pk_retreat PRIMARY KEY (retreat_id);
 
-ALTER TABLE ONLY "user"
+ALTER TABLE ONLY users
     ADD CONSTRAINT pk_user PRIMARY KEY (user_id);
 
 ALTER TABLE ONLY hospital_image
