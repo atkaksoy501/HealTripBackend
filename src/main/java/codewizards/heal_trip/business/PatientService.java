@@ -33,7 +33,7 @@ public class PatientService implements IPatientService{
         newPatient.setPatient_height(patient.getPatient_height());
         newPatient.setPatient_weight(patient.getPatient_weight());
         newPatient = patientDTO.save(newPatient);
-        return newPatient.getUser_id();
+        return newPatient.getId();
     }
 
     public Patient updatePatient(int patient_id, Patient patient) {
