@@ -27,7 +27,7 @@ public class UserService implements IUserService{
         newUser.setEmail(user.getEmail());
         newUser.setPhone_number(user.getPhone_number());
         newUser.setUser_password(user.getUser_password());
-        newUser.setUser_role(user.getUser_role());
+//        newUser.setUser_role(user.getUser_role());
         newUser.setActive(true);
         newUser = userDTO.save(newUser);
         return newUser.getUser_id();
@@ -52,8 +52,8 @@ public class UserService implements IUserService{
                 dbUser.setPhone_number(user.getPhone_number());
             if (user.getUser_password() != null)
                 dbUser.setUser_password(user.getUser_password());
-            if (user.getUser_role() != null)
-                dbUser.setUser_role(user.getUser_role());
+//            if (user.getUser_role() != null)
+//                dbUser.setUser_role(user.getUser_role());
             dbUser = userDTO.save(dbUser);
         }
         return dbUser;

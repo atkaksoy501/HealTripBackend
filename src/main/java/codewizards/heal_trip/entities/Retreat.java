@@ -11,8 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 public class Retreat {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "retreat_id_generator")
-    @SequenceGenerator(name="retreat_id_generator", sequenceName = "retreat_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @SequenceGenerator(name="retreat_id_generator", sequenceName = "retreat_id_seq", allocationSize=1)
     @Column(name = "retreat_id")
     private int retreat_id;
 
