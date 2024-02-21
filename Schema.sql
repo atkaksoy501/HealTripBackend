@@ -9,15 +9,15 @@ SELECT pg_catalog.set_config('search_path', '', false);
 SET xmloption = content;
 SET row_security = off;
 
-SET search_path TO heal_trip_test;
+SET search_path TO heal_trip_test; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-DROP SCHEMA IF EXISTS heal_trip_test CASCADE;
+DROP SCHEMA IF EXISTS heal_trip_test CASCADE; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-CREATE SCHEMA heal_trip_test;
+CREATE SCHEMA heal_trip_test; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-SET search_path TO heal_trip_test;
+SET search_path TO heal_trip_test; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-ALTER SCHEMA heal_trip_test OWNER TO codewizards_admin;
+ALTER SCHEMA heal_trip_test OWNER TO codewizards_admin; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
 SET default_tablespace = '';
 
@@ -41,14 +41,14 @@ DROP TABLE IF EXISTS hospital_image CASCADE;
 DROP TABLE IF EXISTS hotel_image CASCADE;
 
 CREATE TABLE address (
-    address_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     country varchar NOT NULL,
     city varchar NOT NULL,
     address_detail varchar NOT NULL
 );
 
 CREATE TABLE booking (
-    booking_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     patient_id int4 NOT NULL,
     hospital_id int4 NOT NULL,
     hotel_id int4,
@@ -61,12 +61,12 @@ CREATE TABLE booking (
 );
 
 CREATE TABLE department (
-    department_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     department_name varchar NOT NULL
 );
 
 CREATE TABLE doctor (
-    doctor_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     hospital_id int4 NOT NULL,
     department_id int4 NOT NULL,
     experience_year int4 NOT NULL,
@@ -75,14 +75,14 @@ CREATE TABLE doctor (
 );
 
 CREATE TABLE feedback (
-    feedback_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     booking_id int4 NOT NULL,
     comment varchar NOT NULL,
     rating int4 NOT NULL
 );
 
 CREATE TABLE hospital (
-    hospital_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     bed_capacity int4 NOT NULL,
     hospital_name varchar NOT NULL,
     address_id int4 NOT NULL,
@@ -90,12 +90,12 @@ CREATE TABLE hospital (
 );
 
 CREATE TABLE hospital_organizer (
-    hospital_organizer_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     hospital_id int4 NOT NULL
 );
 
 CREATE TABLE hotel (
-    hotel_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     hotel_name varchar NOT NULL,
     address_id int4 NOT NULL,
     contact_phone varchar NOT NULL,
@@ -103,25 +103,26 @@ CREATE TABLE hotel (
 );
 
 CREATE TABLE hotel_organizer (
-    hotel_organizer_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     hotel_id int4 NOT NULL
 );
 
 CREATE TABLE retreat (
-    retreat_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     retreat_name varchar NOT NULL,
     department_id int4 NOT NULL,
     description varchar NOT NULL
 );
 
-CREATE TABLE "user" (
-    user_id int4 GENERATED ALWAYS AS IDENTITY,
+CREATE TABLE users (
+    id int4 GENERATED ALWAYS AS IDENTITY,
     first_name varchar NOT NULL,
     last_name varchar NOT NULL,
     email varchar NOT NULL,
     phone_number varchar NOT NULL,
     user_password varchar NOT NULL,
-    user_role varchar NOT NULL
+    user_role varchar NOT NULL,
+    active boolean NOT NULL
 );
 
 CREATE TABLE patient (
@@ -132,56 +133,56 @@ CREATE TABLE patient (
 ) INHERITS (users);
 
 CREATE TABLE hospital_image (
-    hospital_image_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     hospital_id int4 NOT NULL,
     image varchar NOT NULL
 );
 
 CREATE TABLE hotel_image (
-    hotel_image_id int4 GENERATED ALWAYS AS IDENTITY,
+    id int4 GENERATED ALWAYS AS IDENTITY,
     hotel_id int4 NOT NULL,
     image varchar NOT NULL
 );
 
 ALTER TABLE ONLY address
-    ADD CONSTRAINT pk_address PRIMARY KEY (address_id);
+    ADD CONSTRAINT pk_address PRIMARY KEY (id);
 
 ALTER TABLE ONLY booking
-    ADD CONSTRAINT pk_booking PRIMARY KEY (booking_id);
+    ADD CONSTRAINT pk_booking PRIMARY KEY (id);
 
 ALTER TABLE ONLY department
-    ADD CONSTRAINT pk_department PRIMARY KEY (department_id);
+    ADD CONSTRAINT pk_department PRIMARY KEY (id);
 
 ALTER TABLE ONLY doctor
-    ADD CONSTRAINT pk_doctor PRIMARY KEY (doctor_id);
+    ADD CONSTRAINT pk_doctor PRIMARY KEY (id);
 
 ALTER TABLE ONLY feedback
-    ADD CONSTRAINT pk_feedback PRIMARY KEY (feedback_id);
+    ADD CONSTRAINT pk_feedback PRIMARY KEY (id);
 
 ALTER TABLE ONLY hospital
-    ADD CONSTRAINT pk_hospital PRIMARY KEY (hospital_id);
+    ADD CONSTRAINT pk_hospital PRIMARY KEY (id);
 
 ALTER TABLE ONLY hospital_organizer
-    ADD CONSTRAINT pk_hospital_organizer PRIMARY KEY (hospital_organizer_id);
+    ADD CONSTRAINT pk_hospital_organizer PRIMARY KEY (id);
 
 ALTER TABLE ONLY hotel
-    ADD CONSTRAINT pk_hotel PRIMARY KEY (hotel_id);
+    ADD CONSTRAINT pk_hotel PRIMARY KEY (id);
 
 ALTER TABLE ONLY hotel_organizer
-    ADD CONSTRAINT pk_hotel_organizer PRIMARY KEY (hotel_organizer_id);
+    ADD CONSTRAINT pk_hotel_organizer PRIMARY KEY (id);
 
 
 ALTER TABLE ONLY retreat
-    ADD CONSTRAINT pk_retreat PRIMARY KEY (retreat_id);
+    ADD CONSTRAINT pk_retreat PRIMARY KEY (id);
 
-ALTER TABLE ONLY "user"
-    ADD CONSTRAINT pk_user PRIMARY KEY (user_id);
+ALTER TABLE ONLY users
+    ADD CONSTRAINT pk_user PRIMARY KEY (id);
 
 ALTER TABLE ONLY hospital_image
-    ADD CONSTRAINT pk_hospital_image PRIMARY KEY (hospital_image_id);
+    ADD CONSTRAINT pk_hospital_image PRIMARY KEY (id);
 
 ALTER TABLE ONLY hotel_image
-    ADD CONSTRAINT pk_hotel_image PRIMARY KEY (hotel_image_id);
+    ADD CONSTRAINT pk_hotel_image PRIMARY KEY (id);
 
 --add fk for booking patient
 ALTER TABLE ONLY booking
