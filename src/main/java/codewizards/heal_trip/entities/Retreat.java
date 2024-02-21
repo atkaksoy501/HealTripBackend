@@ -13,8 +13,8 @@ public class Retreat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @SequenceGenerator(name="retreat_id_generator", sequenceName = "retreat_id_seq", allocationSize=1)
-    @Column(name = "retreat_id")
-    private int retreat_id;
+    @Column(name = "id")
+    private int id;
 
     @Column(name = "retreat_name")
     private String retreat_name;
