@@ -1,5 +1,6 @@
 package codewizards.heal_trip.controllers;
 
+import codewizards.heal_trip.business.IPatientService;
 import codewizards.heal_trip.business.PatientService;
 import codewizards.heal_trip.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/patient")
 public class PatientController {
 
-    private PatientService patientService;
+    private IPatientService patientService;
 
     @Autowired
     public PatientController(PatientService patientService) {
@@ -31,5 +32,10 @@ public class PatientController {
     @PostMapping(value = "/register")
     public ResponseEntity<Integer> registerPatient(@RequestBody Patient patient) {
         return new ResponseEntity<>(patientService.registerPatient(patient), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/update/{patient_id}")
+    public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient, @PathVariable int patient_id) {
+        return new ResponseEntity<>(patientService.updatePatient(patient_id, patient), HttpStatus.OK);
     }
 }
