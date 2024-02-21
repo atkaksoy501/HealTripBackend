@@ -9,15 +9,15 @@ SELECT pg_catalog.set_config('search_path', '', false);
 SET xmloption = content;
 SET row_security = off;
 
-SET search_path TO heal_trip_test; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
+SET search_path TO heal_trip_atakan; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-DROP SCHEMA IF EXISTS heal_trip_test CASCADE; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
+DROP SCHEMA IF EXISTS heal_trip_atakan CASCADE; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-CREATE SCHEMA heal_trip_test; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
+CREATE SCHEMA heal_trip_atakan; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-SET search_path TO heal_trip_test; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
+SET search_path TO heal_trip_atakan; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
-ALTER SCHEMA heal_trip_test OWNER TO codewizards_admin; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
+ALTER SCHEMA heal_trip_atakan OWNER TO codewizards_admin; --DO NOT FORGET TO CHANGE THE SCHEMA NAME--
 
 SET default_tablespace = '';
 
@@ -132,17 +132,18 @@ CREATE TABLE patient (
     patient_weight int4 NOT NULL
 ) INHERITS (users);
 
-CREATE TABLE hospital_image (
+CREATE TABLE images (
     id int4 GENERATED ALWAYS AS IDENTITY,
-    hospital_id int4 NOT NULL,
     image varchar NOT NULL
 );
 
+CREATE TABLE hospital_image (
+    hospital_id int4 NOT NULL
+) INHERITS (images);
+
 CREATE TABLE hotel_image (
-    id int4 GENERATED ALWAYS AS IDENTITY,
-    hotel_id int4 NOT NULL,
-    image varchar NOT NULL
-);
+    hotel_id int4 NOT NULL
+) INHERITS (images);
 
 ALTER TABLE ONLY address
     ADD CONSTRAINT pk_address PRIMARY KEY (id);
@@ -171,18 +172,21 @@ ALTER TABLE ONLY hotel
 ALTER TABLE ONLY hotel_organizer
     ADD CONSTRAINT pk_hotel_organizer PRIMARY KEY (id);
 
-
 ALTER TABLE ONLY retreat
     ADD CONSTRAINT pk_retreat PRIMARY KEY (id);
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT pk_user PRIMARY KEY (id);
 
-ALTER TABLE ONLY hospital_image
-    ADD CONSTRAINT pk_hospital_image PRIMARY KEY (id);
+ALTER TABLE ONLY images
+    ADD CONSTRAINT pk_images PRIMARY KEY (id);
 
-ALTER TABLE ONLY hotel_image
-    ADD CONSTRAINT pk_hotel_image PRIMARY KEY (id);
+-- parent tablodan inherit ettiği için ayrıca pk olarak tanımlamaya gerek var mı?
+-- ALTER TABLE ONLY hospital_image
+--     ADD CONSTRAINT pk_hospital_image PRIMARY KEY (id);
+--
+-- ALTER TABLE ONLY hotel_image
+--     ADD CONSTRAINT pk_hotel_image PRIMARY KEY (id);
 
 --add fk for booking patient
 ALTER TABLE ONLY booking
