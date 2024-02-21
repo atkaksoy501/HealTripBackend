@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
-@Entity
+@MappedSuperclass
 @Data
-@Table(name="users")
+//@Table(name="users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
