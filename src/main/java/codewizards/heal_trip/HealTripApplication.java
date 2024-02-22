@@ -9,4 +9,6 @@ public class HealTripApplication {
 		SpringApplication.run(HealTripApplication.class, args);
 	}
 
+
+
 }
