@@ -20,20 +20,10 @@ public class PatientService implements IPatientService{
     }
 
     public Integer registerPatient(Patient patient) {
-        Patient newPatient = new Patient();
-        newPatient.setFirst_name(patient.getFirst_name());
-        newPatient.setLast_name(patient.getLast_name());
-        newPatient.setEmail(patient.getEmail());
-        newPatient.setPhone_number(patient.getPhone_number());
-        newPatient.setUser_password(patient.getUser_password());
-        newPatient.setUser_role("patient");
-        newPatient.setActive(true);
-        newPatient.setBirth_year(patient.getBirth_year());
-        newPatient.setGender(patient.getGender());
-        newPatient.setPatient_height(patient.getPatient_height());
-        newPatient.setPatient_weight(patient.getPatient_weight());
-        newPatient = patientDTO.save(newPatient);
-        return newPatient.getId();
+        patient.setUser_role("patient");
+        patient.setActive(true);
+        patient = patientDTO.save(patient);
+        return patient.getId();
     }
 
     public Patient updatePatient(int patient_id, Patient patient) {
@@ -49,8 +39,8 @@ public class PatientService implements IPatientService{
                 dbPatient.setPhone_number(patient.getPhone_number());
             if (patient.getUser_password() != null)
                 dbPatient.setUser_password(patient.getUser_password());
-            if (patient.getBirth_year() != 0)
-                dbPatient.setBirth_year(patient.getBirth_year());
+            if (patient.getBirth_date() != null)
+                dbPatient.setBirth_date(patient.getBirth_date());
             if (patient.getGender() != 0)
                 dbPatient.setGender(patient.getGender());
             if (patient.getPatient_height() != 0)
@@ -60,5 +50,15 @@ public class PatientService implements IPatientService{
             dbPatient = patientDTO.save(dbPatient);
         }
         return dbPatient;
+    }
+
+    public boolean deletePatient(int patient_id) {
+        Patient dbPatient = patientDTO.findById(patient_id).orElse(null);
+        if (dbPatient != null) {
+            dbPatient.setActive(false);
+            patientDTO.save(dbPatient);
+            return false;
+        }
+        return true;
     }
 }

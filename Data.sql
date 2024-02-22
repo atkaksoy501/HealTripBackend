@@ -46,10 +46,10 @@ INSERT INTO feedback (id, booking_id, comment, rating) VALUES (DEFAULT, 1, 'Good
 INSERT INTO feedback (id, booking_id, comment, rating) VALUES (DEFAULT, 2, 'Bad', 1);
 INSERT INTO feedback (id, booking_id, comment, rating) VALUES (DEFAULT, 3, 'Normal', 3);
 
-INSERT INTO hospital_image (id, hospital_id, image) VALUES (DEFAULT, 1, 'dGVzdA==');
-INSERT INTO hospital_image (id, hospital_id, image) VALUES (DEFAULT, 2, 'dGVzdA==');
-INSERT INTO hospital_image (id, hospital_id, image) VALUES (DEFAULT, 3, 'dGVzdA==');
-
-INSERT INTO hotel_image (id, hotel_id, image) VALUES (DEFAULT, 1, 'dGVzdA==');
-INSERT INTO hotel_image (id, hotel_id, image) VALUES (DEFAULT, 2, 'dGVzdA==');
-INSERT INTO hotel_image (id, hotel_id, image) VALUES (DEFAULT, 3, 'dGVzdA==');
+-- INSERT INTO hospital_image (id, hospital_id, image) VALUES (DEFAULT, 1, 'dGVzdA==');
+-- INSERT INTO hospital_image (id, hospital_id, image) VALUES (DEFAULT, 2, 'dGVzdA==');
+-- INSERT INTO hospital_image (id, hospital_id, image) VALUES (DEFAULT, 3, 'dGVzdA==');
+--
+-- INSERT INTO hotel_image (id, hotel_id, image) VALUES (DEFAULT, 1, 'dGVzdA==');
+-- INSERT INTO hotel_image (id, hotel_id, image) VALUES (DEFAULT, 2, 'dGVzdA==');
+-- INSERT INTO hotel_image (id, hotel_id, image) VALUES (DEFAULT, 3, 'dGVzdA==');
