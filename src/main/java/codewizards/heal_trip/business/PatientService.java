@@ -1,6 +1,6 @@
 package codewizards.heal_trip.business;
 
-import codewizards.heal_trip.dataAccess.PatientDTO;
+import codewizards.heal_trip.dataAccess.PatientDao;
 import codewizards.heal_trip.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,26 +8,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class PatientService implements IPatientService{
 
-    private PatientDTO patientDTO;
+    private PatientDao patientDao;
 
     @Autowired
-    public PatientService(PatientDTO patientDTO) {
-        this.patientDTO = patientDTO;
+    public PatientService(PatientDao patientDao) {
+        this.patientDao = patientDao;
     }
 
     public Patient getPatientById(int patient_id) {
-        return patientDTO.findById(patient_id).orElse(null);
+        return patientDao.findById(patient_id).orElse(null);
     }
 
     public Integer registerPatient(Patient patient) {
         patient.setUser_role("patient");
         patient.setActive(true);
-        patient = patientDTO.save(patient);
+        patient = patientDao.save(patient);
         return patient.getId();
     }
 
     public Patient updatePatient(int patient_id, Patient patient) {
-        Patient dbPatient = patientDTO.findById(patient_id).orElse(null);
+        Patient dbPatient = patientDao.findById(patient_id).orElse(null);
         if (dbPatient != null) {
             if (patient.getFirst_name() != null)
                 dbPatient.setFirst_name(patient.getFirst_name());
@@ -47,16 +47,16 @@ public class PatientService implements IPatientService{
                 dbPatient.setPatient_height(patient.getPatient_height());
             if (patient.getPatient_weight() != 0)
                 dbPatient.setPatient_weight(patient.getPatient_weight());
-            dbPatient = patientDTO.save(dbPatient);
+            dbPatient = patientDao.save(dbPatient);
         }
         return dbPatient;
     }
 
     public boolean deletePatient(int patient_id) {
-        Patient dbPatient = patientDTO.findById(patient_id).orElse(null);
+        Patient dbPatient = patientDao.findById(patient_id).orElse(null);
         if (dbPatient != null) {
             dbPatient.setActive(false);
-            patientDTO.save(dbPatient);
+            patientDao.save(dbPatient);
             return false;
         }
         return true;
