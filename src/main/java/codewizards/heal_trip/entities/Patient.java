@@ -1,8 +1,10 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import lombok.*;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -10,14 +12,11 @@ import lombok.*;
 @Table(name="patient")
 @Entity
 public class Patient extends User{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_id_generator")
-//    @SequenceGenerator(name="patient_id_generator", sequenceName = "patient_id_seq", allocationSize=1)
-//    @Column(name = "patient_id")
-//    private int patient_id;
 
-    @Column(name = "birth_year")
-    private int birth_year;
+    @Column(name = "birth_date")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate birth_date;
 
     @Column(name = "gender")
     private char gender;
