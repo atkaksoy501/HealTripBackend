@@ -9,4 +9,6 @@ public interface IPatientService {
     Integer registerPatient(Patient patient);
 
     Patient updatePatient(int patient_id, Patient patient);
+
+    boolean deletePatient(int patient_id);
 }

@@ -38,4 +38,13 @@ public class PatientController {
     public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient, @PathVariable int patient_id) {
         return new ResponseEntity<>(patientService.updatePatient(patient_id, patient), HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/deleteById/{patient_id}")
+    public ResponseEntity<String> deletePatient(@PathVariable int patient_id) {
+        boolean isPatientActive = patientService.deletePatient(patient_id);
+        if (!isPatientActive)
+            return new ResponseEntity<>("Patient with id " + patient_id + " has been deleted", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Patient with id " + patient_id + " does not exist", HttpStatus.NOT_FOUND);
+    }
 }
