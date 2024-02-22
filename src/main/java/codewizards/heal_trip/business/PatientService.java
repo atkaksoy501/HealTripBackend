@@ -61,4 +61,14 @@ public class PatientService implements IPatientService{
         }
         return dbPatient;
     }
+
+    public boolean deletePatient(int patient_id) {
+        Patient dbPatient = patientDTO.findById(patient_id).orElse(null);
+        if (dbPatient != null) {
+            dbPatient.setActive(false);
+            patientDTO.save(dbPatient);
+            return false;
+        }
+        return true;
+    }
 }
