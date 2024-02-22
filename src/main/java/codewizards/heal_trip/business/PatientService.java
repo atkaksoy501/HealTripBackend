@@ -28,12 +28,12 @@ public class PatientService implements IPatientService{
         newPatient.setUser_password(patient.getUser_password());
         newPatient.setUser_role("patient");
         newPatient.setActive(true);
-        newPatient.setBirth_year(patient.getBirth_year());
+        newPatient.setBirth_date(patient.getBirth_date());
         newPatient.setGender(patient.getGender());
         newPatient.setPatient_height(patient.getPatient_height());
         newPatient.setPatient_weight(patient.getPatient_weight());
         newPatient = patientDTO.save(newPatient);
-        return newPatient.getUser_id();
+        return newPatient.getId();
     }
 
     public Patient updatePatient(int patient_id, Patient patient) {
@@ -49,8 +49,8 @@ public class PatientService implements IPatientService{
                 dbPatient.setPhone_number(patient.getPhone_number());
             if (patient.getUser_password() != null)
                 dbPatient.setUser_password(patient.getUser_password());
-            if (patient.getBirth_year() != 0)
-                dbPatient.setBirth_year(patient.getBirth_year());
+            if (patient.getBirth_date() != null)
+                dbPatient.setBirth_date(patient.getBirth_date());
             if (patient.getGender() != 0)
                 dbPatient.setGender(patient.getGender());
             if (patient.getPatient_height() != 0)

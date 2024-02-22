@@ -30,7 +30,7 @@ public class UserService implements IUserService{
 //        newUser.setUser_role(user.getUser_role());
         newUser.setActive(true);
         newUser = userDTO.save(newUser);
-        return newUser.getUser_id();
+        return newUser.getId();
     }
 
     @Override

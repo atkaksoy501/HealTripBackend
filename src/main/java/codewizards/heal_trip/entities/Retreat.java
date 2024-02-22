@@ -12,7 +12,6 @@ import lombok.*;
 public class Retreat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @SequenceGenerator(name="retreat_id_generator", sequenceName = "retreat_id_seq", allocationSize=1)
     @Column(name = "id")
     private int id;
 
