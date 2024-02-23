@@ -18,8 +18,9 @@ public class Retreat {
     @Column(name = "retreat_name")
     private String retreat_name;
 
-//    @OneToMany(mappedBy = "retreat") //Department class'ı oluşturulduktan sonra açılacak. int olan tip Department olarak değiştirilecek.
-    private int department_id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    private Department department;
 
     @Column(name = "description")
     private String description;

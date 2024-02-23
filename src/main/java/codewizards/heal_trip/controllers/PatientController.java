@@ -1,7 +1,6 @@
 package codewizards.heal_trip.controllers;
 
 import codewizards.heal_trip.business.IPatientService;
-import codewizards.heal_trip.business.PatientService;
 import codewizards.heal_trip.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,7 @@ public class PatientController {
     private IPatientService patientService;
 
     @Autowired
-    public PatientController(PatientService patientService) {
+    public PatientController(IPatientService patientService) {
         super();
         this.patientService = patientService;
     }
