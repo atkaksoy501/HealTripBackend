@@ -13,7 +13,7 @@ import lombok.*;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
+    @Column(name = "id")
     private int id;
     
     @Column(name = "patient_id")
@@ -30,6 +30,9 @@ public class Booking {
     
     @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
     
     @Column(name = "booking_date")
     private Date booking_date;

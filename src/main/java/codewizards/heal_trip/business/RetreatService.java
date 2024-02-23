@@ -18,4 +18,30 @@ public class RetreatService implements IRetreatService{
     public Retreat getRetreatById(int retreat_id) {
         return retreatDao.findById(retreat_id).orElse(null);
     }
+
+    public int addRetreat(Retreat retreat) {
+        retreat = retreatDao.save(retreat);
+        return retreat.getId();
+    }
+
+    public boolean deleteRetreat(int retreat_id) {
+        retreatDao.deleteById(retreat_id);
+        Retreat retreat = retreatDao.findById(retreat_id).orElse(null);
+        if (retreat == null)
+            return true;
+        else
+            return false;
+    }
+
+    public Retreat updateRetreat(Retreat retreat, int retreat_id) {
+        Retreat dbRetreat = retreatDao.findById(retreat_id).orElse(null);
+        if (dbRetreat != null) {
+            if (retreat.getRetreat_name() != null)
+                dbRetreat.setRetreat_name(retreat.getRetreat_name());
+            if (retreat.getDescription() != null)
+                dbRetreat.setDescription(retreat.getDescription());
+            dbRetreat = retreatDao.save(dbRetreat);
+        }
+        return dbRetreat;
+    }
 }
