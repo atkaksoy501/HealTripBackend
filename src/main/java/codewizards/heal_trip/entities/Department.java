@@ -11,7 +11,7 @@ import lombok.*;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "department_id")
+    @Column(name = "id")
     private int id;
     
     @Column(name = "department_name")
