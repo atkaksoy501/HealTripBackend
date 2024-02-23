@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name="hospital_organizer")
 @AllArgsConstructor
 @NoArgsConstructor
-public class HospitalOrganizer {
-    @Id
-    @Column(name="hospital_organizer_id")
-    private int hospitalOrganizerId;
+public class HospitalOrganizer extends User{
 
     @Column(name="hospital_id")
     private int hospitalId;

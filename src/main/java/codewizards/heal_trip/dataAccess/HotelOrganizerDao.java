@@ -5,5 +5,5 @@ import codewizards.heal_trip.entities.HotelOrganizer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HotelOrganizerDao extends JpaRepository<HotelOrganizer,Integer> {
-    HotelOrganizer findById(int id);
+//    HotelOrganizer findById(int id);
 }
