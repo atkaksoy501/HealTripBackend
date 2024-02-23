@@ -1,23 +1,20 @@
 package codewizards.heal_trip.controllers;
 
-import codewizards.heal_trip.business.RetreatService;
+import codewizards.heal_trip.business.IRetreatService;
 import codewizards.heal_trip.entities.Retreat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/retreat")
 public class RetreatController {
 
-    private RetreatService retreatService;
+    private IRetreatService retreatService;
 
     @Autowired
-    public RetreatController(RetreatService retreatService) {
+    public RetreatController(IRetreatService retreatService) {
         super();
         this.retreatService = retreatService;
     }
@@ -29,5 +26,24 @@ public class RetreatController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<>(retreat, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/delete/{retreat_id}")
+    public ResponseEntity<String> deleteRetreat(@PathVariable int retreat_id) {
+        boolean isDeleted = retreatService.deleteRetreat(retreat_id);
+        if (isDeleted)
+            return new ResponseEntity<>("Retreat with id = " + retreat_id + " has been deleted", HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping(value = "/update/{retreat_id}")
+    public ResponseEntity<Retreat> updateRetreat(@RequestBody Retreat retreat, @PathVariable int retreat_id) {
+        return new ResponseEntity<>(retreatService.updateRetreat(retreat, retreat_id), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/add")
+    public ResponseEntity<Integer> addRetreat(@RequestBody Retreat retreat) {
+        return new ResponseEntity<>(retreatService.addRetreat(retreat), HttpStatus.OK);
     }
 }
