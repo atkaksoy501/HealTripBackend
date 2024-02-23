@@ -40,7 +40,7 @@ public class HotelOrganizerService implements IHotelOrganizerService {
 
     @Override
     public HotelOrganizer getById(int id) {
-        return this.hotelOrganizerDao.findById(id);
+        return this.hotelOrganizerDao.findById(id).orElse(null);
     }
 
     @Override

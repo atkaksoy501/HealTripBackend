@@ -15,18 +15,18 @@ import java.util.List;
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="hotel_id")
+    @Column(name="id")
     private int hotelId;
 
     @Column(name="hotel_name")
     private String hotelName;
 
-    @Column(name="address_id")
-    private int addressId;
+//    @Column(name="address_id")
+//    private int addressId;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id", referencedColumnName = "address_id") //id = adresteki id
-//    private Address address;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id") //id = adresteki id
+    private Address address;
 
     @Column(name="contact_phone")
     private String contactPhone;

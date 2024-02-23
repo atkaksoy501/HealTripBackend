@@ -1,20 +1,16 @@
 package codewizards.heal_trip.controllers;
 
-import codewizards.heal_trip.business.PatientService;
-import codewizards.heal_trip.business.UserService;
-import codewizards.heal_trip.entities.User;
+import codewizards.heal_trip.business.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(IUserService userService) {
         super();
         this.userService = userService;
     }
