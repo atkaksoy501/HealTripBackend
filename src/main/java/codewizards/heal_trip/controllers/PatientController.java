@@ -1,5 +1,6 @@
 package codewizards.heal_trip.controllers;
 
+import codewizards.heal_trip.business.IEmailService;
 import codewizards.heal_trip.business.IPatientService;
 import codewizards.heal_trip.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class PatientController {
 
     private IPatientService patientService;
-    private EmailController emailController;
+    private IEmailService emailService;
 
     @Autowired
-    public PatientController(IPatientService patientService, EmailController emailController) {
+    public PatientController(IPatientService patientService, IEmailService emailService) {
         super();
         this.patientService = patientService;
-        this.emailController = emailController;
+        this.emailService = emailService;
     }
 
     @GetMapping(value = "/getById/{patient_id}")
@@ -31,10 +32,14 @@ public class PatientController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<String> registerPatient(@RequestBody Patient patient) {
-        Integer patientId = patientService.registerPatient(patient);
-        String response = emailController.sendWelcomeEmail(patient.getEmail()).getBody();
-        return new ResponseEntity<>("Patient with id " + patientId + " has been registered. " + response, HttpStatus.OK);
+    public ResponseEntity<String> registerPatient(@RequestBody Patient patient) throws IllegalArgumentException {
+        try {
+            emailService.sendWelcomeEmail(patient.getEmail());
+            Integer patientId = patientService.registerPatient(patient);
+            return new ResponseEntity<>("Patient with id " + patientId + " has been registered. Email has ben sent to " + patient.getEmail(), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping(value = "/update/{patient_id}")

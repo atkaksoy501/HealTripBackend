@@ -14,11 +14,6 @@ public class EmailController {
 
     private IEmailService emailService;
 
-    private String welcomeSubject = "Welcome to HealTrip";
-    private String welcomeText = "Welcome to HealTrip! \n\nWe are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
-    private String appointmentSubject = "Appointment Confirmation";
-    private String appointmentText = "Your appointment has been confirmed! \n\nWe are looking forward to seeing you on the scheduled date and time. If you have any questions, feel free to contact us.";
-
     @Autowired
     public EmailController(IEmailService emailService) {
         super();
@@ -26,21 +21,33 @@ public class EmailController {
     }
 
     @GetMapping(value = "/send")
-    public ResponseEntity<String> sendEmail(String to, String subject, String text) {
-        emailService.sendEmail(to, subject, text);
-        return new ResponseEntity<>("Email sent to " + to, HttpStatus.OK);
+    public ResponseEntity<String> sendEmail(String to, String subject, String text) throws IllegalArgumentException {
+        try {
+            emailService.sendEmail(to, subject, text);
+            return new ResponseEntity<>("Email sent to " + to, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/sendWelcome")
-    public ResponseEntity<String> sendWelcomeEmail(String to) {
-        emailService.sendEmail(to, welcomeSubject, welcomeText);
-        return new ResponseEntity<>("Welcome email sent to " + to, HttpStatus.OK);
+    public ResponseEntity<String> sendWelcomeEmail(String to) throws IllegalArgumentException {
+        try {
+            emailService.sendWelcomeEmail(to);
+            return new ResponseEntity<>("Welcome email sent to " + to, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/sendAppointment")
-    public ResponseEntity<String> sendAppointmentEmail(String to) {
-        emailService.sendEmail(to, appointmentSubject, appointmentText);
-        return new ResponseEntity<>("Appointment email sent to " + to, HttpStatus.OK);
+    public ResponseEntity<String> sendAppointmentEmail(String to) throws IllegalArgumentException {
+        try {
+            emailService.sendAppointmentEmail(to);
+            return new ResponseEntity<>("Appointment email sent to " + to, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
