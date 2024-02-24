@@ -11,4 +11,5 @@ public interface IHospitalOrganizerService {
     void add(HospitalOrganizer hospitalOrganizer);
     HospitalOrganizer getById(int id);
     void deleteById(int id);
+    void update(HospitalOrganizer hospitalOrganizer);
 }

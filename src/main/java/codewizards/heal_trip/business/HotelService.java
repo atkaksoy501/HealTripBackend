@@ -46,11 +46,16 @@ public class HotelService implements IHotelService {
 
     @Override
     public Hotel getById(int id) {
-        return this.hotelDao.findById(id);
+        return this.hotelDao.findById(id).orElse(null);
     }
 
     @Override
     public void deleteById(int id) {
         this.hotelDao.deleteById(id);
+    }
+
+    @Override
+    public void update(Hotel hotel) {
+        this.hotelDao.save(hotel);
     }
 }

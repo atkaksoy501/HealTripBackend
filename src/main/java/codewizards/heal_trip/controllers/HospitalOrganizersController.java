@@ -45,4 +45,9 @@ public class HospitalOrganizersController {
     public void deleteById(@RequestParam int id) {
         this.iHospitalOrganizerService.deleteById(id);
     }
+
+    @PutMapping("/update")
+    public void update(@RequestBody HospitalOrganizer hospitalOrganizer) {
+        this.iHospitalOrganizerService.update(hospitalOrganizer);
+    }
 }
