@@ -45,4 +45,9 @@ public class HotelOrganizersController {
     public void deleteById(@RequestParam int id) {
         this.iHotelOrganizerService.deleteById(id);
     }
+
+    @PutMapping("/update")
+    public void update(@RequestBody HotelOrganizer hotelOrganizer) {
+        this.iHotelOrganizerService.update(hotelOrganizer);
+    }
 }
