@@ -5,6 +5,8 @@ import codewizards.heal_trip.entities.Retreat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RetreatService implements IRetreatService{
 
@@ -43,5 +45,9 @@ public class RetreatService implements IRetreatService{
             dbRetreat = retreatDao.save(dbRetreat);
         }
         return dbRetreat;
+    }
+
+    public Iterable<Retreat> getAllRetreats() {
+        return retreatDao.findAll();
     }
 }

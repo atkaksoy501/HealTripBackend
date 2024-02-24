@@ -46,4 +46,9 @@ public class PatientController {
         else
             return new ResponseEntity<>("Patient with id " + patient_id + " does not exist", HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping(value = "/getAll")
+    public ResponseEntity<Iterable<Patient>> getAllPatients() {
+        return new ResponseEntity<>(patientService.getAllPatients(), HttpStatus.OK);
+    }
 }
