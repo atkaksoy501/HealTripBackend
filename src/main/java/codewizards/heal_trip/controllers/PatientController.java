@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 public class PatientController {
 
     private IPatientService patientService;
+    private EmailController emailController;
 
     @Autowired
-    public PatientController(IPatientService patientService) {
+    public PatientController(IPatientService patientService, EmailController emailController) {
         super();
         this.patientService = patientService;
+        this.emailController = emailController;
     }
 
     @GetMapping(value = "/getById/{patient_id}")
@@ -29,8 +31,10 @@ public class PatientController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<Integer> registerPatient(@RequestBody Patient patient) {
-        return new ResponseEntity<>(patientService.registerPatient(patient), HttpStatus.OK);
+    public ResponseEntity<String> registerPatient(@RequestBody Patient patient) {
+        Integer patientId = patientService.registerPatient(patient);
+        String response = emailController.sendWelcomeEmail(patient.getEmail()).getBody();
+        return new ResponseEntity<>("Patient with id " + patientId + " has been registered. " + response, HttpStatus.OK);
     }
 
     @PatchMapping(value = "/update/{patient_id}")

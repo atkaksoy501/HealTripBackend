@@ -15,9 +15,9 @@ public class EmailController {
     private IEmailService emailService;
 
     private String welcomeSubject = "Welcome to HealTrip";
-    private String welcomeText = "Welcome to HealTrip! We are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
+    private String welcomeText = "Welcome to HealTrip! \n\nWe are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
     private String appointmentSubject = "Appointment Confirmation";
-    private String appointmentText = "Your appointment has been confirmed. We are looking forward to seeing you on the scheduled date and time. If you have any questions, feel free to contact us.";
+    private String appointmentText = "Your appointment has been confirmed! \n\nWe are looking forward to seeing you on the scheduled date and time. If you have any questions, feel free to contact us.";
 
     @Autowired
     public EmailController(IEmailService emailService) {
