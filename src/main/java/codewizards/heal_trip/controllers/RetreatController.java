@@ -46,4 +46,9 @@ public class RetreatController {
     public ResponseEntity<Integer> addRetreat(@RequestBody Retreat retreat) {
         return new ResponseEntity<>(retreatService.addRetreat(retreat), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getAll")
+    public ResponseEntity<Iterable<Retreat>> getAllRetreats() {
+        return new ResponseEntity<>(retreatService.getAllRetreats(), HttpStatus.OK);
+    }
 }

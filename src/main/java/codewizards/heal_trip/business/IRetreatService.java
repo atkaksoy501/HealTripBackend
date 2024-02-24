@@ -11,4 +11,6 @@ public interface IRetreatService {
     boolean deleteRetreat(int retreat_id);
 
     Retreat updateRetreat(Retreat retreat, int retreat_id);
+
+    Iterable<Retreat> getAllRetreats();
 }
