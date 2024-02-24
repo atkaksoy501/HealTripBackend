@@ -10,4 +10,5 @@ public interface IHotelService {
     void add(Hotel hotel);
     Hotel getById(int id);
     void deleteById(int id);
+    void update(Hotel hotel);
 }

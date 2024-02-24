@@ -47,4 +47,9 @@ public class HotelOrganizerService implements IHotelOrganizerService {
     public void deleteById(int id) {
         this.hotelOrganizerDao.deleteById(id);
     }
+
+    @Override
+    public void update(HotelOrganizer hotelOrganizer) {
+        this.hotelOrganizerDao.save(hotelOrganizer);
+    }
 }
