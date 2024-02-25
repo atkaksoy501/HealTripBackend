@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,10 +21,13 @@ public class Patient extends User{
 
     @Column(name = "gender")
     private char gender;
-
+    
     @Column(name = "patient_height")
     private int patient_height;
 
     @Column(name = "patient_weight")
     private int patient_weight;
+    
+    @OneToMany(mappedBy = "patient")
+    private List<Booking> bookings;
 }

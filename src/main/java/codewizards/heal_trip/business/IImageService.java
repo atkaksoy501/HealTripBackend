@@ -16,7 +16,7 @@ public interface IImageService {
 
     void deleteHospitalImage(int image_id);
 
-    HotelImage getHotelImageByHotelId(int hotel_id);
+    //HotelImage getHotelImageByHotelId(int hotel_id);
 
-    HospitalImage getHospitalImageByHospitalId(int hospital_id);
+    //HospitalImage getHospitalImageByHospitalId(int hospital_id);
 }
