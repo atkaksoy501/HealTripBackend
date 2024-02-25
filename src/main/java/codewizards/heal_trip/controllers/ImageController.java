@@ -59,21 +59,21 @@ public class ImageController {
         return new ResponseEntity<>("Hospital Image with id " + image_id + " has been deleted", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/hotel/getByHotelId/{hotel_id}")
-    public ResponseEntity<HotelImage> getHotelImageByHotelId(@PathVariable int hotel_id) {
-        HotelImage hotelImage = imageService.getHotelImageByHotelId(hotel_id);
-        if (hotelImage == null)
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        else
-            return new ResponseEntity<>(hotelImage, HttpStatus.OK);
-    }
+    //@GetMapping(value = "/hotel/getByHotelId/{hotel_id}")
+    //public ResponseEntity<HotelImage> getHotelImageByHotelId(@PathVariable int hotel_id) {
+    //    HotelImage hotelImage = imageService.getHotelImageByHotelId(hotel_id);
+    //    if (hotelImage == null)
+    //        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    //    else
+    //        return new ResponseEntity<>(hotelImage, HttpStatus.OK);
+    //}
 
-    @GetMapping(value = "/hospital/getByHospitalId/{hospital_id}")
-    public ResponseEntity<HotelImage> getHospitalImageByHospitalId(@PathVariable int hospital_id) {
-        HotelImage hotelImage = imageService.getHotelImageByHotelId(hospital_id);
-        if (hotelImage == null)
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        else
-            return new ResponseEntity<>(hotelImage, HttpStatus.OK);
-    }
+    //@GetMapping(value = "/hospital/getByHospitalId/{hospital_id}")
+    //public ResponseEntity<HotelImage> getHospitalImageByHospitalId(@PathVariable int hospital_id) {
+    //    HotelImage hotelImage = imageService.getHotelImageByHotelId(hospital_id);
+    //    if (hotelImage == null)
+    //        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    //    else
+    //        return new ResponseEntity<>(hotelImage, HttpStatus.OK);
+    //}
 }
