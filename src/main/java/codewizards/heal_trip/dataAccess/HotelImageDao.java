@@ -1,8 +1,8 @@
 package codewizards.heal_trip.dataAccess;
 
 import codewizards.heal_trip.entities.HotelImage;
-import codewizards.heal_trip.entities.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HotelImageDTO extends JpaRepository<HotelImage, Integer> {
+public interface HotelImageDao extends JpaRepository<HotelImage, Integer> {
+    HotelImage findByHotelId(int hotel_image_id);
 }
