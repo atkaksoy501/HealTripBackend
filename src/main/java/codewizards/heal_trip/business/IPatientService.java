@@ -11,4 +11,6 @@ public interface IPatientService {
     Patient updatePatient(int patient_id, Patient patient);
 
     boolean deletePatient(int patient_id);
+
+    Iterable<Patient> getAllPatients();
 }
