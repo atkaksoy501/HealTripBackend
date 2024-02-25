@@ -50,4 +50,9 @@ public class HotelsController {
     public void deleteById(@RequestParam int id) {
         this.iHotelService.deleteById(id);
     }
+
+    @PutMapping("/update")
+    public void update(@RequestBody Hotel hotel){
+        this.iHotelService.update(hotel);
+    }
 }

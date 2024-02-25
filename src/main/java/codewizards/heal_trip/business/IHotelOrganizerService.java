@@ -10,4 +10,5 @@ public interface IHotelOrganizerService {
     void add(HotelOrganizer hotelOrganizer);
     HotelOrganizer getById(int id);
     void deleteById(int id);
+    void update(HotelOrganizer hotelOrganizer);
 }
