@@ -4,5 +4,5 @@ import codewizards.heal_trip.entities.HotelImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HotelImageDao extends JpaRepository<HotelImage, Integer> {
-    HotelImage findByHotelId(int hotel_image_id);
+    //HotelImage findByHotelId(int hotel_image_id);
 }
