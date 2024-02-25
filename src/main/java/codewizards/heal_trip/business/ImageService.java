@@ -42,11 +42,11 @@ public class ImageService implements IImageService {
         hospitalImageDao.deleteById(image_id);
     }
 
-    public HotelImage getHotelImageByHotelId(int hotel_id) {
-        return hotelImageDao.findByHotelId(hotel_id);
-    }
+    //public HotelImage getHotelImageByHotelId(int hotel_id) {
+    //    return hotelImageDao.findByHotelId(hotel_id);
+    //}
 
-    public HospitalImage getHospitalImageByHospitalId(int hospital_id) {
-        return hospitalImageDao.findByHospitalId(hospital_id);
-    }
+    //public HospitalImage getHospitalImageByHospitalId(int hospital_id) {
+    //    return hospitalImageDao.findByHospitalId(hospital_id);
+    //}
 }
