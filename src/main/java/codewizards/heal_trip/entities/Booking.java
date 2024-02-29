@@ -54,19 +54,23 @@ public class Booking {
     @JoinColumn(name = "patient_id")
     private Patient patient;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
-    private Hospital hospital;
+    //@OneToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "hospital_id", referencedColumnName = "id")
+    //private Hospital hospital;
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    @ManyToOne()
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "retreat_id", referencedColumnName = "id")
     private Retreat retreat;
+
+    @ManyToOne()
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 }

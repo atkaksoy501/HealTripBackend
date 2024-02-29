@@ -3,6 +3,8 @@ package codewizards.heal_trip.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -16,4 +18,7 @@ public class Department {
     
     @Column(name = "department_name")
     private String departmentName;
+
+    @OneToMany(mappedBy = "department")
+    private List<Doctor> doctors;
 }

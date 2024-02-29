@@ -3,6 +3,8 @@ package codewizards.heal_trip.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name="doctor")
@@ -14,11 +16,14 @@ public class Doctor {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "hospital_id")
-    private int hospitalId;
+    //many to one
+    @ManyToOne()
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 
-    @Column(name = "department_id")
-    private int departmentId;
+    @ManyToOne()
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     @Column(name = "experience_year")
     private int experience_year;
@@ -31,4 +36,7 @@ public class Doctor {
 
     @Column(name = "active")
     private boolean active;
+
+    @OneToMany(mappedBy = "doctor")
+    private List<Booking> bookings;
 }

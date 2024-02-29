@@ -29,7 +29,20 @@ public class HospitalController {
             return new ResponseEntity<>(hospital, HttpStatus.OK);
     }
     @PostMapping(value = "/register")
-    public ResponseEntity<Integer> registerHospital(@RequestBody Hospital hospital) {
+    public ResponseEntity<Hospital> registerHospital(@RequestBody Hospital hospital) {
         return new ResponseEntity<>(hospitalService.registerHospital(hospital), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/deleteById/{hospital_id}")
+    public ResponseEntity<String> deleteHospital(@PathVariable int hospital_id) {
+        boolean isHospitalActive = hospitalService.deleteHospital(hospital_id);
+        if (!isHospitalActive)
+            return new ResponseEntity<>("Hospital with id " + hospital_id + " has been deleted", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Hospital with id " + hospital_id + " does not exist", HttpStatus.NOT_FOUND);
+    }
+    @PutMapping("/update")
+    public Hospital updateHospital(@RequestBody Hospital newHospital){
+        return new ResponseEntity<>(hospitalService.updateHospital(newHospital), HttpStatus.OK).getBody();
     }
 }
