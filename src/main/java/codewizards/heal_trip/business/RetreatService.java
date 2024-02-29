@@ -4,6 +4,8 @@ import codewizards.heal_trip.dataAccess.RetreatDao;
 import codewizards.heal_trip.entities.Retreat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class RetreatService implements IRetreatService{
         return retreatDao.findById(retreat_id).orElse(null);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int addRetreat(Retreat retreat) {
         retreat = retreatDao.save(retreat);
         return retreat.getId();
