@@ -4,6 +4,8 @@ import codewizards.heal_trip.dataAccess.PatientDao;
 import codewizards.heal_trip.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class PatientService implements IPatientService{
         return patient.getId();
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Patient updatePatient(int patient_id, Patient patient) {
         Patient dbPatient = patientDao.findById(patient_id).orElse(null);
         if (dbPatient != null) {
