@@ -5,6 +5,8 @@ import codewizards.heal_trip.dataAccess.UserDao;
 import codewizards.heal_trip.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -20,6 +22,7 @@ public class UserService implements IUserService{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Integer registerUser(User user) {
         User newUser = new User();
         newUser.setFirst_name(user.getFirst_name());
