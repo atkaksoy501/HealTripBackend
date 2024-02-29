@@ -14,8 +14,9 @@ public class Feedback {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "booking_id")
-    private int bookingId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    private Booking booking;
 
     @Column(name = "comment")
     private String comment;
