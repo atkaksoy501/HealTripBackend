@@ -1,8 +1,6 @@
 package codewizards.heal_trip.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name="hospital_image")
 @Entity
-public class HospitalImage extends Image {
+public class HospitalImage {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "image")
+    private byte[] image;
+
     @Column(name = "hospital_image_id")
     private int hospital_image_id;
 
