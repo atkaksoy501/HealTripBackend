@@ -27,7 +27,7 @@ public class Doctor {
     private String doctorName;
 
     @Column(name = "doctor_image")
-    private String doctorImage;
+    private byte[] doctorImage;
 
     @Column(name = "active")
     private boolean active;
