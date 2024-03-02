@@ -7,7 +7,7 @@ public interface IHotelService {
     List<Hotel> getAll();
     List<Hotel> getAllSorted();
     List<Hotel> getAll(int pageNo, int pageSize);
-    void add(Hotel hotel);
+    int add(Hotel hotel);
     Hotel getById(int id);
     void deleteById(int id);
     void update(Hotel hotel);
