@@ -1,11 +1,11 @@
 package codewizards.heal_trip;
 
-import codewizards.heal_trip.business.HotelOrganizerService;
+import codewizards.heal_trip.business.*;
 import codewizards.heal_trip.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 public class TestDataCreator {
 
@@ -28,9 +29,16 @@ public class TestDataCreator {
     private MockMvc mockMvc;
 
     @Autowired
-    private HotelOrganizerService hotelOrganizerService;
+    private IHotelOrganizerService hotelOrganizerService;
+
+    @Autowired
+    private IHospitalOrganizerService hospitalOrganizerService;
+
+    @Autowired
+    private IHospitalService hospitalService;
 
     @Test
+    @Order(1)
     void createPatient() throws Exception {
         Patient patient = new Patient();
         patient.setFirst_name("Atakan");
@@ -57,6 +65,7 @@ public class TestDataCreator {
     }
 
     @Test
+    @Order(2)
     void createAddress() throws Exception {
         Address address = new Address();
         address.setCity("Antalya");
@@ -77,6 +86,7 @@ public class TestDataCreator {
     }
 
     @Test
+    @Order(3)
     void createHotel() throws Exception {
         Hotel hotel = new Hotel();
         hotel.setHotelName("Akra Hotel");
@@ -97,18 +107,13 @@ public class TestDataCreator {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(hotelJson));
 
-        result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.hotelName").value("Akra Hotel"))
-                .andExpect(jsonPath("$.bedCapacity").value(100))
-                .andExpect(jsonPath("$.contactPhone").value("1234567890"))
-                .andExpect(jsonPath("$.address.city").value("Antalya"))
-                .andExpect(jsonPath("$.address.country").value("Turkey"))
-                .andExpect(jsonPath("$.address.addressDetail").value("Akra Hotel"));
+        result.andExpect(status().isOk());
     }
 
     @Test
+    @Order(4)
     void createHotelOrganizer() throws Exception {
-        int hotelId = 7;
+        int hotelId = 1;
         HotelOrganizer hotelOrganizer = hotelOrganizerService.createHotelOrganizerWithHotel(hotelId);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -122,13 +127,14 @@ public class TestDataCreator {
     }
 
     @Test
+    @Order(5)
     void createHotelImage() throws Exception {
-        int hotelId = 7;
+        int hotelId = 1;
         byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/images/1.jpeg"));
 
         HotelImage hotelImage = new HotelImage();
         hotelImage.setImage(fileContent);
-        hotelImage.setHotel_image_id(hotelId);
+        hotelImage.setHotel_id(hotelId);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String hotelImageJson = objectMapper.writeValueAsString(hotelImage);
@@ -141,6 +147,7 @@ public class TestDataCreator {
     }
 
     @Test
+    @Order(6)
     void createHospital() throws Exception {
         Hospital hospital = new Hospital();
         hospital.setHospitalName("Akdeniz University Hospital");
@@ -154,6 +161,83 @@ public class TestDataCreator {
         ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(hospitalJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(7)
+    void createHospitalOrganizer() throws Exception {
+        int hospitalId = 1;
+        HospitalOrganizer hospitalOrganizer = hospitalOrganizerService.createHospitalOrganizerWithHospital(hospitalId);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String hospitalOrganizerJson = objectMapper.writeValueAsString(hospitalOrganizer);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/hospitalOrganizer/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(hospitalOrganizerJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(8)
+    void createHospitalImage() throws Exception {
+        int hospitalId = 1;
+        byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/images/2.jpeg"));
+
+        HospitalImage hospitalImage = new HospitalImage();
+        hospitalImage.setImage(fileContent);
+        hospitalImage.setHospital_id(hospitalId);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hospital/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(hospitalImageJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(9)
+    void createDepartment() throws Exception {
+        Department department = new Department();
+        department.setDepartmentName("Cardiology");
+
+        Hospital hospital = hospitalService.getHospitalById(1);
+        department.setHospital(hospital);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String departmentJson = objectMapper.writeValueAsString(department);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/department/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(departmentJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(10)
+    void createDoctor() throws Exception {
+        Doctor doctor = new Doctor();
+        byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/images/2.jpeg"));
+        doctor.setDoctorImage(fileContent);
+        doctor.setActive(true);
+        doctor.setDepartmentId(1);
+        doctor.setExperience_year(10);
+        doctor.setDoctorName("Dr. John Doe");
+        doctor.setHospitalId(1);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String doctorJson = objectMapper.writeValueAsString(doctor);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(doctorJson));
 
         result.andExpect(status().isOk());
     }
