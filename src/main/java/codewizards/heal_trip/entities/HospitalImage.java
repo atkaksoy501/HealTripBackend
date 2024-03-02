@@ -20,7 +20,7 @@ public class HospitalImage {
     @Column(name = "image")
     private byte[] image;
 
-    @Column(name = "hospital_image_id")
-    private int hospital_image_id;
+    @Column(name = "hospital_id")
+    private int hospital_id;
 
 }
