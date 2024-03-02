@@ -13,11 +13,13 @@ import java.util.List;
 public class HotelOrganizerService implements IHotelOrganizerService {
 
     private HotelOrganizerDao hotelOrganizerDao;
+    private IHotelService hotelService;
 
     @Autowired
-    public HotelOrganizerService(HotelOrganizerDao hotelOrganizerDao) {
+    public HotelOrganizerService(HotelOrganizerDao hotelOrganizerDao, IHotelService hotelService) {
         super();
         this.hotelOrganizerDao = hotelOrganizerDao;
+        this.hotelService = hotelService;
     }
 
     @Override
@@ -51,5 +53,22 @@ public class HotelOrganizerService implements IHotelOrganizerService {
     @Override
     public void update(HotelOrganizer hotelOrganizer) {
         this.hotelOrganizerDao.save(hotelOrganizer);
+    }
+
+    @Override
+    public HotelOrganizer createHotelOrganizerWithHotel(int hotelId) {
+        HotelOrganizer hotelOrganizer = new HotelOrganizer();
+        hotelOrganizer.setActive(true);
+        hotelOrganizer.setEmail("atkaksoy501@hotmail.com");
+        hotelOrganizer.setFirst_name("Atakan");
+        hotelOrganizer.setLast_name("Aksoy");
+        hotelOrganizer.setPhone_number("1234567890");
+        hotelOrganizer.setUser_password("123456");
+        hotelOrganizer.setUser_role("hotel_organizer");
+
+        Hotel hotel = hotelService.getById(hotelId);
+        hotelOrganizer.setHotel(hotel);
+
+        return hotelOrganizer;
     }
 }
