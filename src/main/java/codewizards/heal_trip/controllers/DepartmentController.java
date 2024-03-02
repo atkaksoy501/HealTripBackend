@@ -7,7 +7,7 @@ import codewizards.heal_trip.business.*;
 import codewizards.heal_trip.entities.Department;
 
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/department")
 public class DepartmentController {
     private IDepartmentService departmentService;
     @Autowired
