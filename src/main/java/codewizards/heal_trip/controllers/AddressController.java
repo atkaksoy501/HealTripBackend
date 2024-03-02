@@ -7,7 +7,7 @@ import codewizards.heal_trip.business.*;
 import codewizards.heal_trip.entities.*;
 
 @RestController
-@RequestMapping("/addresses")
+@RequestMapping("/address")
 public class AddressController {
     private IAddressService addressService;
     @Autowired
