@@ -37,8 +37,8 @@ public class HotelsController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody Hotel hotel) {
-        this.iHotelService.add(hotel);
+    public int add(@RequestBody Hotel hotel) {
+        return this.iHotelService.add(hotel);
     }
 
     @GetMapping("/get")
