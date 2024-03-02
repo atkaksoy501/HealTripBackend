@@ -1,6 +1,7 @@
 package codewizards.heal_trip.business;
 
 import codewizards.heal_trip.dataAccess.HospitalOrganizerDao;
+import codewizards.heal_trip.entities.Hospital;
 import codewizards.heal_trip.entities.HospitalOrganizer;
 import codewizards.heal_trip.entities.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,13 @@ import java.util.List;
 public class HospitalOrganizerService implements IHospitalOrganizerService{
 
     private HospitalOrganizerDao hospitalOrganizerDao;
+    private IHospitalService hospitalService;
 
     @Autowired
-    public HospitalOrganizerService(HospitalOrganizerDao hospitalOrganizerDao) {
+    public HospitalOrganizerService(HospitalOrganizerDao hospitalOrganizerDao, IHospitalService hospitalService) {
         super();
         this.hospitalOrganizerDao = hospitalOrganizerDao;
+        this.hospitalService = hospitalService;
     }
 
     @Override
@@ -50,5 +53,21 @@ public class HospitalOrganizerService implements IHospitalOrganizerService{
     @Override
     public void update(HospitalOrganizer hospitalOrganizer) {
         this.hospitalOrganizerDao.save(hospitalOrganizer);
+    }
+
+    @Override
+    public HospitalOrganizer createHospitalOrganizerWithHospital(int hospitalId) {
+        HospitalOrganizer hospitalOrganizer = new HospitalOrganizer();
+        hospitalOrganizer.setActive(true);
+        hospitalOrganizer.setEmail("atkaksoy501@hotmail.com");
+        hospitalOrganizer.setFirst_name("Atakan");
+        hospitalOrganizer.setLast_name("Aksoy");
+        hospitalOrganizer.setPhone_number("1234567890");
+        hospitalOrganizer.setUser_password("123456");
+        hospitalOrganizer.setUser_role("hospital_organizer");
+
+        Hospital hospital = hospitalService.getHospitalById(hospitalId);
+        hospitalOrganizer.setHospital(hospital);
+        return hospitalOrganizer;
     }
 }
