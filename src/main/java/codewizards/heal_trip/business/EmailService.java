@@ -12,7 +12,7 @@ public class EmailService implements IEmailService{
 
     private JavaMailSender emailSender;
     private String welcomeSubject = "Welcome to HealTrip";
-    private String welcomeText = "Welcome to HealTrip! \n\nWe are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
+    private String welcomeText = "Welcome to HealTrip, %s! \n\nWe are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
     private String appointmentSubject = "Appointment Confirmation";
     private String appointmentText = "Your appointment has been confirmed! \n\nWe are looking forward to seeing you on the scheduled date and time. If you have any questions, feel free to contact us.";
 
@@ -32,8 +32,8 @@ public class EmailService implements IEmailService{
         emailSender.send(message);
     }
 
-    public void sendWelcomeEmail(String to) {
-        sendEmail(to, welcomeSubject, welcomeText);
+    public void sendWelcomeEmail(String to, String firstName) {
+        sendEmail(to, welcomeSubject, String.format(welcomeText, firstName));
     }
 
     public void sendAppointmentEmail(String to) {

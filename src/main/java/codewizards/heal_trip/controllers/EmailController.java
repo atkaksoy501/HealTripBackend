@@ -31,9 +31,9 @@ public class EmailController {
     }
 
     @GetMapping(value = "/sendWelcome")
-    public ResponseEntity<String> sendWelcomeEmail(String to) throws IllegalArgumentException {
+    public ResponseEntity<String> sendWelcomeEmail(String to, String firstName) throws IllegalArgumentException {
         try {
-            emailService.sendWelcomeEmail(to);
+            emailService.sendWelcomeEmail(to, firstName);
             return new ResponseEntity<>("Welcome email sent to " + to, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
