@@ -1,5 +1,7 @@
 package codewizards.heal_trip.business;
 
+import codewizards.heal_trip.entities.Booking;
+
 public interface IEmailService {
     void sendEmail(String to, String subject, String text);
 
@@ -7,5 +9,5 @@ public interface IEmailService {
 
     void sendWelcomeEmail(String to, String firstName);
 
-    void sendAppointmentEmail(String to);
+    void sendAppointmentEmail(Booking booking);
 }

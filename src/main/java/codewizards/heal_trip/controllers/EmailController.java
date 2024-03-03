@@ -1,6 +1,7 @@
 package codewizards.heal_trip.controllers;
 
 import codewizards.heal_trip.business.IEmailService;
+import codewizards.heal_trip.entities.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +42,10 @@ public class EmailController {
     }
 
     @GetMapping(value = "/sendAppointment")
-    public ResponseEntity<String> sendAppointmentEmail(String to) throws IllegalArgumentException {
+    public ResponseEntity<String> sendAppointmentEmail(Booking booking) throws IllegalArgumentException {
         try {
-            emailService.sendAppointmentEmail(to);
-            return new ResponseEntity<>("Appointment email sent to " + to, HttpStatus.OK);
+            emailService.sendAppointmentEmail(booking);
+            return new ResponseEntity<>("Appointment email sent to " + booking.getPatient().getEmail(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
