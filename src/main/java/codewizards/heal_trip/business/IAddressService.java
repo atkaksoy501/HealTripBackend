@@ -6,7 +6,7 @@ import codewizards.heal_trip.entities.Address;
 public interface IAddressService {
     List<Address> getAll();
     
-    Optional<Address> getById(int id);
+    Address getById(int id);
     
     Address add(Address address);
     
