@@ -21,8 +21,8 @@ public class AddressService implements IAddressService {
     }
     
     @Override
-    public Optional<Address> getById(int id) {
-        return this.addressDao.findById(id);
+    public Address getById(int id) {
+        return this.addressDao.findById(id).orElse(null);
     }
     
     @Override
