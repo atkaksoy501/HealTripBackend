@@ -26,7 +26,7 @@ public class AddressController {
     }
     
     @GetMapping("/getById")
-    public Optional<Address> getById(@RequestParam int id){
+    public Address getById(@RequestParam int id){
         return this.addressService.getById(id);
     }
     
