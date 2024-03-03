@@ -5,7 +5,7 @@ public interface IEmailService {
 
     boolean patternMatches(String emailAddress);
 
-    void sendWelcomeEmail(String to);
+    void sendWelcomeEmail(String to, String firstName);
 
     void sendAppointmentEmail(String to);
 }
