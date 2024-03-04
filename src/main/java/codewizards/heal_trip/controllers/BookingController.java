@@ -10,7 +10,7 @@ import codewizards.heal_trip.business.IBookingService;
 import codewizards.heal_trip.entities.*;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/booking")
 public class BookingController {
     private IBookingService bookingService;
     private IEmailService emailService;
@@ -29,8 +29,8 @@ public class BookingController {
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestBody Booking booking) throws IllegalArgumentException{
         try {
-            emailService.sendAppointmentEmail(booking);
             Booking dbBooking = bookingService.add(booking);
+            emailService.sendAppointmentEmail(booking);
             return new ResponseEntity<>("Booking with id " + dbBooking.getId() + " has been registered. Email has ben sent to " + booking.getPatient().getEmail(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
