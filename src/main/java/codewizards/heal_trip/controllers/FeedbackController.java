@@ -29,19 +29,8 @@ public class FeedbackController {
         else
             return new ResponseEntity<>(feedback, HttpStatus.OK);
     }
-    @PostMapping(value = "/addFeedback")
-    public ResponseEntity<Feedback> registerFeedback(@RequestBody Feedback feedback) {
+    @PostMapping(value = "/add")
+    public ResponseEntity<Integer> registerUser(@RequestBody Feedback feedback) {
         return new ResponseEntity<>(feedbackService.addFeedback(feedback), HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/deleteFeedback/{feedback_id}")
-    public ResponseEntity<String> deleteFeedback(@PathVariable int feedback_id) {
-        feedbackService.deleteFeedback(feedback_id);
-        return new ResponseEntity<>("Feedback with id " + feedback_id + " has been deleted", HttpStatus.OK);
-    }
-
-    @PutMapping("/updateFeedback")
-    public ResponseEntity<Feedback> updateFeedback(@RequestBody Feedback newFeedback){
-        return new ResponseEntity<>(feedbackService.updateFeedback(newFeedback), HttpStatus.OK);
     }
 }
