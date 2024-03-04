@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -27,23 +28,7 @@ public class Hospital {
     @Column(name = "contact_phone")
     private String contactPhone;
 
-    @Column(name = "active")
-    private boolean active;
-
-    @OneToOne()
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
-
-    @OneToOne()
-    @JoinColumn(name = "hospital_organizer_id", referencedColumnName = "id")
-    private HospitalOrganizer hospitalOrganizer;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "hospital")
-    private List<HospitalImage> hospitalImages;
-
-    @OneToMany(mappedBy = "hospital")
-    private List<Booking> bookings;
-
-    @OneToMany(mappedBy = "hospital")
-    private List<Doctor> doctors;
+    private List<Department> departments;
 }
