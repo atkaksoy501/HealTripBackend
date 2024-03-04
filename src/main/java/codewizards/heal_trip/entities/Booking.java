@@ -17,18 +17,6 @@ public class Booking {
     @Column(name = "id")
     private int id;
     
-    //@Column(name = "patient_id")
-    //private int patientId;
-
-    //@Column(name = "hospital_id")
-    //private int hospitalId;
-
-    //@Column(name = "hotel_id")
-    //private int hotelId;
-    //
-    //@Column(name = "doctor_id")
-    //private int doctorId;
-    
     @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd/MM/yyyy")
@@ -47,26 +35,27 @@ public class Booking {
     @Column(name = "status")
     private String status;
     
-    //@Column(name = "retreat_id")
-    //private int retreatId;
-    
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "retreat_id", referencedColumnName = "id")
     private Retreat retreat;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "feedback_id", referencedColumnName = "id")
+    private Feedback feedback;
 }
