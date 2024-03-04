@@ -1,7 +1,9 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -31,4 +33,8 @@ public class Doctor {
 
     @Column(name = "active")
     private boolean active;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "doctor")
+    private List<Booking> bookings;
 }
