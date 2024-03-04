@@ -29,7 +29,7 @@ public class FeedbackController {
         else
             return new ResponseEntity<>(feedback, HttpStatus.OK);
     }
-    @PostMapping(value = "/addFeedback")
+    @PostMapping(value = "/add")
     public ResponseEntity<Integer> registerUser(@RequestBody Feedback feedback) {
         return new ResponseEntity<>(feedbackService.addFeedback(feedback), HttpStatus.OK);
     }
