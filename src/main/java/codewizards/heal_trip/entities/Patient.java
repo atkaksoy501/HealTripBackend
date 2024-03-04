@@ -1,6 +1,7 @@
 package codewizards.heal_trip.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -27,7 +28,8 @@ public class Patient extends User{
 
     @Column(name = "patient_weight")
     private int patient_weight;
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "patient")
     private List<Booking> bookings;
 }
