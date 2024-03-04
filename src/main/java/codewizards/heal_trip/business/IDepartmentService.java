@@ -13,7 +13,7 @@ public interface IDepartmentService {
     Department add(Department department);
     Department getByDepartmentName(String departmentName);
     
-    Optional<Department> getById(int id);
+    Department getById(int id);
     
     void deleteById(int id);
     
