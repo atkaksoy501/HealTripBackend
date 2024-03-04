@@ -41,7 +41,7 @@ public class DepartmentController {
     }
     
     @GetMapping("/getById")
-    public Optional<Department> getById(@RequestParam int id){
+    public Department getById(@RequestParam int id){
         return this.departmentService.getById(id);
     }
     
