@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HospitalOrganizer extends User{
 
-    @Column(name="hospital_id")
-    private int hospitalId;
+    @OneToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 
 //    @OneToOne
 //    @MapsId
