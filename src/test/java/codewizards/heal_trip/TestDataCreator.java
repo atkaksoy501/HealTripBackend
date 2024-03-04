@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import java.io.File;
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -36,6 +37,24 @@ public class TestDataCreator {
 
     @Autowired
     private IHospitalService hospitalService;
+
+    @Autowired
+    private IDepartmentService departmentService;
+
+    @Autowired
+    private IHotelService hotelService;
+
+    @Autowired
+    private IDoctorService doctorService;
+
+    @Autowired
+    private IPatientService patientService;
+
+    @Autowired
+    private IRetreatService retreatService;
+
+    @Autowired
+    private IFeedbackService feedbackService;
 
     @Test
     @Order(1)
@@ -70,7 +89,7 @@ public class TestDataCreator {
         Address address = new Address();
         address.setCity("Antalya");
         address.setCountry("Turkey");
-        address.setAddressDetail("Akra Hotel");
+        address.setAddressDetail("Akdeniz Üniversitesi");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String addressJson = objectMapper.writeValueAsString(address);
@@ -82,7 +101,7 @@ public class TestDataCreator {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.city").value("Antalya"))
                 .andExpect(jsonPath("$.country").value("Turkey"))
-                .andExpect(jsonPath("$.addressDetail").value("Akra Hotel"));
+                .andExpect(jsonPath("$.addressDetail").value("Akdeniz Üniversitesi"));
     }
 
     @Test
@@ -238,6 +257,70 @@ public class TestDataCreator {
         ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(doctorJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(11)
+    void createRetreat() throws Exception {
+        Retreat retreat = new Retreat();
+        retreat.setRetreat_name("Diş Dolgusu");
+        retreat.setDescription("Diş dolgusu");
+
+        Department department = departmentService.getById(1);
+        retreat.setDepartment(department);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String retreatJson = objectMapper.writeValueAsString(retreat);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/retreat/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(retreatJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(12)
+    void createFeedback() throws Exception {
+        Feedback feedback = new Feedback();
+        feedback.setBookingId(1);
+        feedback.setComment("Müko");
+        feedback.setRating(5);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String bookingJson = objectMapper.writeValueAsString(feedback);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/feedback/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bookingJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(13)
+    void createBooking() throws Exception {
+        Booking booking = new Booking();
+        booking.setBooking_date(LocalDate.now());
+        booking.setHospital(hospitalService.getHospitalById(1));
+        booking.setHotel(hotelService.getById(1));
+        booking.setDoctor(doctorService.getDoctorById(1));
+        booking.setPatient(patientService.getPatientById(1));
+        booking.setRetreat(retreatService.getRetreatById(1));
+        booking.setStatus("Active");
+        booking.setEndDate(LocalDate.of(2024, 3, 20));
+        booking.setStartDate(LocalDate.now());
+        booking.setFeedback(feedbackService.getFeedbackById(1));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String bookingJson = objectMapper.writeValueAsString(booking);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/booking/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bookingJson));
 
         result.andExpect(status().isOk());
     }
