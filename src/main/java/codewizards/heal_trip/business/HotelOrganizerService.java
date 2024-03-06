@@ -54,21 +54,4 @@ public class HotelOrganizerService implements IHotelOrganizerService {
     public void update(HotelOrganizer hotelOrganizer) {
         this.hotelOrganizerDao.save(hotelOrganizer);
     }
-
-    @Override
-    public HotelOrganizer createHotelOrganizerWithHotel(int hotelId) {
-        HotelOrganizer hotelOrganizer = new HotelOrganizer();
-        hotelOrganizer.setActive(true);
-        hotelOrganizer.setEmail("atkaksoy501@hotmail.com");
-        hotelOrganizer.setFirst_name("Atakan");
-        hotelOrganizer.setLast_name("Aksoy");
-        hotelOrganizer.setPhone_number("1234567890");
-        hotelOrganizer.setUser_password("123456");
-        hotelOrganizer.setUser_role("hotel_organizer");
-
-        Hotel hotel = hotelService.getById(hotelId);
-        hotelOrganizer.setHotel(hotel);
-
-        return hotelOrganizer;
-    }
 }
