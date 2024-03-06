@@ -54,20 +54,4 @@ public class HospitalOrganizerService implements IHospitalOrganizerService{
     public void update(HospitalOrganizer hospitalOrganizer) {
         this.hospitalOrganizerDao.save(hospitalOrganizer);
     }
-
-    @Override
-    public HospitalOrganizer createHospitalOrganizerWithHospital(int hospitalId) {
-        HospitalOrganizer hospitalOrganizer = new HospitalOrganizer();
-        hospitalOrganizer.setActive(true);
-        hospitalOrganizer.setEmail("atkaksoy501@hotmail.com");
-        hospitalOrganizer.setFirst_name("Atakan");
-        hospitalOrganizer.setLast_name("Aksoy");
-        hospitalOrganizer.setPhone_number("1234567890");
-        hospitalOrganizer.setUser_password("123456");
-        hospitalOrganizer.setUser_role("hospital_organizer");
-
-        Hospital hospital = hospitalService.getHospitalById(hospitalId);
-        hospitalOrganizer.setHospital(hospital);
-        return hospitalOrganizer;
-    }
 }

@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.MediaType;
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,12 +30,6 @@ public class TestDataCreator {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private IHotelOrganizerService hotelOrganizerService;
-
-    @Autowired
-    private IHospitalOrganizerService hospitalOrganizerService;
 
     @Autowired
     private IHospitalService hospitalService;
@@ -56,272 +52,341 @@ public class TestDataCreator {
     @Autowired
     private IFeedbackService feedbackService;
 
+    @Autowired
+    private IAddressService addressService;
+
     @Test
     @Order(1)
     void createPatient() throws Exception {
-        Patient patient = new Patient();
-        patient.setFirst_name("Atakan");
-        patient.setLast_name("Aksoy");
-        patient.setEmail("atkaksoy501@hotmail.com");
-        patient.setPhone_number("1234567890");
-        patient.setUser_password("123456");
-        patient.setBirth_date(java.time.LocalDate.of(2002, 1, 4));
-        patient.setGender('M');
-        patient.setPatient_height(190);
-        patient.setPatient_weight(110);
-        patient.setUser_role("patient");
-        patient.setActive(true);
+        List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
+        List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String patientJson = objectMapper.writeValueAsString(patient);
+        for (int i = 0; i < 10; i++) {
+            Patient patient = new Patient();
+            patient.setFirst_name(names.get(i));
+            patient.setLast_name(surnames.get(i));
+            patient.setEmail("healtrip.codewizards@gmail.com");
+            patient.setPhone_number("1234567890");
+            patient.setUser_password("123456");
+            patient.setBirth_date(java.time.LocalDate.of(2002, 1, 4));
+            patient.setGender('M');
+            patient.setPatient_height(190);
+            patient.setPatient_weight(110);
+            patient.setUser_role("patient");
+            patient.setActive(true);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/patient/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(patientJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String patientJson = objectMapper.writeValueAsString(patient);
 
-        result.andExpect(status().isOk());
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/patient/register")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(patientJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(2)
     void createAddress() throws Exception {
-        Address address = new Address();
-        address.setCity("Antalya");
-        address.setCountry("Turkey");
-        address.setAddressDetail("Akdeniz Üniversitesi");
+        List<String> cities = List.of("Ankara", "İstanbul", "İzmir", "Antalya", "Adana", "Bursa", "Eskişehir", "Trabzon",
+                "Samsun", "Konya");
+        List<String> countries = List.of("Turkey", "Germany", "France", "Italy", "Spain", "Portugal", "Greece", "Russia",
+                "Ukraine", "England");
+        List<String> names = Arrays.asList("Akra Hotel", "Akdeniz University Hospital", "Hilton Hotel", "Johns Hopkins Hospital",
+                "Marriott Hotel", "Mayo Clinic Hospital", "Ritz-Carlton Hotel", "Cleveland Clinic Hospital", "Four Seasons Hotel",
+                "Massachusetts General Hospital");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String addressJson = objectMapper.writeValueAsString(address);
+        for (int i = 0; i < 10; i++) {
+            Address address = new Address();
+            address.setCity(cities.get(i));
+            address.setCountry(countries.get(i));
+            address.setAddressDetail(names.get(i));
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/address/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(addressJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String addressJson = objectMapper.writeValueAsString(address);
 
-        result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.city").value("Antalya"))
-                .andExpect(jsonPath("$.country").value("Turkey"))
-                .andExpect(jsonPath("$.addressDetail").value("Akdeniz Üniversitesi"));
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/address/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(addressJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(3)
     void createHotel() throws Exception {
-        Hotel hotel = new Hotel();
-        hotel.setHotelName("Akra Hotel");
-        hotel.setBedCapacity(100);
-        hotel.setContactPhone("1234567890");
+        List<String> names = Arrays.asList("Akra Hotel", "Hilton Hotel", "Marriott Hotel", "Ritz-Carlton Hotel",
+                "Four Seasons Hotel", "Sheraton Hotel", "Radisson Hotel", "InterContinental Hotel", "Hyatt Hotel",
+                "Wyndham Hotel");
 
-        Address address = new Address();
-        address.setCity("Antalya");
-        address.setCountry("Turkey");
-        address.setAddressDetail("Akra Hotel");
+        for (int i = 0; i < 10; i++) {
+            Hotel hotel = new Hotel();
+            hotel.setHotelName(names.get(i));
+            hotel.setBedCapacity(100);
+            hotel.setContactPhone("1234567890");
+            hotel.setAddress(addressService.getById(i + 1));
 
-        hotel.setAddress(address);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hotelJson = objectMapper.writeValueAsString(hotel);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String hotelJson = objectMapper.writeValueAsString(hotel);
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/hotel/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(hotelJson));
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/hotel/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(hotelJson));
-
-        result.andExpect(status().isOk());
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(4)
     void createHotelOrganizer() throws Exception {
-        int hotelId = 1;
-        HotelOrganizer hotelOrganizer = hotelOrganizerService.createHotelOrganizerWithHotel(hotelId);
+        List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
+        List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String hotelOrganizerJson = objectMapper.writeValueAsString(hotelOrganizer);
+        for (int i = 0; i < 10; i++) {
+            HotelOrganizer hotelOrganizer = new HotelOrganizer();
+            hotelOrganizer.setFirst_name(names.get(i));
+            hotelOrganizer.setLast_name(surnames.get(i));
+            hotelOrganizer.setEmail("healtrip.codewizards@gmail.com");
+            hotelOrganizer.setPhone_number("1234567890");
+            hotelOrganizer.setUser_password("123456");
+            hotelOrganizer.setUser_role("hotel_organizer");
+            hotelOrganizer.setActive(true);
+            hotelOrganizer.setHotel(hotelService.getById(i + 1));
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/hotelOrganizer/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(hotelOrganizerJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hotelOrganizerJson = objectMapper.writeValueAsString(hotelOrganizer);
 
-        result.andExpect(status().isOk());
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/hotelOrganizer/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(hotelOrganizerJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(5)
     void createHotelImage() throws Exception {
-        int hotelId = 1;
-        byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/images/1.jpeg"));
+        for (int i = 1; i <= 10; i++) {
+            int hotelId = i;
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hotelImages/" + i + ".jpeg"));
 
-        HotelImage hotelImage = new HotelImage();
-        hotelImage.setImage(fileContent);
-        hotelImage.setHotel_id(hotelId);
+            HotelImage hotelImage = new HotelImage();
+            hotelImage.setImage(fileContent);
+            hotelImage.setHotel_id(hotelId);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String hotelImageJson = objectMapper.writeValueAsString(hotelImage);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hotelImageJson = objectMapper.writeValueAsString(hotelImage);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hotel/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(hotelImageJson));
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hotel/save")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(hotelImageJson));
 
-        result.andExpect(status().isOk());
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(6)
     void createHospital() throws Exception {
-        Hospital hospital = new Hospital();
-        hospital.setHospitalName("Akdeniz University Hospital");
-        hospital.setBed_capacity(1000);
-        hospital.setContactPhone("1234567890");
-        hospital.setAddressId(1);
+        List<String> names = Arrays.asList("Akdeniz University Hospital", "Johns Hopkins Hospital", "Mayo Clinic Hospital",
+                "Cleveland Clinic Hospital", "Massachusetts General Hospital", "Atakan Hospital", "Burak Hospital", "Onur Hospital",
+                "Sude Hospital", "Aziz Hospital");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String hospitalJson = objectMapper.writeValueAsString(hospital);
+        for (int i = 0; i < 10; i++) {
+            Hospital hospital = new Hospital();
+            hospital.setHospitalName(names.get(i));
+            hospital.setBed_capacity(1000);
+            hospital.setContactPhone("1234567890");
+            hospital.setAddressId(i + 1);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(hospitalJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hospitalJson = objectMapper.writeValueAsString(hospital);
 
-        result.andExpect(status().isOk());
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/register")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(hospitalJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(7)
     void createHospitalOrganizer() throws Exception {
-        int hospitalId = 1;
-        HospitalOrganizer hospitalOrganizer = hospitalOrganizerService.createHospitalOrganizerWithHospital(hospitalId);
+        List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
+        List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String hospitalOrganizerJson = objectMapper.writeValueAsString(hospitalOrganizer);
+        for (int i = 0; i < 10; i++) {
+            HospitalOrganizer hospitalOrganizer = new HospitalOrganizer();
+            hospitalOrganizer.setFirst_name(names.get(i));
+            hospitalOrganizer.setLast_name(surnames.get(i));
+            hospitalOrganizer.setEmail("healtrip.codewizards@gmail.com");
+            hospitalOrganizer.setPhone_number("1234567890");
+            hospitalOrganizer.setUser_password("123456");
+            hospitalOrganizer.setUser_role("hospital_organizer");
+            hospitalOrganizer.setActive(true);
+            hospitalOrganizer.setHospital(hospitalService.getHospitalById(i + 1));
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/hospitalOrganizer/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(hospitalOrganizerJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hospitalOrganizerJson = objectMapper.writeValueAsString(hospitalOrganizer);
 
-        result.andExpect(status().isOk());
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/hospitalOrganizer/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(hospitalOrganizerJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(8)
     void createHospitalImage() throws Exception {
-        int hospitalId = 1;
-        byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/images/2.jpeg"));
+        for (int i = 1; i <= 10; i++) {
+            int hospitalId = i;
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hospitalImages/" + i + ".jpeg"));
 
-        HospitalImage hospitalImage = new HospitalImage();
-        hospitalImage.setImage(fileContent);
-        hospitalImage.setHospital_id(hospitalId);
+            HospitalImage hospitalImage = new HospitalImage();
+            hospitalImage.setImage(fileContent);
+            hospitalImage.setHospital_id(hospitalId);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hospital/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(hospitalImageJson));
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hospital/save")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(hospitalImageJson));
 
-        result.andExpect(status().isOk());
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(9)
     void createDepartment() throws Exception {
-        Department department = new Department();
-        department.setDepartmentName("Cardiology");
+        List<String> names = List.of("Cardiology", "Dermatology", "Endocrinology", "Gastroenterology", "Hematology",
+                "Infectious Disease", "Nephrology", "Neurology", "Oncology", "Pulmonology");
 
-        Hospital hospital = hospitalService.getHospitalById(1);
-        department.setHospital(hospital);
+        for (int i = 0; i < 10; i++) {
+            Department department = new Department();
+            department.setDepartmentName(names.get(i));
+            department.setHospital(hospitalService.getHospitalById(i +1));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String departmentJson = objectMapper.writeValueAsString(department);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String departmentJson = objectMapper.writeValueAsString(department);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/department/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(departmentJson));
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/department/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(departmentJson));
 
-        result.andExpect(status().isOk());
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(10)
     void createDoctor() throws Exception {
-        Doctor doctor = new Doctor();
-        byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/images/2.jpeg"));
-        doctor.setDoctorImage(fileContent);
-        doctor.setActive(true);
-        doctor.setDepartmentId(1);
-        doctor.setExperience_year(10);
-        doctor.setDoctorName("Dr. John Doe");
-        doctor.setHospitalId(1);
+        List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
+        List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String doctorJson = objectMapper.writeValueAsString(doctor);
+        for (int i = 0; i < 10; i++) {
+            Doctor doctor = new Doctor();
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/doctorImages/" + (i + 1) + ".jpeg"));
+            doctor.setDoctorImage(fileContent);
+            doctor.setActive(true);
+            doctor.setDepartmentId(i + 1);
+            doctor.setExperience_year(10);
+            doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
+            doctor.setHospitalId(i + 1);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(doctorJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String doctorJson = objectMapper.writeValueAsString(doctor);
 
-        result.andExpect(status().isOk());
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/register")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(doctorJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(11)
     void createRetreat() throws Exception {
-        Retreat retreat = new Retreat();
-        retreat.setRetreat_name("Diş Dolgusu");
-        retreat.setDescription("Diş dolgusu");
+        List<String> names = List.of("Diş Dolgusu", "Diş Beyazlatma", "Diş Çekimi", "Kanal Tedavisi", "Ortodonti",
+                "Periodontoloji", "Pedodonti", "Ağız ve Diş Cerrahisi", "Endodonti", "Protez");
 
-        Department department = departmentService.getById(1);
-        retreat.setDepartment(department);
+        for (int i = 0; i < 10; i++) {
+            Retreat retreat = new Retreat();
+            retreat.setRetreat_name(names.get(i));
+            retreat.setDescription(names.get(i));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String retreatJson = objectMapper.writeValueAsString(retreat);
+            Department department = departmentService.getById(i + 1);
+            retreat.setDepartment(department);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/retreat/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(retreatJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String retreatJson = objectMapper.writeValueAsString(retreat);
 
-        result.andExpect(status().isOk());
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/retreat/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(retreatJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(12)
     void createFeedback() throws Exception {
-        Feedback feedback = new Feedback();
-        feedback.setBookingId(1);
-        feedback.setComment("Müko");
-        feedback.setRating(5);
+        List<String> comments = List.of("Mükemmel", "Harika", "Çok iyi", "İyi", "Orta", "Kötü", "Çok kötü", "Berbat",
+                "Rezalet", "Felaket");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String bookingJson = objectMapper.writeValueAsString(feedback);
+        for (int i = 0; i < 10; i++) {
+            Feedback feedback = new Feedback();
+            feedback.setBookingId(i + 1);
+            feedback.setComment(comments.get(i));
+            feedback.setRating(10 - i);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/feedback/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bookingJson));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String bookingJson = objectMapper.writeValueAsString(feedback);
 
-        result.andExpect(status().isOk());
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/feedback/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(bookingJson));
+
+            result.andExpect(status().isOk());
+        }
     }
 
     @Test
     @Order(13)
     void createBooking() throws Exception {
-        Booking booking = new Booking();
-        booking.setBooking_date(LocalDate.now());
-        booking.setHospital(hospitalService.getHospitalById(1));
-        booking.setHotel(hotelService.getById(1));
-        booking.setDoctor(doctorService.getDoctorById(1));
-        booking.setPatient(patientService.getPatientById(1));
-        booking.setRetreat(retreatService.getRetreatById(1));
-        booking.setStatus("Active");
-        booking.setEndDate(LocalDate.of(2024, 3, 20));
-        booking.setStartDate(LocalDate.now());
-        booking.setFeedback(feedbackService.getFeedbackById(1));
+        for (int i = 0; i < 10; i++) {
+            Booking booking = new Booking();
+            booking.setBooking_date(LocalDate.now());
+            booking.setHospital(hospitalService.getHospitalById(i + 1));
+            booking.setHotel(hotelService.getById(i + 1));
+            booking.setDoctor(doctorService.getDoctorById(i + 1));
+            booking.setPatient(patientService.getPatientById(i + 1));
+            booking.setRetreat(retreatService.getRetreatById(i + 1));
+            booking.setStatus("Active");
+            booking.setEndDate(LocalDate.of(2024, 3, 20));
+            booking.setStartDate(LocalDate.now());
+            booking.setFeedback(feedbackService.getFeedbackById(i + 1));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String bookingJson = objectMapper.writeValueAsString(booking);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String bookingJson = objectMapper.writeValueAsString(booking);
 
-        ResultActions result = mockMvc.perform(post(BASE_URL + "/booking/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bookingJson));
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/booking/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(bookingJson));
 
-        result.andExpect(status().isOk());
+            result.andExpect(status().isOk());
+        }
     }
 }
