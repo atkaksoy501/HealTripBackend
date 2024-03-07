@@ -13,13 +13,11 @@ import java.util.List;
 public class HotelOrganizerService implements IHotelOrganizerService {
 
     private HotelOrganizerDao hotelOrganizerDao;
-    private IHotelService hotelService;
 
     @Autowired
-    public HotelOrganizerService(HotelOrganizerDao hotelOrganizerDao, IHotelService hotelService) {
+    public HotelOrganizerService(HotelOrganizerDao hotelOrganizerDao) {
         super();
         this.hotelOrganizerDao = hotelOrganizerDao;
-        this.hotelService = hotelService;
     }
 
     @Override

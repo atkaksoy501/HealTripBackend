@@ -6,7 +6,7 @@ import codewizards.heal_trip.entities.*;
 public interface IBookingService {
     List<Booking> getAll();
     
-    Optional<Booking> getById(int id);
+    Booking getById(int id);
     
     Booking add(Booking booking);
     

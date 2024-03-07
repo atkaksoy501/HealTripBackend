@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="patient")
+@Table(name="patients")
 @Entity
 public class Patient extends User{
 
