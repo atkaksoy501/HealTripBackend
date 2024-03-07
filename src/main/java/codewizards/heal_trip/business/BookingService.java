@@ -20,8 +20,8 @@ public class BookingService implements IBookingService{
     }
     
     @Override
-    public Optional<Booking> getById(int id) {
-        return this.bookingDao.findById(id);
+    public Booking getById(int id) {
+        return this.bookingDao.findById(id).orElse(null);
     }
     
     @Override
