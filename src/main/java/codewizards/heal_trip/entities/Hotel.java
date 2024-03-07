@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name="hotel")
+@Table(name="hotels")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Hotel {

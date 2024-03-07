@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name="feedback")
+@Table(name="feedbacks")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Feedback {
