@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name="hotel_organizer")
+@Table(name="hotel_organizers")
 @AllArgsConstructor
 @NoArgsConstructor
 public class HotelOrganizer extends User{
