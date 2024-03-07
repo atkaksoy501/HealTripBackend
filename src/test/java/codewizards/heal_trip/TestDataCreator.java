@@ -39,7 +39,10 @@ public class TestDataCreator {
 
     @Autowired
     private IHotelService hotelService;
-
+    
+    @Autowired
+    private IBookingService bookingService;
+  
     @Autowired
     private IDoctorService doctorService;
 
@@ -349,7 +352,7 @@ public class TestDataCreator {
 
         for (int i = 0; i < 10; i++) {
             Feedback feedback = new Feedback();
-            feedback.setBookingId(i + 1);
+            feedback.setBooking(bookingService.getById(i + 1));
             feedback.setComment(comments.get(i));
             feedback.setRating(10 - i);
 
