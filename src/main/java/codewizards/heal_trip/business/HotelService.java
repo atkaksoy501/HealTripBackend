@@ -40,8 +40,9 @@ public class HotelService implements IHotelService {
     }
 
     @Override
-    public void add(Hotel hotel) {
-        this.hotelDao.save(hotel);
+    public int add(Hotel hotel) {
+        Hotel dbHotel = this.hotelDao.save(hotel);
+        return dbHotel.getHotelId();
     }
 
     @Override

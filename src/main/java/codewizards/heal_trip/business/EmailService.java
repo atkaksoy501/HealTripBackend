@@ -1,24 +1,29 @@
 package codewizards.heal_trip.business;
 
+import codewizards.heal_trip.entities.Address;
+import codewizards.heal_trip.entities.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Component
 public class EmailService implements IEmailService{
 
     private JavaMailSender emailSender;
+    private IAddressService addressService;
     private String welcomeSubject = "Welcome to HealTrip";
-    private String welcomeText = "Welcome to HealTrip! \n\nWe are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
+    private String welcomeText = "Welcome to HealTrip, %s! \n\nWe are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
     private String appointmentSubject = "Appointment Confirmation";
-    private String appointmentText = "Your appointment has been confirmed! \n\nWe are looking forward to seeing you on the scheduled date and time. If you have any questions, feel free to contact us.";
+    private String appointmentText = "Hi %s, Your booking has been confirmed! \n\nWe are looking forward to seeing you on the scheduled date and time. You can find your booking details below. If you have any questions, feel free to contact us.";
 
     @Autowired
-    public EmailService(JavaMailSender emailSender) {
+    public EmailService(JavaMailSender emailSender, IAddressService addressService) {
         this.emailSender = emailSender;
+        this.addressService = addressService;
     }
 
     public void sendEmail(String to, String subject, String text) {
@@ -32,12 +37,30 @@ public class EmailService implements IEmailService{
         emailSender.send(message);
     }
 
-    public void sendWelcomeEmail(String to) {
-        sendEmail(to, welcomeSubject, welcomeText);
+    public void sendWelcomeEmail(String to, String firstName) {
+        sendEmail(to, welcomeSubject, String.format(welcomeText, firstName));
     }
 
-    public void sendAppointmentEmail(String to) {
-        sendEmail(to, appointmentSubject, appointmentText);
+    public void sendAppointmentEmail(Booking booking) {
+        String to = booking.getPatient().getEmail();
+        String text = String.format(appointmentText, booking.getPatient().getFirst_name());
+        text += "\n\n";
+        text += "Booking Details: \n";
+        text += "Patient Name: " + booking.getPatient().getFirst_name() + " " + booking.getPatient().getLast_name() + "\n";
+        text += "Booking Date: " + booking.getBooking_date() + "\n";
+        text += "Start Date: " + booking.getStartDate() + "\n";
+        text += "End Date: " + booking.getEndDate() + "\n";
+        text += "Doctor Name: " + booking.getDoctor().getDoctorName() + "\n";
+        text += "Retreat Name: " + booking.getRetreat().getRetreat_name() + "\n";
+        text += "Hospital Name: " + booking.getHospital().getHospitalName() + "\n";
+        Address address = addressService.getById(booking.getHospital().getAddressId());
+        text += "Hospital Address: " + address.getAddressDetail() + "\n";
+        if (booking.getHotel() != null) {
+            text += "Hotel Name: " + booking.getHotel().getHotelName() + "\n";
+            address = booking.getHotel().getAddress();
+            text += "Hotel Address: " + address.getAddressDetail() + "\n";
+        }
+        sendEmail(to, appointmentSubject, text);
     }
 
     public boolean patternMatches(String emailAddress) {

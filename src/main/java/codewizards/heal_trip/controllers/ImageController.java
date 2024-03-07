@@ -2,6 +2,7 @@ package codewizards.heal_trip.controllers;
 
 import codewizards.heal_trip.business.IImageService;
 import codewizards.heal_trip.business.ImageService;
+import codewizards.heal_trip.entities.HospitalImage;
 import codewizards.heal_trip.entities.HotelImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,9 +43,9 @@ public class ImageController {
     }
 
     @PostMapping(value = "/hospital/save")
-    public ResponseEntity<HotelImage> saveHospitalImage(@RequestBody HotelImage hotelImage) {
-        imageService.saveHotelImage(hotelImage);
-        return new ResponseEntity<>(hotelImage, HttpStatus.OK);
+    public ResponseEntity<HospitalImage> saveHospitalImage(@RequestBody HospitalImage hospitalImage) {
+        imageService.saveHospitalImage(hospitalImage);
+        return new ResponseEntity<>(hospitalImage, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/hotel/deleteById/{image_id}")

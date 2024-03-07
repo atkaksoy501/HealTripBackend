@@ -1,6 +1,7 @@
 package codewizards.heal_trip.controllers;
 
 import codewizards.heal_trip.business.IEmailService;
+import codewizards.heal_trip.entities.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/email")
+@RequestMapping("/email")
 public class EmailController {
 
     private IEmailService emailService;
@@ -20,7 +21,7 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @GetMapping(value = "/send")
+    @GetMapping("/send")
     public ResponseEntity<String> sendEmail(String to, String subject, String text) throws IllegalArgumentException {
         try {
             emailService.sendEmail(to, subject, text);
@@ -30,21 +31,21 @@ public class EmailController {
         }
     }
 
-    @GetMapping(value = "/sendWelcome")
-    public ResponseEntity<String> sendWelcomeEmail(String to) throws IllegalArgumentException {
+    @GetMapping("/sendWelcome")
+    public ResponseEntity<String> sendWelcomeEmail(String to, String firstName) throws IllegalArgumentException {
         try {
-            emailService.sendWelcomeEmail(to);
+            emailService.sendWelcomeEmail(to, firstName);
             return new ResponseEntity<>("Welcome email sent to " + to, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping(value = "/sendAppointment")
-    public ResponseEntity<String> sendAppointmentEmail(String to) throws IllegalArgumentException {
+    @GetMapping("/sendAppointment")
+    public ResponseEntity<String> sendAppointmentEmail(Booking booking) throws IllegalArgumentException {
         try {
-            emailService.sendAppointmentEmail(to);
-            return new ResponseEntity<>("Appointment email sent to " + to, HttpStatus.OK);
+            emailService.sendAppointmentEmail(booking);
+            return new ResponseEntity<>("Appointment email sent to " + booking.getPatient().getEmail(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
