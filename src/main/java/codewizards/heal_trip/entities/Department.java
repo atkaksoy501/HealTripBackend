@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,11 @@ public class Department {
     @Column(name = "department_name")
     private String departmentName;
 
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "department")
     private List<Doctor> doctors;
 }

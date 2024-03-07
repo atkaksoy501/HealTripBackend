@@ -7,4 +7,3 @@ public interface IDoctorService {
     boolean deleteDoctor(int doctor_id);
     Doctor updateDoctor(Doctor doctor);
 }
-
