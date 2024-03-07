@@ -1,8 +1,6 @@
 package codewizards.heal_trip.controllers;
 
-import codewizards.heal_trip.business.HotelOrganizerService;
 import codewizards.heal_trip.business.IHotelOrganizerService;
-import codewizards.heal_trip.entities.Hotel;
 import codewizards.heal_trip.entities.HotelOrganizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,41 +11,41 @@ import java.util.List;
 @RequestMapping("/hotelOrganizer")
 public class HotelOrganizersController {
 
-    IHotelOrganizerService iHotelOrganizerService;
+    IHotelOrganizerService hotelOrganizerService;
 
     @Autowired
-    public HotelOrganizersController(IHotelOrganizerService iHotelOrganizerService) {
+    public HotelOrganizersController(IHotelOrganizerService hotelOrganizerService) {
         super();
-        this.iHotelOrganizerService = iHotelOrganizerService;
+        this.hotelOrganizerService = hotelOrganizerService;
     }
 
     @GetMapping("/getAll")
     public List<HotelOrganizer> getAll(){
-        return this.iHotelOrganizerService.getAll();
+        return this.hotelOrganizerService.getAll();
     }
 
     @GetMapping("/getAllByPage")
     public List<HotelOrganizer> getAll(int pageNo, int pageSize){
-        return this.iHotelOrganizerService.getAll(pageNo, pageSize);
+        return this.hotelOrganizerService.getAll(pageNo, pageSize);
     }
 
     @PostMapping("/add")
     public void add(@RequestBody HotelOrganizer hotelOrganizer) {
-        this.iHotelOrganizerService.add(hotelOrganizer);
+        this.hotelOrganizerService.add(hotelOrganizer);
     }
 
     @GetMapping("/get")
     public HotelOrganizer getById(@RequestParam int id) {
-        return this.iHotelOrganizerService.getById(id);
+        return this.hotelOrganizerService.getById(id);
     }
 
     @DeleteMapping("/delete")
     public void deleteById(@RequestParam int id) {
-        this.iHotelOrganizerService.deleteById(id);
+        this.hotelOrganizerService.deleteById(id);
     }
 
     @PutMapping("/update")
     public void update(@RequestBody HotelOrganizer hotelOrganizer) {
-        this.iHotelOrganizerService.update(hotelOrganizer);
+        this.hotelOrganizerService.update(hotelOrganizer);
     }
 }
