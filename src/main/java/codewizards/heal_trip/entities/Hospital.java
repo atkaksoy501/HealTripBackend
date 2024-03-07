@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="hospital")
+@Table(name="hospitals")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Hospital {
