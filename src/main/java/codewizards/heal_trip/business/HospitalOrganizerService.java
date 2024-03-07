@@ -14,13 +14,11 @@ import java.util.List;
 public class HospitalOrganizerService implements IHospitalOrganizerService{
 
     private HospitalOrganizerDao hospitalOrganizerDao;
-    private IHospitalService hospitalService;
 
     @Autowired
-    public HospitalOrganizerService(HospitalOrganizerDao hospitalOrganizerDao, IHospitalService hospitalService) {
+    public HospitalOrganizerService(HospitalOrganizerDao hospitalOrganizerDao) {
         super();
         this.hospitalOrganizerDao = hospitalOrganizerDao;
-        this.hospitalService = hospitalService;
     }
 
     @Override

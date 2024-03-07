@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/email")
+@RequestMapping("/email")
 public class EmailController {
 
     private IEmailService emailService;
@@ -21,7 +21,7 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @GetMapping(value = "/send")
+    @GetMapping("/send")
     public ResponseEntity<String> sendEmail(String to, String subject, String text) throws IllegalArgumentException {
         try {
             emailService.sendEmail(to, subject, text);
@@ -31,7 +31,7 @@ public class EmailController {
         }
     }
 
-    @GetMapping(value = "/sendWelcome")
+    @GetMapping("/sendWelcome")
     public ResponseEntity<String> sendWelcomeEmail(String to, String firstName) throws IllegalArgumentException {
         try {
             emailService.sendWelcomeEmail(to, firstName);
@@ -41,7 +41,7 @@ public class EmailController {
         }
     }
 
-    @GetMapping(value = "/sendAppointment")
+    @GetMapping("/sendAppointment")
     public ResponseEntity<String> sendAppointmentEmail(Booking booking) throws IllegalArgumentException {
         try {
             emailService.sendAppointmentEmail(booking);

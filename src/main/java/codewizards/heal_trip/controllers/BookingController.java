@@ -38,7 +38,7 @@ public class BookingController {
     }
     
     @GetMapping("/getById")
-    public Optional<Booking> getById(@RequestParam int id){
+    public Booking getById(@RequestParam int id){
         return this.bookingService.getById(id);
     }
     

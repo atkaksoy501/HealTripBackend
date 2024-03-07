@@ -6,7 +6,7 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name="retreat")
+@Table(name="retreats")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Retreat {
