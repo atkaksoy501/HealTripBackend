@@ -27,8 +27,4 @@ public class HospitalImage {
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 
-    @ManyToOne()
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
-
 }
