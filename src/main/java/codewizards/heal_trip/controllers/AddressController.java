@@ -7,7 +7,7 @@ import codewizards.heal_trip.business.*;
 import codewizards.heal_trip.entities.*;
 
 @RestController
-@RequestMapping("/addresses")
+@RequestMapping("/address")
 public class AddressController {
     private IAddressService addressService;
     @Autowired
@@ -26,7 +26,7 @@ public class AddressController {
     }
     
     @GetMapping("/getById")
-    public Optional<Address> getById(@RequestParam int id){
+    public Address getById(@RequestParam int id){
         return this.addressService.getById(id);
     }
     

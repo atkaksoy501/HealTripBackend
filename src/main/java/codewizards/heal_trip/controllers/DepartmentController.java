@@ -7,7 +7,7 @@ import codewizards.heal_trip.business.*;
 import codewizards.heal_trip.entities.Department;
 
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/department")
 public class DepartmentController {
     private IDepartmentService departmentService;
     @Autowired
@@ -41,7 +41,7 @@ public class DepartmentController {
     }
     
     @GetMapping("/getById")
-    public Optional<Department> getById(@RequestParam int id){
+    public Department getById(@RequestParam int id){
         return this.departmentService.getById(id);
     }
     

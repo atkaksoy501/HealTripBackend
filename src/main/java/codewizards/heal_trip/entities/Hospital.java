@@ -1,11 +1,13 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name="hospital")
+@Table(name="hospitals")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Hospital {
@@ -26,4 +28,7 @@ public class Hospital {
     @Column(name = "contact_phone")
     private String contactPhone;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospital")
+    private List<Department> departments;
 }

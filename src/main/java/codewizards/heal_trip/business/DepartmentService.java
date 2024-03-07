@@ -45,8 +45,8 @@ public class DepartmentService implements IDepartmentService{
     }
     
     @Override
-    public Optional<Department> getById(int id) {
-        return this.departmentDao.findById(id);
+    public Department getById(int id) {
+        return this.departmentDao.findById(id).orElse(null);
     }
     
     @Override
