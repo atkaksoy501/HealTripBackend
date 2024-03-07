@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value="/doctor")
+@RequestMapping("/doctor")
 public class DoctorController {
     private DoctorService doctorService;
     @Autowired
@@ -17,7 +17,7 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    @GetMapping(value="/getDoctorById/{doctor_id}")
+    @GetMapping("/getDoctorById/{doctor_id}")
     public ResponseEntity<Doctor> getDoctorById(@PathVariable int doctor_id) {
         Doctor doctor = doctorService.getDoctorById(doctor_id);
         if (doctor == null) {
@@ -25,11 +25,11 @@ public class DoctorController {
         }
         else
             return new ResponseEntity<>(doctor, HttpStatus.OK);}
-    @PostMapping(value = "/register")
+    @PostMapping("/register")
     public ResponseEntity<Integer> registerUser(@RequestBody Doctor doctor) {
         return new ResponseEntity<>(doctorService.registerDoctor(doctor), HttpStatus.OK);
    }
-    @DeleteMapping(value = "/deleteById/{doctor_id}")
+    @DeleteMapping("/deleteById/{doctor_id}")
     public ResponseEntity<String> deleteDoctor(@PathVariable int doctor_id) {
         boolean isDoctorActive = doctorService.deleteDoctor(doctor_id);
         if (!isDoctorActive)
