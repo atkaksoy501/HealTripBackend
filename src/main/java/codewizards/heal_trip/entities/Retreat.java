@@ -6,7 +6,7 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name="retreat")
+@Table(name="retreats")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Retreat {
@@ -18,7 +18,7 @@ public class Retreat {
     @Column(name = "retreat_name")
     private String retreat_name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 

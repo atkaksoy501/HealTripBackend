@@ -1,6 +1,7 @@
 package codewizards.heal_trip.business;
 
 import codewizards.heal_trip.dataAccess.HospitalOrganizerDao;
+import codewizards.heal_trip.entities.Hospital;
 import codewizards.heal_trip.entities.HospitalOrganizer;
 import codewizards.heal_trip.entities.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;

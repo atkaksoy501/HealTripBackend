@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name="hotel")
+@Table(name="hotels")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Hotel {
@@ -24,7 +24,7 @@ public class Hotel {
 //    @Column(name="address_id")
 //    private int addressId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id") //id = adresteki id
     private Address address;
 

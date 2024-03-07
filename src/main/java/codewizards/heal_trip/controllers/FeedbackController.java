@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value="/feedback")
+@RequestMapping("/feedback")
 public class FeedbackController {
 
     private FeedbackService feedbackService;
@@ -20,7 +20,7 @@ public class FeedbackController {
         this.feedbackService = feedbackService;
     }
 
-    @GetMapping(value="/getFeedbackById/{feedback_id}")
+    @GetMapping("/getFeedbackById/{feedback_id}")
     public ResponseEntity<Feedback> getFeedbackById(@PathVariable int feedback_id) {
         Feedback feedback = feedbackService.getFeedbackById(feedback_id);
         if (feedback == null) {
@@ -29,7 +29,7 @@ public class FeedbackController {
         else
             return new ResponseEntity<>(feedback, HttpStatus.OK);
     }
-    @PostMapping(value = "/addFeedback")
+    @PostMapping("/add")
     public ResponseEntity<Integer> registerUser(@RequestBody Feedback feedback) {
         return new ResponseEntity<>(feedbackService.addFeedback(feedback), HttpStatus.OK);
     }
