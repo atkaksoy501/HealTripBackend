@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value="/hospital")
+@RequestMapping("/hospital")
 public class HospitalController {
     private HospitalService hospitalService;
 
@@ -19,7 +19,7 @@ public class HospitalController {
         this.hospitalService = hospitalService;
     }
 
-    @GetMapping(value="/getHospitalById/{hospital_id}")
+    @GetMapping("/getHospitalById/{hospital_id}")
     public ResponseEntity<Hospital> getHospitalById(@PathVariable int hospital_id) {
         Hospital hospital = hospitalService.getHospitalById(hospital_id);
         if (hospital == null) {
@@ -28,7 +28,7 @@ public class HospitalController {
         else
             return new ResponseEntity<>(hospital, HttpStatus.OK);
     }
-    @PostMapping(value = "/register")
+    @PostMapping("/register")
     public ResponseEntity<Integer> registerHospital(@RequestBody Hospital hospital) {
         return new ResponseEntity<>(hospitalService.registerHospital(hospital), HttpStatus.OK);
     }

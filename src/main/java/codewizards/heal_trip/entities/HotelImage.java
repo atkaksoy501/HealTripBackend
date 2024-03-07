@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="hotel_image")
+@Table(name="hotel_images")
 @Entity
 public class HotelImage{
 
