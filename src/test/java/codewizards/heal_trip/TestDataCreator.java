@@ -39,7 +39,10 @@ public class TestDataCreator {
 
     @Autowired
     private IHotelService hotelService;
-
+    
+    @Autowired
+    private IBookingService bookingService;
+  
     @Autowired
     private IDoctorService doctorService;
 
@@ -177,7 +180,7 @@ public class TestDataCreator {
 
             HotelImage hotelImage = new HotelImage();
             hotelImage.setImage(fileContent);
-            hotelImage.setHotel_id(hotelId);
+            hotelImage.setHotel(hotelService.getById(hotelId));
 
             ObjectMapper objectMapper = new ObjectMapper();
             String hotelImageJson = objectMapper.writeValueAsString(hotelImage);
@@ -202,7 +205,8 @@ public class TestDataCreator {
             hospital.setHospitalName(names.get(i));
             hospital.setBed_capacity(1000);
             hospital.setContactPhone("1234567890");
-            hospital.setAddressId(i + 1);
+            hospital.setAddress(addressService.getById(i + 1));
+            hospital.setActive(true);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String hospitalJson = objectMapper.writeValueAsString(hospital);
@@ -252,7 +256,7 @@ public class TestDataCreator {
 
             HospitalImage hospitalImage = new HospitalImage();
             hospitalImage.setImage(fileContent);
-            hospitalImage.setHospital_id(hospitalId);
+            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
 
             ObjectMapper objectMapper = new ObjectMapper();
             String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
@@ -298,10 +302,11 @@ public class TestDataCreator {
             byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/doctorImages/" + (i + 1) + ".jpeg"));
             doctor.setDoctorImage(fileContent);
             doctor.setActive(true);
-            doctor.setDepartmentId(i + 1);
+            doctor.setDepartment(departmentService.getById(i + 1));
             doctor.setExperience_year(10);
             doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
-            doctor.setHospitalId(i + 1);
+            doctor.setHospital(hospitalService.getHospitalById(i + 1));
+            doctor.setActive(true);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String doctorJson = objectMapper.writeValueAsString(doctor);
@@ -347,7 +352,7 @@ public class TestDataCreator {
 
         for (int i = 0; i < 10; i++) {
             Feedback feedback = new Feedback();
-            feedback.setBookingId(i + 1);
+            feedback.setBooking(bookingService.getById(i + 1));
             feedback.setComment(comments.get(i));
             feedback.setRating(10 - i);
 

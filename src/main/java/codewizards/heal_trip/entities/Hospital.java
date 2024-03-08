@@ -22,8 +22,15 @@ public class Hospital {
     @Column(name = "hospital_name")
     private String hospitalName;
 
-    @Column(name = "address_id")
-    private int addressId;
+    @Column(name = "active")
+    private boolean active;
+
+    //@Column(name = "address_id")
+    //private int addressId;
+
+    @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     @Column(name = "contact_phone")
     private String contactPhone;
@@ -31,4 +38,17 @@ public class Hospital {
     @JsonIgnore
     @OneToMany(mappedBy = "hospital")
     private List<Department> departments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospital")
+    private List<Booking> bookings;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospital")
+    private List<Doctor> doctors;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospital")
+    private List<HospitalImage> hospitalImages;
+
 }

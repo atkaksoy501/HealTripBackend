@@ -19,16 +19,8 @@ public class DoctorService implements IDoctorService{
         return doctorDao.findById(doctor_id).orElse(null);
     }
     @Override
-    public Integer registerDoctor(Doctor doctor) {
-        Doctor newDoctor = new Doctor();
-        newDoctor.setHospitalId(doctor.getHospitalId());
-        newDoctor.setDepartmentId(doctor.getDepartmentId());
-        newDoctor.setExperience_year(doctor.getExperience_year());
-        newDoctor.setDoctorName(doctor.getDoctorName());
-        newDoctor.setDoctorImage(doctor.getDoctorImage());
-        newDoctor.setActive(true);
-        newDoctor = doctorDao.save(newDoctor);
-        return newDoctor.getId();
+    public Doctor registerDoctor(Doctor doctor) {
+        return doctorDao.save(doctor);
     }
     @Override
     public boolean deleteDoctor(int doctor_id) {
@@ -39,5 +31,10 @@ public class DoctorService implements IDoctorService{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Doctor updateDoctor(Doctor doctor) {
+        return doctorDao.save(doctor);
     }
 }

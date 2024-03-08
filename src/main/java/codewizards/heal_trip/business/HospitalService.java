@@ -20,14 +20,23 @@ public class HospitalService implements IHospitalService{
     }
 
     @Override
-    public Integer registerHospital(Hospital hospital) {
-        Hospital newHospital = new Hospital();
-        newHospital.setId(hospital.getId());
-        newHospital.setBed_capacity(hospital.getBed_capacity());
-        newHospital.setHospitalName(hospital.getHospitalName());
-        newHospital.setAddressId(hospital.getAddressId());
-        newHospital.setContactPhone(hospital.getContactPhone());
-        newHospital = hospitalDao.save(newHospital);
-        return newHospital.getId();
+    public Hospital registerHospital(Hospital hospital) {
+        return hospitalDao.save(hospital);
+    }
+
+    @Override
+    public boolean deleteHospital(int hospital_id) {
+        Hospital dbHospital = hospitalDao.findById(hospital_id).orElse(null);
+        if (dbHospital != null) {
+            dbHospital.setActive(false);
+            hospitalDao.save(dbHospital);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Hospital updateHospital(Hospital hospital) {
+        return hospitalDao.save(hospital);
     }
 }
