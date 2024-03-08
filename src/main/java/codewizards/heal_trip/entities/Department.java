@@ -1,7 +1,10 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -20,4 +23,8 @@ public class Department {
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "department")
+    private List<Doctor> doctors;
 }

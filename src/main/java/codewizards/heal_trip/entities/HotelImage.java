@@ -20,7 +20,11 @@ public class HotelImage{
     @Column(name = "image")
     private byte[] image;
 
-    @Column(name = "hotel_id")
-    private int hotel_id;
+    //@Column(name = "hotel_id")
+    //private int hotel_id;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    private Hotel hotel;
 
 }
