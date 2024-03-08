@@ -16,11 +16,11 @@ public class Doctor {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "hospital_id")
-    private int hospitalId;
+    //@Column(name = "hospital_id")
+    //private int hospitalId;
 
-    @Column(name = "department_id")
-    private int departmentId;
+    //@Column(name = "department_id")
+    //private int departmentId;
 
     @Column(name = "experience_year")
     private int experience_year;
@@ -37,4 +37,12 @@ public class Doctor {
     @JsonIgnore
     @OneToMany(mappedBy = "doctor")
     private List<Booking> bookings;
+
+    @ManyToOne
+    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
+    private Hospital hospital;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 }
