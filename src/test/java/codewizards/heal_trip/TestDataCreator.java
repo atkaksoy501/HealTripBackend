@@ -8,14 +8,15 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -58,8 +59,60 @@ public class TestDataCreator {
     @Autowired
     private IAddressService addressService;
 
+    private HttpHeaders createHeader() {
+        // Create the Basic Auth header
+        String auth = "admin:admin"; // replace with your username and password
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.US_ASCII));
+        String authHeader = "Basic " + new String(encodedAuth);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authHeader);
+
+        return headers;
+    }
+
     @Test
     @Order(1)
+    void createAdminUser() throws Exception {
+        UsersRequest user = new UsersRequest();
+        user.setFirst_name("Admin");
+        user.setLast_name("Admin");
+        user.setEmail("admin");
+        user.setPassword("admin");
+        user.setRoles("ROLE_ADMIN");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userJson = objectMapper.writeValueAsString(user);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userJson));
+
+        result.andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(2)
+    void loginUser() throws Exception {
+        // Create a map to hold the username and password
+        Map<String, String> loginDetails = new HashMap<>();
+        loginDetails.put("email", "admin");
+        loginDetails.put("password", "admin");
+
+        // Convert the map to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+        String loginDetailsJson = objectMapper.writeValueAsString(loginDetails);
+
+        // Send a POST request to the login endpoint
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/auth/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginDetailsJson));
+
+        // Check that the status of the response is OK (200)
+        result.andExpect(status().isOk());
+    }
+    @Test
+    @Order(3)
     void createPatient() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
@@ -83,6 +136,7 @@ public class TestDataCreator {
             String patientJson = objectMapper.writeValueAsString(patient);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/patient/register")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(patientJson));
 
@@ -91,7 +145,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(2)
+    @Order(4)
     void createAddress() throws Exception {
         List<String> cities = List.of("Ankara", "İstanbul", "İzmir", "Antalya", "Adana", "Bursa", "Eskişehir", "Trabzon",
                 "Samsun", "Konya");
@@ -111,6 +165,7 @@ public class TestDataCreator {
             String addressJson = objectMapper.writeValueAsString(address);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/address/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(addressJson));
 
@@ -119,7 +174,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void createHotel() throws Exception {
         List<String> names = Arrays.asList("Akra Hotel", "Hilton Hotel", "Marriott Hotel", "Ritz-Carlton Hotel",
                 "Four Seasons Hotel", "Sheraton Hotel", "Radisson Hotel", "InterContinental Hotel", "Hyatt Hotel",
@@ -136,6 +191,7 @@ public class TestDataCreator {
             String hotelJson = objectMapper.writeValueAsString(hotel);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hotel/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(hotelJson));
 
@@ -144,7 +200,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void createHotelOrganizer() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
@@ -164,6 +220,7 @@ public class TestDataCreator {
             String hotelOrganizerJson = objectMapper.writeValueAsString(hotelOrganizer);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hotelOrganizer/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(hotelOrganizerJson));
 
@@ -172,7 +229,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     void createHotelImage() throws Exception {
         for (int i = 1; i <= 10; i++) {
             int hotelId = i;
@@ -186,6 +243,7 @@ public class TestDataCreator {
             String hotelImageJson = objectMapper.writeValueAsString(hotelImage);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hotel/save")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(hotelImageJson));
 
@@ -194,7 +252,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     void createHospital() throws Exception {
         List<String> names = Arrays.asList("Akdeniz University Hospital", "Johns Hopkins Hospital", "Mayo Clinic Hospital",
                 "Cleveland Clinic Hospital", "Massachusetts General Hospital", "Atakan Hospital", "Burak Hospital", "Onur Hospital",
@@ -212,6 +270,7 @@ public class TestDataCreator {
             String hospitalJson = objectMapper.writeValueAsString(hospital);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/register")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(hospitalJson));
 
@@ -220,7 +279,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     void createHospitalOrganizer() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
@@ -240,6 +299,7 @@ public class TestDataCreator {
             String hospitalOrganizerJson = objectMapper.writeValueAsString(hospitalOrganizer);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hospitalOrganizer/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(hospitalOrganizerJson));
 
@@ -248,7 +308,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(8)
+    @Order(10)
     void createHospitalImage() throws Exception {
         for (int i = 1; i <= 10; i++) {
             int hospitalId = i;
@@ -262,6 +322,7 @@ public class TestDataCreator {
             String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hospital/save")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(hospitalImageJson));
 
@@ -270,7 +331,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(9)
+    @Order(11)
     void createDepartment() throws Exception {
         List<String> names = List.of("Cardiology", "Dermatology", "Endocrinology", "Gastroenterology", "Hematology",
                 "Infectious Disease", "Nephrology", "Neurology", "Oncology", "Pulmonology");
@@ -284,6 +345,7 @@ public class TestDataCreator {
             String departmentJson = objectMapper.writeValueAsString(department);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/department/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(departmentJson));
 
@@ -292,7 +354,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(10)
+    @Order(12)
     void createDoctor() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
@@ -312,6 +374,7 @@ public class TestDataCreator {
             String doctorJson = objectMapper.writeValueAsString(doctor);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/register")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(doctorJson));
 
@@ -320,7 +383,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(11)
+    @Order(13)
     void createRetreat() throws Exception {
         List<String> names = List.of("Diş Dolgusu", "Diş Beyazlatma", "Diş Çekimi", "Kanal Tedavisi", "Ortodonti",
                 "Periodontoloji", "Pedodonti", "Ağız ve Diş Cerrahisi", "Endodonti", "Protez");
@@ -337,6 +400,7 @@ public class TestDataCreator {
             String retreatJson = objectMapper.writeValueAsString(retreat);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/retreat/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(retreatJson));
 
@@ -345,7 +409,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(12)
+    @Order(14)
     void createFeedback() throws Exception {
         List<String> comments = List.of("Mükemmel", "Harika", "Çok iyi", "İyi", "Orta", "Kötü", "Çok kötü", "Berbat",
                 "Rezalet", "Felaket");
@@ -360,6 +424,7 @@ public class TestDataCreator {
             String bookingJson = objectMapper.writeValueAsString(feedback);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/feedback/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(bookingJson));
 
@@ -368,7 +433,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(13)
+    @Order(15)
     void createBooking() throws Exception {
         for (int i = 0; i < 10; i++) {
             Booking booking = new Booking();
@@ -388,6 +453,7 @@ public class TestDataCreator {
             String bookingJson = objectMapper.writeValueAsString(booking);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/booking/add")
+                    .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(bookingJson));
 

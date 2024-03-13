@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**")
+                        .requestMatchers("/auth/register", "/auth/authenticate")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
@@ -46,7 +46,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 
