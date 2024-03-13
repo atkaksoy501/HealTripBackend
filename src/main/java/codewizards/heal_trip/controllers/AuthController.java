@@ -1,6 +1,6 @@
 package codewizards.heal_trip.controllers;
 
-import codewizards.heal_trip.business.AuthService;
+import codewizards.heal_trip.business.IAuthService;
 import codewizards.heal_trip.config.JwtUtils;
 import codewizards.heal_trip.entities.AuthenticationRequest;
 import codewizards.heal_trip.entities.UsersRequest;
@@ -29,7 +29,7 @@ public class AuthController {
 
     private final JpaUserDetailsService jpaUserDetailsService;
 
-    private final AuthService authService;
+    private final IAuthService IAuthService;
 
     private final JwtUtils jwtUtils;
 
@@ -59,7 +59,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserSecurity> register(@RequestBody UsersRequest user) throws Exception {
-        return ResponseEntity.ok(authService.AddUser(user).map(UserSecurity::new).orElseThrow(() -> new Exception("Unknown")));
+        return ResponseEntity.ok(IAuthService.AddUser(user).map(UserSecurity::new).orElseThrow(() -> new Exception("Unknown")));
     }
 
 }
