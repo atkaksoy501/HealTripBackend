@@ -36,7 +36,7 @@ public class Booking {
     private String status;
     
     @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
     
     @ManyToOne

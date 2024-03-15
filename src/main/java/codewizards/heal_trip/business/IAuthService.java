@@ -1,10 +1,10 @@
 package codewizards.heal_trip.business;
 
-import codewizards.heal_trip.entities.Users;
-import codewizards.heal_trip.entities.UsersRequest;
+import codewizards.heal_trip.DTO.UserDTO;
+import codewizards.heal_trip.entities.User;
 
 import java.util.Optional;
 
 public interface IAuthService {
-    public Optional<Users> AddUser(UsersRequest user);
+    Optional<User> AddUser(UserDTO user);
 }

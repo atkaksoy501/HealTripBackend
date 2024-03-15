@@ -1,9 +1,9 @@
 package codewizards.heal_trip.controllers;
 
+import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.IAuthService;
 import codewizards.heal_trip.config.JwtUtils;
 import codewizards.heal_trip.entities.AuthenticationRequest;
-import codewizards.heal_trip.entities.UsersRequest;
 import codewizards.heal_trip.security.JpaUserDetailsService;
 import codewizards.heal_trip.security.UserSecurity;
 import jakarta.servlet.http.Cookie;
@@ -58,7 +58,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserSecurity> register(@RequestBody UsersRequest user) throws Exception {
+    public ResponseEntity<UserSecurity> register(@RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(IAuthService.AddUser(user).map(UserSecurity::new).orElseThrow(() -> new Exception("Unknown")));
     }
 
