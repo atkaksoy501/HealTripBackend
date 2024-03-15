@@ -1,5 +1,6 @@
 package codewizards.heal_trip;
 
+import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.*;
 import codewizards.heal_trip.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,7 +75,7 @@ public class TestDataCreator {
     @Test
     @Order(1)
     void createAdminUser() throws Exception {
-        UsersRequest user = new UsersRequest();
+        UserDTO user = new UserDTO();
         user.setFirst_name("Admin");
         user.setLast_name("Admin");
         user.setEmail("admin");
@@ -121,14 +122,14 @@ public class TestDataCreator {
             Patient patient = new Patient();
             patient.setFirst_name(names.get(i));
             patient.setLast_name(surnames.get(i));
-            patient.setEmail("healtrip.codewizards@gmail.com");
+            patient.setEmail("healtrip.codewizards" + i + "@gmail.com");
             patient.setPhone_number("1234567890");
-            patient.setUser_password("123456");
+            patient.setPassword("123456");
             patient.setBirth_date(java.time.LocalDate.of(2002, 1, 4));
             patient.setGender('M');
             patient.setPatient_height(190);
             patient.setPatient_weight(110);
-            patient.setUser_role("patient");
+            patient.setRoles("PATIENT");
             patient.setActive(true);
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -209,10 +210,10 @@ public class TestDataCreator {
             HotelOrganizer hotelOrganizer = new HotelOrganizer();
             hotelOrganizer.setFirst_name(names.get(i));
             hotelOrganizer.setLast_name(surnames.get(i));
-            hotelOrganizer.setEmail("healtrip.codewizards@gmail.com");
+            hotelOrganizer.setEmail("healtrip.codewizards" + i + "@gmail.com");
             hotelOrganizer.setPhone_number("1234567890");
-            hotelOrganizer.setUser_password("123456");
-            hotelOrganizer.setUser_role("hotel_organizer");
+            hotelOrganizer.setPassword("123456");
+            hotelOrganizer.setRoles("HOTEL_ORGANIZER");
             hotelOrganizer.setActive(true);
             hotelOrganizer.setHotel(hotelService.getById(i + 1));
 
@@ -288,10 +289,10 @@ public class TestDataCreator {
             HospitalOrganizer hospitalOrganizer = new HospitalOrganizer();
             hospitalOrganizer.setFirst_name(names.get(i));
             hospitalOrganizer.setLast_name(surnames.get(i));
-            hospitalOrganizer.setEmail("healtrip.codewizards@gmail.com");
+            hospitalOrganizer.setEmail("healtrip.codewizards" + i + "@gmail.com");
             hospitalOrganizer.setPhone_number("1234567890");
-            hospitalOrganizer.setUser_password("123456");
-            hospitalOrganizer.setUser_role("hospital_organizer");
+            hospitalOrganizer.setPassword("123456");
+            hospitalOrganizer.setRoles("HOSPITAL_ORGANIZER");
             hospitalOrganizer.setActive(true);
             hospitalOrganizer.setHospital(hospitalService.getHospitalById(i + 1));
 
@@ -441,7 +442,7 @@ public class TestDataCreator {
             booking.setHospital(hospitalService.getHospitalById(i + 1));
             booking.setHotel(hotelService.getById(i + 1));
             booking.setDoctor(doctorService.getDoctorById(i + 1));
-            booking.setPatient(patientService.getPatientById(i + 1));
+            booking.setPatient(patientService.getPatientById(i + 2));
             booking.setRetreat(retreatService.getRetreatById(i + 1));
             booking.setStatus("Active");
             booking.setEndDate(LocalDate.of(2024, 3, 20));
