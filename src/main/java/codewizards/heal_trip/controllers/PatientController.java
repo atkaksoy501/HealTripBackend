@@ -6,6 +6,7 @@ import codewizards.heal_trip.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,6 +36,7 @@ public class PatientController {
     public ResponseEntity<String> registerPatient(@RequestBody Patient patient) throws IllegalArgumentException {
         try {
             emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
+            patient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
             Integer patientId = patientService.registerPatient(patient);
             return new ResponseEntity<>("Patient with id " + patientId + " has been registered. Email has ben sent to " + patient.getEmail(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
