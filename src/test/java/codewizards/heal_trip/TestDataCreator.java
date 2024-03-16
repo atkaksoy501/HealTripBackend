@@ -122,7 +122,7 @@ public class TestDataCreator {
             Patient patient = new Patient();
             patient.setFirst_name(names.get(i));
             patient.setLast_name(surnames.get(i));
-            patient.setEmail("healtrip.codewizards" + i + "@gmail.com");
+            patient.setEmail("patient_" + i + "@gmail.com");
             patient.setPhone_number("1234567890");
             patient.setPassword("123456");
             patient.setBirth_date(java.time.LocalDate.of(2002, 1, 4));
@@ -210,7 +210,7 @@ public class TestDataCreator {
             HotelOrganizer hotelOrganizer = new HotelOrganizer();
             hotelOrganizer.setFirst_name(names.get(i));
             hotelOrganizer.setLast_name(surnames.get(i));
-            hotelOrganizer.setEmail("healtrip.codewizards" + i + "@gmail.com");
+            hotelOrganizer.setEmail("hotel_organizer_" + i + "@gmail.com");
             hotelOrganizer.setPhone_number("1234567890");
             hotelOrganizer.setPassword("123456");
             hotelOrganizer.setRoles("HOTEL_ORGANIZER");
@@ -289,7 +289,7 @@ public class TestDataCreator {
             HospitalOrganizer hospitalOrganizer = new HospitalOrganizer();
             hospitalOrganizer.setFirst_name(names.get(i));
             hospitalOrganizer.setLast_name(surnames.get(i));
-            hospitalOrganizer.setEmail("healtrip.codewizards" + i + "@gmail.com");
+            hospitalOrganizer.setEmail("hospital_organizer_" + i + "@gmail.com");
             hospitalOrganizer.setPhone_number("1234567890");
             hospitalOrganizer.setPassword("123456");
             hospitalOrganizer.setRoles("HOSPITAL_ORGANIZER");
