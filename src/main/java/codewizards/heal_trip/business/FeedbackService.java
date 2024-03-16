@@ -21,13 +21,17 @@ public class FeedbackService implements IFeedbackService{
     }
 
     @Override
-    public Integer addFeedback(Feedback feedback) {
-        Feedback newFeedback = new Feedback();
-        newFeedback.setId(feedback.getId());
-        newFeedback.setBookingId(feedback.getBookingId());
-        newFeedback.setComment(feedback.getComment());
-        newFeedback.setRating(feedback.getRating());
-        newFeedback = feedbackDao.save(newFeedback);
-        return newFeedback.getId();
+    public Feedback addFeedback(Feedback feedback) {
+        return feedbackDao.save(feedback);
+    }
+
+    @Override
+    public void deleteFeedback(int feedback_id) {
+        feedbackDao.deleteById(feedback_id);
+    }
+
+    @Override
+    public Feedback updateFeedback(Feedback feedback) {
+        return feedbackDao.save(feedback);
     }
 }

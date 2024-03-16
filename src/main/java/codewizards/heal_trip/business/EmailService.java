@@ -53,7 +53,7 @@ public class EmailService implements IEmailService{
         text += "Doctor Name: " + booking.getDoctor().getDoctorName() + "\n";
         text += "Retreat Name: " + booking.getRetreat().getRetreat_name() + "\n";
         text += "Hospital Name: " + booking.getHospital().getHospitalName() + "\n";
-        Address address = addressService.getById(booking.getHospital().getAddressId());
+        Address address = booking.getHospital().getAddress();
         text += "Hospital Address: " + address.getAddressDetail() + "\n";
         if (booking.getHotel() != null) {
             text += "Hotel Name: " + booking.getHotel().getHotelName() + "\n";

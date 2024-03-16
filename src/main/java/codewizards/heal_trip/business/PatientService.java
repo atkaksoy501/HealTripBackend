@@ -24,7 +24,7 @@ public class PatientService implements IPatientService{
     }
 
     public Integer registerPatient(Patient patient) {
-        patient.setUser_role("patient");
+        patient.setRoles("PATIENT");
         patient.setActive(true);
         patient = patientDao.save(patient);
         return patient.getId();
@@ -42,8 +42,8 @@ public class PatientService implements IPatientService{
                 dbPatient.setEmail(patient.getEmail());
             if (patient.getPhone_number() != null)
                 dbPatient.setPhone_number(patient.getPhone_number());
-            if (patient.getUser_password() != null)
-                dbPatient.setUser_password(patient.getUser_password());
+            if (patient.getPassword() != null)
+                dbPatient.setPassword(patient.getPassword());
             if (patient.getBirth_date() != null)
                 dbPatient.setBirth_date(patient.getBirth_date());
             if (patient.getGender() != 0)
