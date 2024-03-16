@@ -34,8 +34,8 @@ public class HotelOrganizerService implements IHotelOrganizerService {
     }
 
     @Override
-    public void add(HotelOrganizer hotelOrganizer) {
-        this.hotelOrganizerDao.save(hotelOrganizer);
+    public Integer add(HotelOrganizer hotelOrganizer) {
+        return this.hotelOrganizerDao.save(hotelOrganizer).getId();
     }
 
     @Override
