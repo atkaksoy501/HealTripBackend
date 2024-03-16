@@ -34,8 +34,8 @@ public class HospitalOrganizerService implements IHospitalOrganizerService{
     }
 
     @Override
-    public void add(HospitalOrganizer hospitalOrganizer) {
-        this.hospitalOrganizerDao.save(hospitalOrganizer);
+    public Integer add(HospitalOrganizer hospitalOrganizer) {
+        return this.hospitalOrganizerDao.save(hospitalOrganizer).getId();
     }
 
     @Override

@@ -29,7 +29,7 @@ public class UserService implements IUserService{
         newUser.setLast_name(user.getLast_name());
         newUser.setEmail(user.getEmail());
         newUser.setPhone_number(user.getPhone_number());
-        newUser.setUser_password(user.getUser_password());
+        newUser.setPassword(user.getPassword());
 //        newUser.setUser_role(user.getUser_role());
         newUser.setActive(true);
         newUser = userDao.save(newUser);
@@ -53,8 +53,8 @@ public class UserService implements IUserService{
                 dbUser.setEmail(user.getEmail());
             if (user.getPhone_number() != null)
                 dbUser.setPhone_number(user.getPhone_number());
-            if (user.getUser_password() != null)
-                dbUser.setUser_password(user.getUser_password());
+            if (user.getPassword() != null)
+                dbUser.setPassword(user.getPassword());
 //            if (user.getUser_role() != null)
 //                dbUser.setUser_role(user.getUser_role());
             dbUser = userDao.save(dbUser);
