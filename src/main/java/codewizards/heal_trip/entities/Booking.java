@@ -36,14 +36,14 @@ public class Booking {
     private String status;
     
     @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
     

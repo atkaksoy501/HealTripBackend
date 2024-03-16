@@ -1,8 +1,11 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -18,8 +21,8 @@ public class Retreat {
     @Column(name = "retreat_name")
     private String retreat_name;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @Column(name = "description")
