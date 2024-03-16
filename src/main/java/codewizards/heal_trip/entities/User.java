@@ -1,39 +1,46 @@
 package codewizards.heal_trip.entities;
 
 import jakarta.persistence.*;
-
 import lombok.*;
 
-@MappedSuperclass
-@Data
-//@Table(name="users")
-@AllArgsConstructor
-@NoArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+import static jakarta.persistence.GenerationType.SEQUENCE;
+
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@EqualsAndHashCode
+@Entity(name = "User")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "email_unique", columnNames = "email"))
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
-//    @Column(name = "id")
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = SEQUENCE,
+            generator = "user_sequence"
+    )
+    @Column(name = "id", updatable = false)
     private int id;
-
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String first_name;
-
     @Column(name = "last_name")
     private String last_name;
-
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
-
     @Column(name = "phone_number")
     private String phone_number;
 
-    @Column(name = "user_password")
-    private String user_password;
+    @Column(name = "roles", nullable = false)
+    private String Roles;
 
-    @Column(name = "user_role")
-    private String user_role;
+    @ToString.Exclude
+    @Column(name = "password", nullable = false, columnDefinition = "text")
+    private String password;
 
     @Column(name = "active")
     private boolean active;
