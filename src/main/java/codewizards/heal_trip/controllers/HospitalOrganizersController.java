@@ -1,8 +1,12 @@
 package codewizards.heal_trip.controllers;
 
+import codewizards.heal_trip.business.IEmailService;
 import codewizards.heal_trip.business.IHospitalOrganizerService;
 import codewizards.heal_trip.entities.HospitalOrganizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,12 +15,14 @@ import java.util.List;
 @RequestMapping("/hospitalOrganizer")
 public class HospitalOrganizersController {
 
-    IHospitalOrganizerService hospitalOrganizerService;
+    private IHospitalOrganizerService hospitalOrganizerService;
+    private IEmailService emailService;
 
     @Autowired
-    public HospitalOrganizersController(IHospitalOrganizerService hospitalOrganizerService) {
+    public HospitalOrganizersController(IHospitalOrganizerService hospitalOrganizerService, IEmailService emailService) {
         super();
         this.hospitalOrganizerService = hospitalOrganizerService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/getAll")
@@ -30,8 +36,15 @@ public class HospitalOrganizersController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody HospitalOrganizer hospitalOrganizer) {
-        this.hospitalOrganizerService.add(hospitalOrganizer);
+    public ResponseEntity<String> add(@RequestBody HospitalOrganizer hospitalOrganizer) {
+        try {
+            emailService.sendWelcomeEmail(hospitalOrganizer.getEmail(), hospitalOrganizer.getFirst_name());
+            hospitalOrganizer.setPassword(new BCryptPasswordEncoder().encode(hospitalOrganizer.getPassword()));
+            Integer hospitalOrganizerId = hospitalOrganizerService.add(hospitalOrganizer);
+            return new ResponseEntity<>("Hospital Organizer with id " + hospitalOrganizerId + " has been registered. Email has ben sent to " + hospitalOrganizer.getEmail(), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/get")

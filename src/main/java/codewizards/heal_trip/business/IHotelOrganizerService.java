@@ -7,7 +7,7 @@ import java.util.List;
 public interface IHotelOrganizerService {
     List<HotelOrganizer> getAll();
     List<HotelOrganizer> getAll(int pageNo, int pageSize);
-    void add(HotelOrganizer hotelOrganizer);
+    Integer add(HotelOrganizer hotelOrganizer);
     HotelOrganizer getById(int id);
     void deleteById(int id);
     void update(HotelOrganizer hotelOrganizer);
