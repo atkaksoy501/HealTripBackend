@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/hotelOrganizer")
+@CrossOrigin
 public class HotelOrganizersController {
 
     private IHotelOrganizerService hotelOrganizerService;
