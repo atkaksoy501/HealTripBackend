@@ -1,6 +1,7 @@
 package codewizards.heal_trip.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,11 +39,11 @@ public class Hotel {
 //    @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL)
 //    private HotelOrganizer organizer;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "hotel")
     private List<Booking> bookings;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "hotel")
     private List<HotelImage> hotelImages;
 }

@@ -34,19 +34,23 @@ public class Booking {
     
     @Column(name = "status")
     private String status;
-    
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
-    
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
-    
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
-    
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
