@@ -28,4 +28,8 @@ public class Retreat {
     @Column(name = "description")
     private String description;
 
+    @OneToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private RetreatImage image;
+
 }

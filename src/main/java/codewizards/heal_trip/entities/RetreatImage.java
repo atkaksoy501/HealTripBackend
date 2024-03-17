@@ -20,7 +20,4 @@ public class RetreatImage {
     @Column(name = "image")
     private byte[] image;
 
-    @OneToOne
-    @JoinColumn(name = "retreat_id", referencedColumnName = "id")
-    private Retreat retreat;
 }
