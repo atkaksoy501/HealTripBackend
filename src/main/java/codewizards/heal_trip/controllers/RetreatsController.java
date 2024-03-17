@@ -20,7 +20,7 @@ public class RetreatsController {
         this.retreatService = retreatService;
     }
 
-    @GetMapping(value = "/getById/{retreat_id}")
+    @GetMapping(value = "/get/{retreat_id}")
     public ResponseEntity<Retreat> getRetreatById(@PathVariable int retreat_id) {
         Retreat retreat = retreatService.getRetreatById(retreat_id);
         if (retreat == null)

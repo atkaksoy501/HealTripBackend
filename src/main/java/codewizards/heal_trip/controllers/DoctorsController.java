@@ -18,7 +18,7 @@ public class DoctorsController {
         this.doctorService = doctorService;
     }
 
-    @GetMapping(value="/getDoctorById/{doctor_id}")
+    @GetMapping(value="/get/{doctor_id}")
     public ResponseEntity<Doctor> getDoctorById(@PathVariable int doctor_id) {
         Doctor doctor = doctorService.getDoctorById(doctor_id);
         if (doctor == null) {
@@ -26,11 +26,11 @@ public class DoctorsController {
         }
         else
             return new ResponseEntity<>(doctor, HttpStatus.OK);}
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/add")
     public ResponseEntity<Doctor> registerDoctor(@RequestBody Doctor doctor) {
         return new ResponseEntity<>(doctorService.registerDoctor(doctor), HttpStatus.OK);
     }
-    @DeleteMapping(value = "/deleteById/{doctor_id}")
+    @DeleteMapping(value = "/delete/{doctor_id}")
     public ResponseEntity<String> deleteDoctor(@PathVariable int doctor_id) {
         boolean isDoctorActive = doctorService.deleteDoctor(doctor_id);
         if (!isDoctorActive)
@@ -38,8 +38,8 @@ public class DoctorsController {
         else
             return new ResponseEntity<>("Doctor with id " + doctor_id + " does not exist", HttpStatus.NOT_FOUND);
     }
-    @PutMapping("/update")
-    public Doctor updateDoctor(@RequestBody Doctor newDoctor){
+    @PutMapping("/update/{doctor_id}")
+    public Doctor updateDoctor(@RequestBody Doctor newDoctor, @PathVariable int doctorId){
         return new ResponseEntity<>(doctorService.updateDoctor(newDoctor), HttpStatus.OK).getBody();
     }
 }
