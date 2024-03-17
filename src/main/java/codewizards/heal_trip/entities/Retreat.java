@@ -21,8 +21,8 @@ public class Retreat {
     @Column(name = "retreat_name")
     private String retreat_name;
 
-    @OneToOne
-    @JoinColumn(name = "department_id")
+    @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
     @Column(name = "description")
