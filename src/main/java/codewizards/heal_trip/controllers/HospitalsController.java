@@ -1,7 +1,6 @@
 package codewizards.heal_trip.controllers;
 
 import codewizards.heal_trip.business.HospitalService;
-import codewizards.heal_trip.entities.Doctor;
 import codewizards.heal_trip.entities.Hospital;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,11 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/hospital")
-public class HospitalController {
+@CrossOrigin
+public class HospitalsController {
     private HospitalService hospitalService;
 
     @Autowired
-    public HospitalController(HospitalService hospitalService) {
+    public HospitalsController(HospitalService hospitalService) {
         super();
         this.hospitalService = hospitalService;
     }

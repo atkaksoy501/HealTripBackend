@@ -9,12 +9,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/hotel")
-public class HotelController {
+@CrossOrigin
+public class HotelsController {
 
     private IHotelService hotelService;
 
     @Autowired
-    public HotelController(IHotelService hotelService) {
+    public HotelsController(IHotelService hotelService) {
         super();
         this.hotelService = hotelService;
     }
