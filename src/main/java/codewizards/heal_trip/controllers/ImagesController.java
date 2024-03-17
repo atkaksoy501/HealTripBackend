@@ -4,6 +4,7 @@ import codewizards.heal_trip.business.IImageService;
 import codewizards.heal_trip.business.ImageService;
 import codewizards.heal_trip.entities.HospitalImage;
 import codewizards.heal_trip.entities.HotelImage;
+import codewizards.heal_trip.entities.RetreatImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,15 @@ public class ImagesController {
             return new ResponseEntity<>(hotelImage, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/retreat/getById/{image_id}")
+    public ResponseEntity<RetreatImage> getRetreatImageById(@PathVariable int image_id) {
+        RetreatImage retreatImage = imageService.getRetreatImageById(image_id);
+        if (retreatImage == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(retreatImage, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/hotel/save")
     public ResponseEntity<HotelImage> saveHotelImage(@RequestBody HotelImage hotelImage) {
         imageService.saveHotelImage(hotelImage);
@@ -49,6 +59,12 @@ public class ImagesController {
         return new ResponseEntity<>(hospitalImage, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/retreat/save")
+    public ResponseEntity<RetreatImage> saveRetreatImage(@RequestBody RetreatImage retreatImage) {
+        imageService.saveRetreatImage(retreatImage);
+        return new ResponseEntity<>(retreatImage, HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "/hotel/deleteById/{image_id}")
     public ResponseEntity<String> deleteHotelImage(@PathVariable int image_id) {
         imageService.deleteHotelImage(image_id);
@@ -59,6 +75,12 @@ public class ImagesController {
     public ResponseEntity<String> deleteHospitalImage(@PathVariable int image_id) {
         imageService.deleteHotelImage(image_id);
         return new ResponseEntity<>("Hospital Image with id " + image_id + " has been deleted", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/retreat/deleteById/{image_id}")
+    public ResponseEntity<String> deleteRetreatImage(@PathVariable int image_id) {
+        imageService.deleteRetreatImage(image_id);
+        return new ResponseEntity<>("Retreat Image with id " + image_id + " has been deleted", HttpStatus.OK);
     }
 
     //@GetMapping(value = "/hotel/getByHotelId/{hotel_id}")

@@ -411,6 +411,28 @@ public class TestDataCreator {
 
     @Test
     @Order(14)
+    void createRetreatImage() throws Exception {
+        for (int i = 1; i <= 10; i++) {
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/" + i + ".jpeg"));
+
+            RetreatImage retreatImage = new RetreatImage();
+            retreatImage.setImage(fileContent);
+            retreatImage.setRetreat(retreatService.getRetreatById(i));
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String retreatImageJson = objectMapper.writeValueAsString(retreatImage);
+
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
+                    .headers(createHeader())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(retreatImageJson));
+
+            result.andExpect(status().isOk());
+        }
+    }
+
+    @Test
+    @Order(15)
     void createFeedback() throws Exception {
         List<String> comments = List.of("Mükemmel", "Harika", "Çok iyi", "İyi", "Orta", "Kötü", "Çok kötü", "Berbat",
                 "Rezalet", "Felaket");
@@ -434,7 +456,7 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(15)
+    @Order(16)
     void createBooking() throws Exception {
         for (int i = 0; i < 10; i++) {
             Booking booking = new Booking();
