@@ -8,10 +8,11 @@ import codewizards.heal_trip.entities.Department;
 
 @RestController
 @RequestMapping("/department")
-public class DepartmentController {
+@CrossOrigin
+public class DepartmentsController {
     private IDepartmentService departmentService;
     @Autowired
-    public DepartmentController(IDepartmentService departmentService) {
+    public DepartmentsController(IDepartmentService departmentService) {
         this.departmentService = departmentService;
     }
     
