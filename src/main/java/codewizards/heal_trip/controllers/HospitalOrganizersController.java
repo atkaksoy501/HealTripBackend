@@ -48,8 +48,8 @@ public class HospitalOrganizersController {
         }
     }
 
-    @GetMapping("/get")
-    public HospitalOrganizer getById(@RequestParam int id) {
+    @GetMapping("/get/{id}")
+    public HospitalOrganizer getById(@PathVariable int id) {
         return this.hospitalOrganizerService.getById(id);
     }
 
@@ -58,8 +58,8 @@ public class HospitalOrganizersController {
         this.hospitalOrganizerService.deleteById(id);
     }
 
-    @PutMapping("/update")
-    public void update(@RequestBody HospitalOrganizer hospitalOrganizer) {
+    @PutMapping("/update/{id}")
+    public void update(@RequestBody HospitalOrganizer hospitalOrganizer, @PathVariable int hospitalOrganizerId) {
         this.hospitalOrganizerService.update(hospitalOrganizer);
     }
 }
