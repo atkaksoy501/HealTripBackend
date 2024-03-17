@@ -1,6 +1,8 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -34,14 +36,16 @@ public class Doctor {
     @Column(name = "active")
     private boolean active;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "doctor")
     private List<Booking> bookings;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
