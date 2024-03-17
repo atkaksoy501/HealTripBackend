@@ -1,7 +1,6 @@
 package codewizards.heal_trip.controllers;
 
 import codewizards.heal_trip.business.FeedbackService;
-import codewizards.heal_trip.entities.Doctor;
 import codewizards.heal_trip.entities.Feedback;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/feedback")
-public class FeedbackController {
+@CrossOrigin
+public class FeedbacksController {
 
     private FeedbackService feedbackService;
 
     @Autowired
-    public FeedbackController(FeedbackService feedbackService) {
+    public FeedbacksController(FeedbackService feedbackService) {
         super();
         this.feedbackService = feedbackService;
     }

@@ -11,12 +11,13 @@ import codewizards.heal_trip.entities.*;
 
 @RestController
 @RequestMapping("/booking")
-public class BookingController {
+@CrossOrigin
+public class BookingsController {
     private IBookingService bookingService;
     private IEmailService emailService;
     
     @Autowired
-    public BookingController(IBookingService bookingService, IEmailService emailService){
+    public BookingsController(IBookingService bookingService, IEmailService emailService){
         this.bookingService = bookingService;
         this.emailService = emailService;
     }
