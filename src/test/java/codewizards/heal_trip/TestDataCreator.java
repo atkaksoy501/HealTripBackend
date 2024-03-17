@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.MediaType;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.NoSuchFileException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -136,7 +137,7 @@ public class TestDataCreator {
             objectMapper.registerModule(new JavaTimeModule());
             String patientJson = objectMapper.writeValueAsString(patient);
 
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/patient/register")
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/patient/add")
                     .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(patientJson));
@@ -270,7 +271,7 @@ public class TestDataCreator {
             ObjectMapper objectMapper = new ObjectMapper();
             String hospitalJson = objectMapper.writeValueAsString(hospital);
 
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/register")
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/add")
                     .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(hospitalJson));
@@ -334,10 +335,10 @@ public class TestDataCreator {
     @Test
     @Order(11)
     void createDepartment() throws Exception {
-        List<String> names = List.of("Cardiology", "Dermatology", "Endocrinology", "Gastroenterology", "Hematology",
-                "Infectious Disease", "Nephrology", "Neurology", "Oncology", "Pulmonology");
+        List<String> names = List.of("Aesthetic and Plastic Surgery", "Hair Treatments", "Dental Treatments", "Metabolic Surgery",
+                "Eye Diseases");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Department department = new Department();
             department.setDepartmentName(names.get(i));
             department.setHospital(hospitalService.getHospitalById(i +1));
@@ -374,7 +375,7 @@ public class TestDataCreator {
             ObjectMapper objectMapper = new ObjectMapper();
             String doctorJson = objectMapper.writeValueAsString(doctor);
 
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/register")
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/add")
                     .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(doctorJson));
@@ -386,50 +387,145 @@ public class TestDataCreator {
     @Test
     @Order(13)
     void createRetreat() throws Exception {
-        List<String> names = List.of("Diş Dolgusu", "Diş Beyazlatma", "Diş Çekimi", "Kanal Tedavisi", "Ortodonti",
-                "Periodontoloji", "Pedodonti", "Ağız ve Diş Cerrahisi", "Endodonti", "Protez");
+        List<String> aesthetic = List.of("Nose", "Breast", "Body", "Face", "Genital");
+        List<String> hair = List.of("FUE Hair Transplant", "DHI Hair Transplant", "Afro Hair Transplant", "Beard Transplant", "Eyebrow Transplant");
+        List<String> dental = List.of("Dental Crown", "Dental Bridge", "Teeth Whitening", "Tooth Extraction", "Dental Implant");
+        List<String> metabolic = List.of("Gastric Bypass", "Gastric Sleeve", "Gastric Balloon");
+        List<String> eye = List.of("Lasik Eye Surgery");
 
-        for (int i = 0; i < 10; i++) {
-            Retreat retreat = new Retreat();
-            retreat.setRetreat_name(names.get(i));
-            retreat.setDescription(names.get(i));
+        List<List<String>> retreats = List.of(aesthetic, hair, dental, metabolic, eye);
 
-            Department department = departmentService.getById(i + 1);
-            retreat.setDepartment(department);
+        for (int i = 0; i < retreats.size(); i++) {
+            for (int j = 0; j < retreats.get(i).size(); j++) {
+                Retreat retreat = new Retreat();
+                retreat.setRetreat_name(retreats.get(i).get(j));
+                retreat.setDescription(retreats.get(i).get(j));
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            String retreatJson = objectMapper.writeValueAsString(retreat);
+                Department department = departmentService.getById(i + 1);
+                retreat.setDepartment(department);
 
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/retreat/add")
-                    .headers(createHeader())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(retreatJson));
+                ObjectMapper objectMapper = new ObjectMapper();
+                String retreatJson = objectMapper.writeValueAsString(retreat);
 
-            result.andExpect(status().isOk());
+                ResultActions result = mockMvc.perform(post(BASE_URL + "/retreat/add")
+                        .headers(createHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(retreatJson));
+
+                result.andExpect(status().isOk());
+            }
         }
     }
 
     @Test
     @Order(14)
-    void createRetreatImage() throws Exception {
-        for (int i = 1; i <= 10; i++) {
-            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/" + i + ".jpeg"));
-
-            RetreatImage retreatImage = new RetreatImage();
-            retreatImage.setImage(fileContent);
-            retreatImage.setRetreat(retreatService.getRetreatById(i));
-
+    void createRetreatImage() throws Exception{
+        try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String retreatImageJson = objectMapper.writeValueAsString(retreatImage);
+            for (int i = 1; i <= 5; i++) {
+                byte[] aestheticFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/aesthetic/" + (i) + ".jpg"));
+                byte[] hairFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/hair/" + (i) + ".jpg"));
+                byte[] dentalFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/dental/" + (i) + ".jpg"));
 
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
-                    .headers(createHeader())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(retreatImageJson));
+                if (i <= 3) {
+                    byte[] metabolicFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/metabolic/" + (i) + ".jpg"));
+                    RetreatImage metabolicRetreatImage = new RetreatImage();
+                    metabolicRetreatImage.setImage(metabolicFileContent);
+                    metabolicRetreatImage.setRetreat(retreatService.getRetreatById(i + 15));
+                    String metabolicRetreatImageJson = objectMapper.writeValueAsString(metabolicRetreatImage);
 
-            result.andExpect(status().isOk());
-        }
+                    ResultActions metabolicResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
+                            .headers(createHeader())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(metabolicRetreatImageJson));
+
+                    metabolicResult.andExpect(status().isOk());
+                }
+
+                if (i == 1) {
+                    byte[] eyeFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/eye/" + (i) + ".jpg"));
+                    RetreatImage eyeRetreatImage = new RetreatImage();
+                    eyeRetreatImage.setImage(eyeFileContent);
+                    eyeRetreatImage.setRetreat(retreatService.getRetreatById(i + 18));
+                    String eyeRetreatImageJson = objectMapper.writeValueAsString(eyeRetreatImage);
+
+                    ResultActions eyeResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
+                            .headers(createHeader())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(eyeRetreatImageJson));
+
+                    eyeResult.andExpect(status().isOk());
+                }
+
+                RetreatImage aestheticRetreatImage = new RetreatImage();
+                aestheticRetreatImage.setImage(aestheticFileContent);
+                aestheticRetreatImage.setRetreat(retreatService.getRetreatById(i));
+
+                RetreatImage hairRetreatImage = new RetreatImage();
+                hairRetreatImage.setImage(hairFileContent);
+                hairRetreatImage.setRetreat(retreatService.getRetreatById(i + 5));
+
+                RetreatImage dentalRetreatImage = new RetreatImage();
+                dentalRetreatImage.setImage(dentalFileContent);
+                dentalRetreatImage.setRetreat(retreatService.getRetreatById(i + 10));
+
+
+                String aestheticRetreatImageJson = objectMapper.writeValueAsString(aestheticRetreatImage);
+                String hairRetreatImageJson = objectMapper.writeValueAsString(hairRetreatImage);
+                String dentalRetreatImageJson = objectMapper.writeValueAsString(dentalRetreatImage);
+
+
+                ResultActions aestheticResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
+                        .headers(createHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(aestheticRetreatImageJson));
+
+                ResultActions hairResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
+                        .headers(createHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(hairRetreatImageJson));
+
+                ResultActions dentalResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
+                        .headers(createHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dentalRetreatImageJson));
+
+
+                aestheticResult.andExpect(status().isOk());
+                hairResult.andExpect(status().isOk());
+                dentalResult.andExpect(status().isOk());
+            }
+        } catch (NoSuchFileException ignored) {}
     }
+//        for (int i = 1; i <= 5; i++) {
+//            for (int j = 1; j <= 5; j++) {
+//                String path = "src/test/retreatImages/";
+//                switch (j) {
+//                    case 1 -> path += "aesthetic/";
+//                    case 2 -> path += "hair/";
+//                    case 3 -> path += "dental/";
+//                    case 4 -> path += "metabolic/";
+//                    case 5 -> path += "eye/";
+//                }
+//                try {
+//                    byte[] fileContent = FileUtils.readFileToByteArray(new File(path + i + ".jpg"));
+//                    RetreatImage retreatImage = new RetreatImage();
+//                    retreatImage.setImage(fileContent);
+//                    retreatImage.setRetreat(retreatService.getRetreatById(i*j));
+//
+//                    ObjectMapper objectMapper = new ObjectMapper();
+//                    String retreatImageJson = objectMapper.writeValueAsString(retreatImage);
+//
+//                    ResultActions result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
+//                            .headers(createHeader())
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .content(retreatImageJson));
+//
+//                    result.andExpect(status().isOk());
+//                } catch (Exception ignored) {}
+//            }
+//        }
+
 
     @Test
     @Order(15)
