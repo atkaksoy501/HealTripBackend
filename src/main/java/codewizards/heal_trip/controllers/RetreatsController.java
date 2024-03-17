@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/retreat")
-public class RetreatController {
+@CrossOrigin
+public class RetreatsController {
 
     private IRetreatService retreatService;
 
     @Autowired
-    public RetreatController(IRetreatService retreatService) {
+    public RetreatsController(IRetreatService retreatService) {
         super();
         this.retreatService = retreatService;
     }

@@ -5,18 +5,20 @@ import codewizards.heal_trip.entities.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/email")
-public class EmailController {
+@CrossOrigin
+public class EmailsController {
 
     private IEmailService emailService;
 
     @Autowired
-    public EmailController(IEmailService emailService) {
+    public EmailsController(IEmailService emailService) {
         super();
         this.emailService = emailService;
     }

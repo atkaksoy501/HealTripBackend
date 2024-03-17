@@ -8,10 +8,11 @@ import codewizards.heal_trip.entities.*;
 
 @RestController
 @RequestMapping("/address")
-public class AddressController {
+@CrossOrigin
+public class AddressesController {
     private IAddressService addressService;
     @Autowired
-    public AddressController(IAddressService addressService) {
+    public AddressesController(IAddressService addressService) {
         this.addressService = addressService;
     }
     

@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/image")
-public class ImageController {
+@CrossOrigin
+public class ImagesController {
     private IImageService imageService;
 
     @Autowired
-    public ImageController(ImageService imageService){
+    public ImagesController(ImageService imageService){
         this.imageService = imageService ;
     }
     @GetMapping(value = "/hotel/getById/{image_id}")
