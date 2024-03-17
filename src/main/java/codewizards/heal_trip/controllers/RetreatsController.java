@@ -38,7 +38,7 @@ public class RetreatsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PatchMapping(value = "/update/{retreat_id}")
+    @PutMapping(value = "/update/{retreat_id}")
     public ResponseEntity<Retreat> updateRetreat(@RequestBody Retreat retreat, @PathVariable int retreat_id) {
         return new ResponseEntity<>(retreatService.updateRetreat(retreat, retreat_id), HttpStatus.OK);
     }
