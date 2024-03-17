@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/patient")
-public class PatientController {
+@CrossOrigin
+public class PatientsController {
 
     private IPatientService patientService;
     private IEmailService emailService;
 
     @Autowired
-    public PatientController(IPatientService patientService, IEmailService emailService) {
+    public PatientsController(IPatientService patientService, IEmailService emailService) {
         super();
         this.patientService = patientService;
         this.emailService = emailService;

@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/user")
-public class UserController {
+@CrossOrigin
+public class UsersController {
     private IUserService userService;
 
     @Autowired
-    public UserController(IUserService userService) {
+    public UsersController(IUserService userService) {
         super();
         this.userService = userService;
     }
