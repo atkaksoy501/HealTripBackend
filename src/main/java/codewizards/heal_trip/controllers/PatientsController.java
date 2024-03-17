@@ -45,7 +45,7 @@ public class PatientsController {
         }
     }
 
-    @PatchMapping(value = "/update/{patient_id}")
+    @PutMapping(value = "/update/{patient_id}")
     public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient, @PathVariable int patient_id) {
         return new ResponseEntity<>(patientService.updatePatient(patient_id, patient), HttpStatus.OK);
     }
