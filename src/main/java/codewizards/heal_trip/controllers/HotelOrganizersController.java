@@ -48,18 +48,18 @@ public class HotelOrganizersController {
         }
     }
 
-    @GetMapping("/get")
-    public HotelOrganizer getById(@RequestParam int id) {
+    @GetMapping("/get/{id}")
+    public HotelOrganizer getById(@PathVariable int id) {
         return this.hotelOrganizerService.getById(id);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteById(@RequestParam int id) {
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable int id) {
         this.hotelOrganizerService.deleteById(id);
     }
 
-    @PutMapping("/update")
-    public void update(@RequestBody HotelOrganizer hotelOrganizer) {
+    @PutMapping("/update/{id}")
+    public void update(@RequestBody HotelOrganizer hotelOrganizer, @PathVariable int hotelOrganizerId) {
         this.hotelOrganizerService.update(hotelOrganizer);
     }
 }
