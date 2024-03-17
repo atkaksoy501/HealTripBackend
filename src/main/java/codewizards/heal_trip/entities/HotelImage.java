@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class HotelImage{
     //@Column(name = "hotel_id")
     //private int hotel_id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
