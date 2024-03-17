@@ -24,7 +24,7 @@ public class PatientsController {
         this.emailService = emailService;
     }
 
-    @GetMapping(value = "/getById/{patient_id}")
+    @GetMapping(value = "/get/{patient_id}")
     public ResponseEntity<Patient> getPatientById(@PathVariable int patient_id) {
         Patient patient = patientService.getPatientById(patient_id);
         if (patient == null)
@@ -33,7 +33,7 @@ public class PatientsController {
             return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/add")
     public ResponseEntity<String> registerPatient(@RequestBody Patient patient) throws IllegalArgumentException {
         try {
             emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
@@ -50,7 +50,7 @@ public class PatientsController {
         return new ResponseEntity<>(patientService.updatePatient(patient_id, patient), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/deleteById/{patient_id}")
+    @DeleteMapping(value = "/delete/{patient_id}")
     public ResponseEntity<String> deletePatient(@PathVariable int patient_id) {
         boolean isPatientActive = patientService.deletePatient(patient_id);
         if (!isPatientActive)

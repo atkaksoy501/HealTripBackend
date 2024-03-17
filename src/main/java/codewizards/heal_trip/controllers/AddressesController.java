@@ -26,18 +26,18 @@ public class AddressesController {
         return this.addressService.add(address);
     }
     
-    @GetMapping("/getById")
-    public Address getById(@RequestParam int id){
+    @GetMapping("/get/{id}")
+    public Address getById(@PathVariable int id){
         return this.addressService.getById(id);
     }
     
-    @DeleteMapping("/deleteById")
-    public void deleteById(@RequestParam int id){
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable int id){
         this.addressService.deleteById(id);
     }
     
-    @PutMapping("/update")
-    public Address update(@RequestBody Address address){
+    @PutMapping("/update/{id}")
+    public Address update(@RequestBody Address address, @PathVariable int addressId){
         return this.addressService.update(address);
     }
 }

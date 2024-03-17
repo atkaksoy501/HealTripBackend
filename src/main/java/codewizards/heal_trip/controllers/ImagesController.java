@@ -20,7 +20,7 @@ public class ImagesController {
     public ImagesController(ImageService imageService){
         this.imageService = imageService ;
     }
-    @GetMapping(value = "/hotel/getById/{image_id}")
+    @GetMapping(value = "/hotel/get/{image_id}")
     public ResponseEntity<HotelImage> getHotelImageById(@PathVariable int image_id) {
         HotelImage hotelImage = imageService.getHotelImageById(image_id);
         if (hotelImage == null)
@@ -29,7 +29,7 @@ public class ImagesController {
             return new ResponseEntity<>(hotelImage, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/hospital/getById/{image_id}")
+    @GetMapping(value = "/hospital/get/{image_id}")
     public ResponseEntity<HotelImage> getHospitalImageById(@PathVariable int image_id) {
         HotelImage hotelImage = imageService.getHotelImageById(image_id);
         if (hotelImage == null)
@@ -38,7 +38,7 @@ public class ImagesController {
             return new ResponseEntity<>(hotelImage, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/retreat/getById/{image_id}")
+    @GetMapping(value = "/retreat/get/{image_id}")
     public ResponseEntity<RetreatImage> getRetreatImageById(@PathVariable int image_id) {
         RetreatImage retreatImage = imageService.getRetreatImageById(image_id);
         if (retreatImage == null)
@@ -65,19 +65,19 @@ public class ImagesController {
         return new ResponseEntity<>(retreatImage, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/hotel/deleteById/{image_id}")
+    @DeleteMapping(value = "/hotel/delete/{image_id}")
     public ResponseEntity<String> deleteHotelImage(@PathVariable int image_id) {
         imageService.deleteHotelImage(image_id);
         return new ResponseEntity<>("Hotel Image with id " + image_id + " has been deleted", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/hospital/deleteById/{image_id}")
+    @DeleteMapping(value = "/hospital/delete/{image_id}")
     public ResponseEntity<String> deleteHospitalImage(@PathVariable int image_id) {
         imageService.deleteHotelImage(image_id);
         return new ResponseEntity<>("Hospital Image with id " + image_id + " has been deleted", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/retreat/deleteById/{image_id}")
+    @DeleteMapping(value = "/retreat/delete/{image_id}")
     public ResponseEntity<String> deleteRetreatImage(@PathVariable int image_id) {
         imageService.deleteRetreatImage(image_id);
         return new ResponseEntity<>("Retreat Image with id " + image_id + " has been deleted", HttpStatus.OK);

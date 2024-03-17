@@ -38,18 +38,18 @@ public class BookingsController {
         }
     }
     
-    @GetMapping("/getById")
-    public Booking getById(@RequestParam int id){
+    @GetMapping("/get/{id}")
+    public Booking getById(@PathVariable int id){
         return this.bookingService.getById(id);
     }
     
-    @DeleteMapping("/deleteById")
-    public void deleteById(@RequestParam int id){
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable int id){
         this.bookingService.deleteById(id);
     }
     
-    @PutMapping("/update")
-    public Booking update(@RequestBody Booking booking){
+    @PutMapping("/update/{id}")
+    public Booking update(@RequestBody Booking booking, @PathVariable int bookingId){
         return this.bookingService.update(booking);
     }
 }
