@@ -27,4 +27,5 @@ public class Retreat {
 
     @Column(name = "description")
     private String description;
+
 }
