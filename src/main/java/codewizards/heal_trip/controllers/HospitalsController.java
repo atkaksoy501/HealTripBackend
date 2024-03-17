@@ -19,7 +19,7 @@ public class HospitalsController {
         this.hospitalService = hospitalService;
     }
 
-    @GetMapping(value="/getHospitalById/{hospital_id}")
+    @GetMapping(value="/get/{hospital_id}")
     public ResponseEntity<Hospital> getHospitalById(@PathVariable int hospital_id) {
         Hospital hospital = hospitalService.getHospitalById(hospital_id);
         if (hospital == null) {
@@ -28,12 +28,12 @@ public class HospitalsController {
         else
             return new ResponseEntity<>(hospital, HttpStatus.OK);
     }
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/add")
     public ResponseEntity<Hospital> registerHospital(@RequestBody Hospital hospital) {
         return new ResponseEntity<>(hospitalService.registerHospital(hospital), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/deleteById/{hospital_id}")
+    @DeleteMapping(value = "/delete/{hospital_id}")
     public ResponseEntity<String> deleteHospital(@PathVariable int hospital_id) {
         boolean isHospitalActive = hospitalService.deleteHospital(hospital_id);
         if (!isHospitalActive)
@@ -41,8 +41,8 @@ public class HospitalsController {
         else
             return new ResponseEntity<>("Hospital with id " + hospital_id + " does not exist", HttpStatus.NOT_FOUND);
     }
-    @PutMapping("/update")
-    public Hospital updateHospital(@RequestBody Hospital newHospital){
+    @PutMapping("/update/{hospital_id}")
+    public Hospital updateHospital(@RequestBody Hospital newHospital, @PathVariable int hospitalId){
         return new ResponseEntity<>(hospitalService.updateHospital(newHospital), HttpStatus.OK).getBody();
     }
 }

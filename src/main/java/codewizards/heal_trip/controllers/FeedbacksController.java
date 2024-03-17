@@ -20,7 +20,7 @@ public class FeedbacksController {
         this.feedbackService = feedbackService;
     }
 
-    @GetMapping(value="/getFeedbackById/{feedback_id}")
+    @GetMapping(value="/get/{feedback_id}")
     public ResponseEntity<Feedback> getFeedbackById(@PathVariable int feedback_id) {
         Feedback feedback = feedbackService.getFeedbackById(feedback_id);
         if (feedback == null) {
@@ -34,14 +34,14 @@ public class FeedbacksController {
         return new ResponseEntity<>(feedbackService.addFeedback(feedback), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/deleteFeedback/{feedback_id}")
+    @DeleteMapping(value = "/delete/{feedback_id}")
     public ResponseEntity<String> deleteFeedback(@PathVariable int feedback_id) {
         feedbackService.deleteFeedback(feedback_id);
         return new ResponseEntity<>("Feedback with id " + feedback_id + " has been deleted", HttpStatus.OK);
     }
 
-    @PutMapping("/updateFeedback")
-    public ResponseEntity<Feedback> updateFeedback(@RequestBody Feedback newFeedback){
+    @PutMapping("/update/{feedback_id}")
+    public ResponseEntity<Feedback> updateFeedback(@RequestBody Feedback newFeedback, @PathVariable int feedbackId){
         return new ResponseEntity<>(feedbackService.updateFeedback(newFeedback), HttpStatus.OK);
     }
 }
