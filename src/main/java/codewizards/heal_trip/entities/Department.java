@@ -1,6 +1,8 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,15 +22,17 @@ public class Department {
     @Column(name = "department_name")
     private String departmentName;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "department")
     private List<Doctor> doctors;
 
-    @JsonIgnore
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "department")
     private List<Retreat> retreats;
 }
