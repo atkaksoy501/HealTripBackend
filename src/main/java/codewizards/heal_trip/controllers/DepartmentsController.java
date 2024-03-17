@@ -41,18 +41,18 @@ public class DepartmentsController {
         return this.departmentService.getByDepartmentName(departmentName);
     }
     
-    @GetMapping("/getById")
-    public Department getById(@RequestParam int id){
+    @GetMapping("/get/{id}")
+    public Department getById(@PathVariable int id){
         return this.departmentService.getById(id);
     }
     
-    @DeleteMapping("/deleteById")
-    public void deleteById(@RequestParam int id){
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable int id){
         this.departmentService.deleteById(id);
     }
     
-    @PutMapping("/update")
-    public Department update(@RequestBody Department department){
+    @PutMapping("/update/{id}")
+    public Department update(@RequestBody Department department, @PathVariable int departmentId){
         return this.departmentService.update(department);
     }
 }

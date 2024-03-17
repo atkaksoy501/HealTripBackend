@@ -40,18 +40,18 @@ public class HotelsController {
         return this.hotelService.add(hotel);
     }
 
-    @GetMapping("/get")
-    public Hotel getById(@RequestParam int id) {
+    @GetMapping("/get/{id}")
+    public Hotel getById(@PathVariable int id) {
         return this.hotelService.getById(id);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteById(@RequestParam int id) {
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable int id) {
         this.hotelService.deleteById(id);
     }
 
-    @PutMapping("/update")
-    public void update(@RequestBody Hotel hotel){
+    @PutMapping("/update/{id}")
+    public void update(@RequestBody Hotel hotel, @PathVariable int hotelId){
         this.hotelService.update(hotel);
     }
 }
