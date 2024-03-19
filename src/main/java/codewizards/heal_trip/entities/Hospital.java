@@ -1,7 +1,6 @@
 package codewizards.heal_trip.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -36,20 +35,20 @@ public class Hospital {
     @Column(name = "contact_phone")
     private String contactPhone;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "hospital")
-    private List<Department> departments;
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER)
+    private List<HospitalDepartment> departments;
 
-    @JsonManagedReference
+    @JsonBackReference(value = "hospital-booking")
     @OneToMany(mappedBy = "hospital")
     private List<Booking> bookings;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "hospital")
+//    @JsonManagedReference(value = "doctor-hospital")
+    @OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER)
     private List<Doctor> doctors;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "hospital")
+//    @JsonManagedReference(value = "hospitalImage-hospital")
+    @OneToMany(mappedBy = "hospital", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private List<HospitalImage> hospitalImages;
 
 }

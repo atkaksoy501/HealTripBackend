@@ -11,6 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "bookings")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Booking.class)
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,22 +39,23 @@ public class Booking {
     @Column(name = "status")
     private String status;
 
-    @JsonBackReference
+//    @JsonManagedReference(value = "patient-booking")
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
-    @JsonBackReference
+//    @JsonManagedReference(value = "hospital-booking")
     @ManyToOne
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 
-    @JsonBackReference
+//    @JsonManagedReference(value = "hotel-booking")
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
 
-    @JsonBackReference
+//    @JsonManagedReference(value = "doctor-booking")
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;

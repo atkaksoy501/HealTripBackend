@@ -14,7 +14,7 @@ public class Feedback {
     @Column(name = "id")
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
     private Booking booking;
 

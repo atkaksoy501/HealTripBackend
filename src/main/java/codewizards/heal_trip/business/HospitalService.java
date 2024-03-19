@@ -6,6 +6,8 @@ import codewizards.heal_trip.entities.Hospital;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class HospitalService implements IHospitalService{
     private HospitalDao hospitalDao;
@@ -38,5 +40,10 @@ public class HospitalService implements IHospitalService{
     @Override
     public Hospital updateHospital(Hospital hospital) {
         return hospitalDao.save(hospital);
+    }
+
+    //get all
+    public List<Hospital> getAllHospitals() {
+        return hospitalDao.findAll();
     }
 }
