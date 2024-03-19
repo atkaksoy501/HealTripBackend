@@ -18,6 +18,6 @@ public class HotelOrganizer extends User{
 //    private int hotelOrganizerId;
 
     @OneToOne
-    @JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
 }

@@ -1,8 +1,13 @@
 package codewizards.heal_trip.controllers;
 
 import codewizards.heal_trip.business.IHotelService;
+import codewizards.heal_trip.business.IImageService;
+import codewizards.heal_trip.entities.HospitalImage;
 import codewizards.heal_trip.entities.Hotel;
+import codewizards.heal_trip.entities.HotelImage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,11 +18,13 @@ import java.util.List;
 public class HotelsController {
 
     private IHotelService hotelService;
+    private IImageService imageService;
 
     @Autowired
-    public HotelsController(IHotelService hotelService) {
+    public HotelsController(IHotelService hotelService, IImageService imageService) {
         super();
         this.hotelService = hotelService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/getAll")
@@ -36,8 +43,15 @@ public class HotelsController {
     }
 
     @PostMapping("/add")
-    public int add(@RequestBody Hotel hotel) {
-        return this.hotelService.add(hotel);
+    public ResponseEntity<Hotel> add(@RequestBody Hotel hotel) {
+        List<HotelImage> hotelImages = hotel.getHotelImages();
+        if (hotelImages != null && !hotelImages.isEmpty()) { // todo: servis içinde yazılacak
+            for (HotelImage hotelImage : hotelImages) {
+                hotelImage.setHotel(hotel);
+                imageService.saveHotelImage(hotelImage);
+            }
+        }
+        return new ResponseEntity<>(this.hotelService.add(hotel), HttpStatus.OK);
     }
 
     @GetMapping("/get/{id}")
