@@ -1,8 +1,6 @@
 package codewizards.heal_trip.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -12,6 +10,10 @@ import java.util.List;
 @Table(name="doctors")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Doctor.class)
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,17 +38,18 @@ public class Doctor {
     @Column(name = "active")
     private boolean active;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "doctor")
+//    @JsonBackReference(value = "doctor-booking")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Booking> bookings;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 
-    @JsonBackReference
-    @ManyToOne
+//    @JsonManagedReference(value = "doctor-department")
+//    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "department_id")
     private Department department;
 }
