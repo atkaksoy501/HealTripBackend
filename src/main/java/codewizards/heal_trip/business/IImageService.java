@@ -4,10 +4,16 @@ import codewizards.heal_trip.entities.HospitalImage;
 import codewizards.heal_trip.entities.HotelImage;
 import codewizards.heal_trip.entities.RetreatImage;
 
+import java.util.List;
+
 public interface IImageService {
    HotelImage getHotelImageById(int image_id);
 
+   List<HotelImage> getAllHotelImages();
+
     HospitalImage getHospitalImageById(int image_id);
+
+    List<HospitalImage> getAllHospitalImages();
 
     RetreatImage getRetreatImageById(int image_id);
 

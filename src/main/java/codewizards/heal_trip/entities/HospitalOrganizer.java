@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class HospitalOrganizer extends User{
 
     @OneToOne
-    @JoinColumn(name = "hospital_id")
+    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 
 //    @OneToOne

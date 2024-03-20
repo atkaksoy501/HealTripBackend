@@ -2,9 +2,12 @@ package codewizards.heal_trip;
 
 import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.*;
+import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
 import codewizards.heal_trip.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.NoSuchFileException;
@@ -63,6 +67,12 @@ public class TestDataCreator {
 
     @Autowired
     private IImageService imageService;
+
+    @Autowired
+    private HospitalDepartmentDao hospitalDepartmentDao;
+
+    @Autowired
+    private EntityManager entityManager;
 
     private HttpHeaders createHeader() {
         // Create the Basic Auth header
@@ -122,7 +132,7 @@ public class TestDataCreator {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Patient patient = new Patient();
             patient.setFirst_name(names.get(i));
             patient.setLast_name(surnames.get(i));
@@ -160,7 +170,7 @@ public class TestDataCreator {
                 "Marriott Hotel", "Mayo Clinic Hospital", "Ritz-Carlton Hotel", "Cleveland Clinic Hospital", "Four Seasons Hotel",
                 "Massachusetts General Hospital");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Address address = new Address();
             address.setCity(cities.get(i));
             address.setCountry(countries.get(i));
@@ -185,12 +195,23 @@ public class TestDataCreator {
                 "Four Seasons Hotel", "Sheraton Hotel", "Radisson Hotel", "InterContinental Hotel", "Hyatt Hotel",
                 "Wyndham Hotel");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i <= 5; i++) {
+
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hotelImages/" + i + ".jpeg"));
+
+            HotelImage hotelImage = new HotelImage();
+            hotelImage.setImage(fileContent);
+
+
             Hotel hotel = new Hotel();
             hotel.setHotelName(names.get(i));
             hotel.setBedCapacity(100);
             hotel.setContactPhone("1234567890");
-            hotel.setAddress(addressService.getById(i + 1));
+            hotel.setAddress(addressService.getById(i));
+
+            List<HotelImage> hotelImages = new ArrayList<>();
+            hotelImages.add(hotelImage);
+            hotel.setHotelImages(hotelImages);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String hotelJson = objectMapper.writeValueAsString(hotel);
@@ -210,7 +231,7 @@ public class TestDataCreator {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             HotelOrganizer hotelOrganizer = new HotelOrganizer();
             hotelOrganizer.setFirst_name(names.get(i));
             hotelOrganizer.setLast_name(surnames.get(i));
@@ -233,10 +254,10 @@ public class TestDataCreator {
         }
     }
 
-    @Test
+//    @Test
     @Order(7)
     void createHotelImage() throws Exception {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 5; i++) {
             int hotelId = i;
             byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hotelImages/" + i + ".jpeg"));
 
@@ -256,20 +277,56 @@ public class TestDataCreator {
         }
     }
 
-    @Test
+//    @Test
     @Order(8)
+    void createHospitalImage() throws Exception {
+        for (int i = 1; i <= 5; i++) {
+            int hospitalId = i;
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hospitalImages/" + i + ".jpeg"));
+
+            HospitalImage hospitalImage = new HospitalImage();
+            hospitalImage.setImage(fileContent);
+            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
+
+            hospitalImage = entityManager.merge(hospitalImage);
+
+            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hospital/save")
+                    .headers(createHeader())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(hospitalImageJson));
+
+            result.andExpect(status().isOk());
+        }
+    }
+
+    @Test
+    @Order(9)
     void createHospital() throws Exception {
         List<String> names = Arrays.asList("Akdeniz University Hospital", "Johns Hopkins Hospital", "Mayo Clinic Hospital",
                 "Cleveland Clinic Hospital", "Massachusetts General Hospital", "Atakan Hospital", "Burak Hospital", "Onur Hospital",
                 "Sude Hospital", "Aziz Hospital");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i <= 5; i++) {
+
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hospitalImages/" + i + ".jpeg"));
+
+            HospitalImage hospitalImage = new HospitalImage();
+            hospitalImage.setImage(fileContent);
+
+
             Hospital hospital = new Hospital();
             hospital.setHospitalName(names.get(i));
             hospital.setBed_capacity(1000);
             hospital.setContactPhone("1234567890");
-            hospital.setAddress(addressService.getById(i + 1));
+            hospital.setAddress(addressService.getById(i));
             hospital.setActive(true);
+            hospital.setDoctors(doctorService.getAllDoctors());
+            List<HospitalImage> hospitalImages = new ArrayList<>();
+            hospitalImages.add(hospitalImage);
+            hospital.setHospitalImages(hospitalImages);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String hospitalJson = objectMapper.writeValueAsString(hospital);
@@ -284,12 +341,12 @@ public class TestDataCreator {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     void createHospitalOrganizer() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             HospitalOrganizer hospitalOrganizer = new HospitalOrganizer();
             hospitalOrganizer.setFirst_name(names.get(i));
             hospitalOrganizer.setLast_name(surnames.get(i));
@@ -312,39 +369,27 @@ public class TestDataCreator {
         }
     }
 
-    @Test
-    @Order(10)
-    void createHospitalImage() throws Exception {
-        for (int i = 1; i <= 10; i++) {
-            int hospitalId = i;
-            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hospitalImages/" + i + ".jpeg"));
 
-            HospitalImage hospitalImage = new HospitalImage();
-            hospitalImage.setImage(fileContent);
-            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
-
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hospital/save")
-                    .headers(createHeader())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(hospitalImageJson));
-
-            result.andExpect(status().isOk());
-        }
-    }
 
     @Test
     @Order(11)
     void createDepartment() throws Exception {
-        List<String> names = List.of("Aesthetic and Plastic Surgery", "Hair Treatments", "Dental Treatments", "Metabolic Surgery",
-                "Eye Diseases");
+        List<String> names = List.of("Aesthetic Surgery", "Hair Treatments", "Dental Treatments", "Metabolic Surgery", "Eye Diseases");
 
-        for (int i = 0; i < 5; i++) {
+        List<Hospital> hospitals = hospitalService.getAllHospitals();
+
+        for (int i = 0; i < names.size(); i++) {
             Department department = new Department();
             department.setDepartmentName(names.get(i));
-            department.setHospital(hospitalService.getHospitalById(i +1));
+
+            List<HospitalDepartment> hospitalDepartments = new ArrayList<>();
+            for (Hospital hospital : hospitals) {
+                HospitalDepartment hospitalDepartment = new HospitalDepartment();
+                hospitalDepartment.setHospital(hospital);
+                hospitalDepartment.setDepartment(department);
+                hospitalDepartments.add(hospitalDepartment);
+            }
+            department.setHospitals(hospitalDepartments);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String departmentJson = objectMapper.writeValueAsString(department);
@@ -364,7 +409,7 @@ public class TestDataCreator {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Doctor doctor = new Doctor();
             byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/doctorImages/" + (i + 1) + ".jpeg"));
             doctor.setDoctorImage(fileContent);
@@ -504,9 +549,9 @@ public class TestDataCreator {
         List<String> comments = List.of("Mükemmel", "Harika", "Çok iyi", "İyi", "Orta", "Kötü", "Çok kötü", "Berbat",
                 "Rezalet", "Felaket");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Feedback feedback = new Feedback();
-            feedback.setBooking(bookingService.getById(i + 1));
+//            feedback.setBooking(bookingService.getById(i + 1));
             feedback.setComment(comments.get(i));
             feedback.setRating(10 - i);
 
@@ -525,7 +570,7 @@ public class TestDataCreator {
     @Test
     @Order(16)
     void createBooking() throws Exception {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Booking booking = new Booking();
             booking.setBooking_date(LocalDate.now());
             booking.setHospital(hospitalService.getHospitalById(i + 1));
@@ -541,6 +586,7 @@ public class TestDataCreator {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
             String bookingJson = objectMapper.writeValueAsString(booking);
+            System.out.println(bookingJson);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/booking/add")
                     .headers(createHeader())

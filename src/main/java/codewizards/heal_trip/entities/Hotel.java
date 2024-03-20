@@ -1,7 +1,6 @@
 package codewizards.heal_trip.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +13,10 @@ import java.util.List;
 @Table(name="hotels")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "hotelId",
+        scope = Hotel.class)
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,11 +42,11 @@ public class Hotel {
 //    @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL)
 //    private HotelOrganizer organizer;
 
-    @JsonManagedReference
+    @JsonBackReference(value = "hotel-booking")
     @OneToMany(mappedBy = "hotel")
     private List<Booking> bookings;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "hotel")
+//    @JsonManagedReference(value = "hotelImage-hotel")
+    @OneToMany(mappedBy = "hotel", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private List<HotelImage> hotelImages;
 }
