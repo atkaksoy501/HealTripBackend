@@ -5,6 +5,8 @@ import codewizards.heal_trip.entities.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorService implements IDoctorService{
     private DoctorDao doctorDao;
@@ -36,5 +38,10 @@ public class DoctorService implements IDoctorService{
     @Override
     public Doctor updateDoctor(Doctor doctor) {
         return doctorDao.save(doctor);
+    }
+
+    @Override
+    public List<Doctor> getAllDoctors() {
+        return doctorDao.findAll();
     }
 }

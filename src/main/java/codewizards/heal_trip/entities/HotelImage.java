@@ -25,7 +25,7 @@ public class HotelImage{
     //private int hotel_id;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     private Hotel hotel;
 

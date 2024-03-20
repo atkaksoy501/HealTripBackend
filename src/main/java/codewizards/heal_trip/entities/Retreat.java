@@ -2,6 +2,7 @@ package codewizards.heal_trip.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -22,7 +23,8 @@ public class Retreat {
     @Column(name = "retreat_name")
     private String retreat_name;
 
-    @JsonBackReference
+//    @JsonManagedReference(value = "retreat-department")
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
