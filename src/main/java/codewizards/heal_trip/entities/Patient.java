@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -30,7 +31,7 @@ public class Patient extends User{
     @Column(name = "patient_weight")
     private int patient_weight;
 
-    @JsonManagedReference
+    @JsonBackReference(value = "patient-booking")
     @OneToMany(mappedBy = "patient")
     private List<Booking> bookings;
 }

@@ -26,7 +26,7 @@ public class BookingsController {
     public List<Booking> getAll() {
         return this.bookingService.getAll();
     }
-    
+
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestBody Booking booking) throws IllegalArgumentException{
         try {
