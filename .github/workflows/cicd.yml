@@ -3,7 +3,7 @@ name: Deploy App to Azure
 on:
   push:
     branches:
-      - dev
+      - dev_atakan
 
 
 jobs:
