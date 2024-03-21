@@ -2,6 +2,8 @@ package codewizards.heal_trip.entities;
 
 import java.time.LocalDate;
 import java.util.Date;
+
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +17,7 @@ import lombok.*;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id",
         scope = Booking.class)
-public class Booking {
+public class Booking extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

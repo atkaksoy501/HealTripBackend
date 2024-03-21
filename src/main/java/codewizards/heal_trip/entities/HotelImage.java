@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name="hotel_images")
 @Entity
-public class HotelImage{
+public class HotelImage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
