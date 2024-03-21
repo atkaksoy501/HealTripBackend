@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import java.util.List;
 @Table(name="hospitals")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hospital {
+public class Hospital extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

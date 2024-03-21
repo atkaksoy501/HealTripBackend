@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "hotelId",
         scope = Hotel.class)
-public class Hotel {
+public class Hotel extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")

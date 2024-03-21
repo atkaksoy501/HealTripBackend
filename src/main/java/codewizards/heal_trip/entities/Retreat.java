@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -14,7 +15,7 @@ import java.util.List;
 @Table(name="retreats")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Retreat {
+public class Retreat extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -32,7 +33,7 @@ public class Retreat {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private RetreatImage image;
 
