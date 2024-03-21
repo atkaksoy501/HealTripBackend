@@ -1,13 +1,12 @@
 package codewizards.heal_trip;
 
 import codewizards.heal_trip.DTO.UserDTO;
-import codewizards.heal_trip.business.*;
+import codewizards.heal_trip.business.abstracts.*;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
 import codewizards.heal_trip.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,7 +206,7 @@ public class TestDataCreator {
             hotel.setHotelName(names.get(i));
             hotel.setBedCapacity(100);
             hotel.setContactPhone("1234567890");
-            hotel.setAddress(addressService.getById(i));
+//            hotel.setAddress(addressService.getById(i));
 
             List<HotelImage> hotelImages = new ArrayList<>();
             hotelImages.add(hotelImage);
@@ -321,7 +320,7 @@ public class TestDataCreator {
             hospital.setHospitalName(names.get(i));
             hospital.setBed_capacity(1000);
             hospital.setContactPhone("1234567890");
-            hospital.setAddress(addressService.getById(i));
+//            hospital.setAddress(addressService.getById(i));
             hospital.setActive(true);
             hospital.setDoctors(doctorService.getAllDoctors());
             List<HospitalImage> hospitalImages = new ArrayList<>();
@@ -432,7 +431,42 @@ public class TestDataCreator {
         }
     }
 
-    @Test
+    private RetreatImage saveAestheticRetreatImage(int index) throws Exception {
+        byte[] aestheticFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/aesthetic/" + (index) + ".jpg"));
+        RetreatImage aestheticRetreatImage = new RetreatImage();
+        aestheticRetreatImage.setImage(aestheticFileContent);
+        return aestheticRetreatImage;
+    }
+
+    private RetreatImage saveHairRetreatImage(int index) throws Exception {
+        byte[] hairFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/hair/" + (index) + ".jpg"));
+        RetreatImage hairRetreatImage = new RetreatImage();
+        hairRetreatImage.setImage(hairFileContent);
+        return hairRetreatImage;
+    }
+
+    private RetreatImage saveDentalRetreatImage(int index) throws Exception {
+        byte[] dentalFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/dental/" + (index) + ".jpg"));
+        RetreatImage dentalRetreatImage = new RetreatImage();
+        dentalRetreatImage.setImage(dentalFileContent);
+        return dentalRetreatImage;
+    }
+
+    private RetreatImage saveMetabolicRetreatImage(int index) throws Exception {
+        byte[] metabolicFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/metabolic/" + (index) + ".jpg"));
+        RetreatImage metabolicRetreatImage = new RetreatImage();
+        metabolicRetreatImage.setImage(metabolicFileContent);
+        return metabolicRetreatImage;
+    }
+
+    private RetreatImage saveEyeRetreatImage(int index) throws Exception {
+        byte[] eyeFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/eye/" + (index) + ".jpg"));
+        RetreatImage eyeRetreatImage = new RetreatImage();
+        eyeRetreatImage.setImage(eyeFileContent);
+        return eyeRetreatImage;
+    }
+
+//    @Test
     @Order(13)
     void createRetreatImage() throws Exception{
         try {
@@ -519,13 +553,24 @@ public class TestDataCreator {
 
         List<List<String>> retreats = List.of(aesthetic, hair, dental, metabolic, eye);
 
+
+
         int imageId = 1;
         for (int i = 0; i < retreats.size(); i++) {
             for (int j = 0; j < retreats.get(i).size(); j++) {
+
+
+
                 Retreat retreat = new Retreat();
                 retreat.setRetreat_name(retreats.get(i).get(j));
                 retreat.setDescription(retreats.get(i).get(j));
-                retreat.setImage(imageService.getRetreatImageById(imageId++));
+                switch (i) {
+                    case 0 -> retreat.setImage(saveAestheticRetreatImage(j + 1));
+                    case 1 -> retreat.setImage(saveHairRetreatImage(j + 1));
+                    case 2 -> retreat.setImage(saveDentalRetreatImage(j + 1));
+                    case 3 -> retreat.setImage(saveMetabolicRetreatImage(j + 1));
+                    case 4 -> retreat.setImage(saveEyeRetreatImage(j + 1));
+                }
 
                 Department department = departmentService.getById(i + 1);
                 retreat.setDepartment(department);
