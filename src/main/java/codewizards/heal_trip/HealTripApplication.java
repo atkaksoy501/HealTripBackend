@@ -1,5 +1,6 @@
 package codewizards.heal_trip;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,11 @@ public class HealTripApplication {
 		props.put("mail.debug", "true");
 
 		return mailSender;
+	}
+
+	@Bean
+	public ModelMapper getModelMapper(){
+		return new ModelMapper();
 	}
 
 
