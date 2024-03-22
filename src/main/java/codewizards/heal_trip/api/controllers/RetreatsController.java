@@ -52,4 +52,9 @@ public class RetreatsController {
     public ResponseEntity<Iterable<Retreat>> getAllRetreats() {
         return new ResponseEntity<>(retreatService.getAllRetreats(), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getByDepartmentId/{departmentId}")
+    public ResponseEntity<Iterable<Retreat>> getRetreatsByDepartmentId(@PathVariable int departmentId) {
+        return new ResponseEntity<>(retreatService.getRetreatsByDepartmentId(departmentId), HttpStatus.OK);
+    }
 }

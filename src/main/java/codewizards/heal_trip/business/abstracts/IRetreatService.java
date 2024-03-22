@@ -13,4 +13,6 @@ public interface IRetreatService {
     Retreat updateRetreat(Retreat retreat, int retreat_id);
 
     Iterable<Retreat> getAllRetreats();
+
+    Iterable<Retreat> getRetreatsByDepartmentId(int departmentId);
 }

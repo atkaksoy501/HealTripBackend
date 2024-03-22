@@ -25,7 +25,7 @@ public class Retreat extends BaseEntity {
     private String retreat_name;
 
 //    @JsonManagedReference(value = "retreat-department")
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
