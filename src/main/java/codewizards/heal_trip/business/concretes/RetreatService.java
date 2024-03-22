@@ -52,4 +52,9 @@ public class RetreatService implements IRetreatService {
     public Iterable<Retreat> getAllRetreats() {
         return retreatDao.findAll();
     }
+
+    // get retreats by department id
+    public Iterable<Retreat> getRetreatsByDepartmentId(int departmentId) {
+        return retreatDao.findByDepartmentId(departmentId);
+    }
 }
