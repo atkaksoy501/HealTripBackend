@@ -1,5 +1,6 @@
 package codewizards.heal_trip.business.concretes;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import codewizards.heal_trip.business.abstracts.IBookingService;
@@ -28,6 +29,7 @@ public class BookingService implements IBookingService {
     
     @Override
     public Booking add(Booking booking) {
+        booking.setCreateDate(LocalDateTime.now());
         return this.bookingDao.save(booking);
     }
     

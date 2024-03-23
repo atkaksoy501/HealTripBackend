@@ -25,12 +25,10 @@ public class Department extends BaseEntity {
     @Column(name = "department_name")
     private String departmentName;
 
-//    @JsonManagedReference
-    @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<HospitalDepartment> hospitals;
 
-//    @JsonIgnore
-    @OneToMany(mappedBy = "department", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "department", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<Doctor> doctors;
 
     @JsonIgnore

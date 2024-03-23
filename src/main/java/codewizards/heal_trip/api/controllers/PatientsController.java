@@ -36,7 +36,7 @@ public class PatientsController {
     @PostMapping(value = "/add")
     public ResponseEntity<String> registerPatient(@RequestBody Patient patient) throws IllegalArgumentException {
         try {
-            emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
+//            emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
             patient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
             Integer patientId = patientService.registerPatient(patient);
             return new ResponseEntity<>("Patient with id " + patientId + " has been registered. Email has ben sent to " + patient.getEmail(), HttpStatus.OK);

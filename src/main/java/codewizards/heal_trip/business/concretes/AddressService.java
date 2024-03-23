@@ -3,11 +3,6 @@ package codewizards.heal_trip.business.concretes;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.requests.AddAddressRequest;
-import codewizards.heal_trip.business.DTOs.requests.UpdateAddressRequest;
-import codewizards.heal_trip.business.DTOs.responses.AddedAddressResponse;
-import codewizards.heal_trip.business.DTOs.responses.GotAddressResponse;
-import codewizards.heal_trip.business.DTOs.responses.UpdatedAddressResponse;
 import codewizards.heal_trip.business.abstracts.IAddressService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,28 +22,28 @@ public class AddressService implements IAddressService {
     }
     
     @Override
-    public List<GotAddressResponse> getAll() {
+    public List<Address> getAll() {
         List<Address> addresses = this.addressDao.findAll();
-        List<GotAddressResponse> gotAddressResponseList = new ArrayList<>();
+        List<Address> gotAddressResponseList = new ArrayList<>();
         for (Address address : addresses) {
-            GotAddressResponse gotAddressResponse = this.modelMapperService.forResponse().map(address, GotAddressResponse.class);
+            Address gotAddressResponse = this.modelMapperService.forResponse().map(address, Address.class);
             gotAddressResponseList.add(gotAddressResponse);
         }
         return gotAddressResponseList;
     }
     
     @Override
-    public GotAddressResponse getById(int id) {
+    public Address getById(int id) {
         Address address = this.addressDao.findById(id).orElse(null);
-        return this.modelMapperService.forResponse().map(address, GotAddressResponse.class);
+        return this.modelMapperService.forResponse().map(address, Address.class);
     }
     
     @Override
-    public AddedAddressResponse add(AddAddressRequest address) {
+    public Address add(Address address) {
         Address newAddress = this.modelMapperService.forRequest().map(address, Address.class);
         newAddress.setCreateDate(LocalDateTime.now());
         Address savedAddress = this.addressDao.save(newAddress);
-        return this.modelMapperService.forResponse().map(savedAddress, AddedAddressResponse.class);
+        return this.modelMapperService.forResponse().map(savedAddress, Address.class);
     }
     
     @Override
@@ -57,7 +52,7 @@ public class AddressService implements IAddressService {
     }
     
     @Override
-    public UpdatedAddressResponse update(UpdateAddressRequest address){
+    public Address update(Address address){
         //get current address
         int id = address.getId();
         Address currentAddress = this.addressDao.findById(id).orElse(null);
@@ -70,6 +65,6 @@ public class AddressService implements IAddressService {
         updatedAddress.setId(id);
         Address savedAddress = this.addressDao.save(updatedAddress);
         savedAddress.setUpdateDate(updatedAddress.getUpdateDate());
-        return this.modelMapperService.forResponse().map(savedAddress, UpdatedAddressResponse.class);
+        return this.modelMapperService.forResponse().map(savedAddress, Address.class);
     }
 }

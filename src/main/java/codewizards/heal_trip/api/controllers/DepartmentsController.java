@@ -2,7 +2,6 @@ package codewizards.heal_trip.api.controllers;
 
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.responses.GotAllDepartmentsResponse;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ public class DepartmentsController {
     }
     
     @GetMapping("/getAll")
-    public List<GotAllDepartmentsResponse> getAll() {
+    public List<Department> getAll() {
         return this.departmentService.getAll();
     }
     

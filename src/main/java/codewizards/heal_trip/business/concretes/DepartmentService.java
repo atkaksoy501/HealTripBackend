@@ -1,8 +1,8 @@
 package codewizards.heal_trip.business.concretes;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.responses.GotAllDepartmentsResponse;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class DepartmentService implements IDepartmentService {
     }
     
     @Override
-    public List<GotAllDepartmentsResponse> getAll() {
+    public List<Department> getAll() {
         List<Department> departments = this.departmentDao.findAll();
-        List<GotAllDepartmentsResponse> response = new ArrayList<>();
+        List<Department> response = new ArrayList<>();
         for (Department department : departments) {
-            GotAllDepartmentsResponse gotAllDepartmentsResponse = this.modelMapperService.forResponse().map(department, GotAllDepartmentsResponse.class);
+            Department gotAllDepartmentsResponse = this.modelMapperService.forResponse().map(department, Department.class);
             response.add(gotAllDepartmentsResponse);
         }
         return response;
@@ -47,6 +47,7 @@ public class DepartmentService implements IDepartmentService {
     
     @Override
     public Department add(Department department) {
+        department.setCreateDate(LocalDateTime.now());
         this.departmentDao.save(department);
         return department;
     }

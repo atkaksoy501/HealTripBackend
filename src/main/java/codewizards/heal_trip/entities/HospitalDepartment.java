@@ -2,6 +2,8 @@ package codewizards.heal_trip.entities;
 
 import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -21,7 +23,6 @@ public class HospitalDepartment extends BaseEntity {
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;

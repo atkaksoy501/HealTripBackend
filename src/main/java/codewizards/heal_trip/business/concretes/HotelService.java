@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -42,6 +44,7 @@ public class HotelService implements IHotelService {
 
     @Override
     public Hotel add(Hotel hotel) {
+        hotel.setCreateDate(LocalDateTime.now());
         return this.hotelDao.save(hotel);
     }
 

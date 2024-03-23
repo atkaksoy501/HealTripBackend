@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import codewizards.heal_trip.dataAccess.FeedbackDao;
 
+import java.time.LocalDateTime;
+
 @Service
 public class FeedbackService implements IFeedbackService {
     private FeedbackDao feedbackDao;
@@ -22,6 +24,7 @@ public class FeedbackService implements IFeedbackService {
 
     @Override
     public Feedback addFeedback(Feedback feedback) {
+        feedback.setCreateDate(LocalDateTime.now());
         return feedbackDao.save(feedback);
     }
 
