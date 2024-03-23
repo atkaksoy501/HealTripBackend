@@ -2,15 +2,10 @@ package codewizards.heal_trip.api.controllers;
 
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.requests.AddAddressRequest;
-import codewizards.heal_trip.business.DTOs.requests.UpdateAddressRequest;
-import codewizards.heal_trip.business.DTOs.responses.AddedAddressResponse;
-import codewizards.heal_trip.business.DTOs.responses.GotAddressResponse;
-import codewizards.heal_trip.business.DTOs.responses.UpdatedAddressResponse;
 import codewizards.heal_trip.business.abstracts.IAddressService;
+import codewizards.heal_trip.entities.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import codewizards.heal_trip.entities.*;
 
 @RestController
 @RequestMapping("/address")
@@ -23,17 +18,17 @@ public class AddressesController {
     }
     
     @GetMapping("/getAll")
-    public List<GotAddressResponse> getAll() {
+    public List<Address> getAll() {
         return this.addressService.getAll();
     }
     
     @PostMapping("/add")
-    public AddedAddressResponse add(@RequestBody AddAddressRequest address) {
+    public Address add(@RequestBody Address address) {
         return this.addressService.add(address);
     }
     
     @GetMapping("/get/{id}")
-    public GotAddressResponse getById(@PathVariable int id){
+    public Address getById(@PathVariable int id){
         return this.addressService.getById(id);
     }
     
@@ -43,7 +38,7 @@ public class AddressesController {
     }
     
     @PutMapping("/update")
-    public UpdatedAddressResponse update(@RequestBody UpdateAddressRequest address){
+    public Address update(@RequestBody Address address){
         return this.addressService.update(address);
     }
 }

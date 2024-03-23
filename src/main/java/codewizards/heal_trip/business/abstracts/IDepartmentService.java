@@ -2,11 +2,10 @@ package codewizards.heal_trip.business.abstracts;
 
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.responses.GotAllDepartmentsResponse;
 import codewizards.heal_trip.entities.Department;
 
 public interface IDepartmentService {
-    List<GotAllDepartmentsResponse> getAll();
+    List<Department> getAll();
     
     List<Department> getAll(int pageNo, int pageSize);
     

@@ -1,6 +1,8 @@
 package codewizards.heal_trip.entities;
 
 import codewizards.heal_trip.core.entities.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "addresses")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Address.class)
 public class Address extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

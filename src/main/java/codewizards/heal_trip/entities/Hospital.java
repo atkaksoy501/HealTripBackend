@@ -11,6 +11,10 @@ import java.util.List;
 @Table(name="hospitals")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Hospital.class)
 public class Hospital extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +30,6 @@ public class Hospital extends BaseEntity {
     @Column(name = "active")
     private boolean active;
 
-    //@Column(name = "address_id")
-    //private int addressId;
-
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
@@ -37,19 +38,16 @@ public class Hospital extends BaseEntity {
     private String contactPhone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hospital")
     private List<HospitalDepartment> departments;
 
-    @JsonBackReference(value = "hospital-booking")
     @OneToMany(mappedBy = "hospital")
     private List<Booking> bookings;
 
-//    @JsonManagedReference(value = "doctor-hospital")
-    @OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hospital")
     private List<Doctor> doctors;
 
-//    @JsonManagedReference(value = "hospitalImage-hospital")
-    @OneToMany(mappedBy = "hospital", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hospital", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<HospitalImage> hospitalImages;
 
 }
