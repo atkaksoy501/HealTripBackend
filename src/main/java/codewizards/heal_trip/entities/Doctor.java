@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,17 +15,11 @@ import java.util.List;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id",
         scope = Doctor.class)
-public class Doctor {
+public class Doctor extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
-    //@Column(name = "hospital_id")
-    //private int hospitalId;
-
-    //@Column(name = "department_id")
-    //private int departmentId;
 
     @Column(name = "experience_year")
     private int experience_year;
@@ -38,18 +33,14 @@ public class Doctor {
     @Column(name = "active")
     private boolean active;
 
-//    @JsonBackReference(value = "doctor-booking")
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "doctor")
     private List<Booking> bookings;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
-//    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 
-//    @JsonManagedReference(value = "doctor-department")
-//    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 }
