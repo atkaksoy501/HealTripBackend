@@ -1,27 +1,30 @@
 package codewizards.heal_trip;
 
 import codewizards.heal_trip.DTO.UserDTO;
-import codewizards.heal_trip.business.*;
+import codewizards.heal_trip.business.abstracts.*;
+import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
 import codewizards.heal_trip.entities.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.NoSuchFileException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -74,6 +77,9 @@ public class TestDataCreator {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private ModelMapperService modelMapperService;
+
     private HttpHeaders createHeader() {
         // Create the Basic Auth header
         String auth = "admin:admin"; // replace with your username and password
@@ -97,6 +103,7 @@ public class TestDataCreator {
         user.setRoles("ROLE_ADMIN");
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         String userJson = objectMapper.writeValueAsString(user);
 
         ResultActions result = mockMvc.perform(post(BASE_URL + "/auth/register")
@@ -116,6 +123,7 @@ public class TestDataCreator {
 
         // Convert the map to a JSON string
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         String loginDetailsJson = objectMapper.writeValueAsString(loginDetails);
 
         // Send a POST request to the login endpoint
@@ -177,6 +185,7 @@ public class TestDataCreator {
             address.setAddressDetail(names.get(i));
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String addressJson = objectMapper.writeValueAsString(address);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/address/add")
@@ -214,6 +223,7 @@ public class TestDataCreator {
             hotel.setHotelImages(hotelImages);
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String hotelJson = objectMapper.writeValueAsString(hotel);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hotel/add")
@@ -227,6 +237,8 @@ public class TestDataCreator {
 
     @Test
     @Order(6)
+    @Transactional
+    @Commit
     void createHotelOrganizer() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
@@ -243,6 +255,7 @@ public class TestDataCreator {
             hotelOrganizer.setHotel(hotelService.getById(i + 1));
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String hotelOrganizerJson = objectMapper.writeValueAsString(hotelOrganizer);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hotelOrganizer/add")
@@ -266,6 +279,7 @@ public class TestDataCreator {
             hotelImage.setHotel(hotelService.getById(hotelId));
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String hotelImageJson = objectMapper.writeValueAsString(hotelImage);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hotel/save")
@@ -289,6 +303,7 @@ public class TestDataCreator {
             hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
 
             hospitalImage = entityManager.merge(hospitalImage);
@@ -329,6 +344,7 @@ public class TestDataCreator {
             hospital.setHospitalImages(hospitalImages);
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String hospitalJson = objectMapper.writeValueAsString(hospital);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/add")
@@ -342,6 +358,8 @@ public class TestDataCreator {
 
     @Test
     @Order(10)
+    @Transactional
+    @Commit
     void createHospitalOrganizer() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
@@ -358,6 +376,7 @@ public class TestDataCreator {
             hospitalOrganizer.setHospital(hospitalService.getHospitalById(i + 1));
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String hospitalOrganizerJson = objectMapper.writeValueAsString(hospitalOrganizer);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/hospitalOrganizer/add")
@@ -373,6 +392,8 @@ public class TestDataCreator {
 
     @Test
     @Order(11)
+    @Transactional
+    @Commit
     void createDepartment() throws Exception {
         List<String> names = List.of("Aesthetic Surgery", "Hair Treatments", "Dental Treatments", "Metabolic Surgery", "Eye Diseases");
 
@@ -387,11 +408,13 @@ public class TestDataCreator {
                 HospitalDepartment hospitalDepartment = new HospitalDepartment();
                 hospitalDepartment.setHospital(hospital);
                 hospitalDepartment.setDepartment(department);
+                hospitalDepartment.setCreateDate(LocalDateTime.now());
                 hospitalDepartments.add(hospitalDepartment);
             }
             department.setHospitals(hospitalDepartments);
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String departmentJson = objectMapper.writeValueAsString(department);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/department/add")
@@ -405,6 +428,8 @@ public class TestDataCreator {
 
     @Test
     @Order(12)
+    @Transactional
+    @Commit
     void createDoctor() throws Exception {
         List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
@@ -421,22 +446,65 @@ public class TestDataCreator {
             doctor.setActive(true);
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String doctorJson = objectMapper.writeValueAsString(doctor);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/doctor/add")
                     .headers(createHeader())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(doctorJson));
+            System.out.println(result.andReturn().getResponse().getContentAsString());
 
             result.andExpect(status().isOk());
         }
     }
 
-    @Test
+    private RetreatImage saveAestheticRetreatImage(int index) throws Exception {
+        byte[] aestheticFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/aesthetic/" + (index) + ".jpg"));
+        RetreatImage aestheticRetreatImage = new RetreatImage();
+        aestheticRetreatImage.setImage(aestheticFileContent);
+        aestheticRetreatImage.setCreateDate(LocalDateTime.now());
+        return aestheticRetreatImage;
+    }
+
+    private RetreatImage saveHairRetreatImage(int index) throws Exception {
+        byte[] hairFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/hair/" + (index) + ".jpg"));
+        RetreatImage hairRetreatImage = new RetreatImage();
+        hairRetreatImage.setImage(hairFileContent);
+        hairRetreatImage.setCreateDate(LocalDateTime.now());
+        return hairRetreatImage;
+    }
+
+    private RetreatImage saveDentalRetreatImage(int index) throws Exception {
+        byte[] dentalFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/dental/" + (index) + ".jpg"));
+        RetreatImage dentalRetreatImage = new RetreatImage();
+        dentalRetreatImage.setImage(dentalFileContent);
+        dentalRetreatImage.setCreateDate(LocalDateTime.now());
+        return dentalRetreatImage;
+    }
+
+    private RetreatImage saveMetabolicRetreatImage(int index) throws Exception {
+        byte[] metabolicFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/metabolic/" + (index) + ".jpg"));
+        RetreatImage metabolicRetreatImage = new RetreatImage();
+        metabolicRetreatImage.setImage(metabolicFileContent);
+        metabolicRetreatImage.setCreateDate(LocalDateTime.now());
+        return metabolicRetreatImage;
+    }
+
+    private RetreatImage saveEyeRetreatImage(int index) throws Exception {
+        byte[] eyeFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/eye/" + (index) + ".jpg"));
+        RetreatImage eyeRetreatImage = new RetreatImage();
+        eyeRetreatImage.setImage(eyeFileContent);
+        eyeRetreatImage.setCreateDate(LocalDateTime.now());
+        return eyeRetreatImage;
+    }
+
+//    @Test
     @Order(13)
     void createRetreatImage() throws Exception{
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             for (int i = 1; i <= 5; i++) {
                 byte[] aestheticFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/aesthetic/" + (i) + ".jpg"));
                 byte[] hairFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/hair/" + (i) + ".jpg"));
@@ -510,6 +578,8 @@ public class TestDataCreator {
 
     @Test
     @Order(14)
+    @Transactional
+    @Commit
     void createRetreat() throws Exception {
         List<String> aesthetic = List.of("Nose", "Breast", "Body", "Face", "Genital");
         List<String> hair = List.of("FUE Hair Transplant", "DHI Hair Transplant", "Afro Hair Transplant", "Beard Transplant", "Eyebrow Transplant");
@@ -519,18 +589,30 @@ public class TestDataCreator {
 
         List<List<String>> retreats = List.of(aesthetic, hair, dental, metabolic, eye);
 
+
+
         int imageId = 1;
         for (int i = 0; i < retreats.size(); i++) {
             for (int j = 0; j < retreats.get(i).size(); j++) {
+
+
+
                 Retreat retreat = new Retreat();
                 retreat.setRetreat_name(retreats.get(i).get(j));
                 retreat.setDescription(retreats.get(i).get(j));
-                retreat.setImage(imageService.getRetreatImageById(imageId++));
+                switch (i) {
+                    case 0 -> retreat.setImage(saveAestheticRetreatImage(j + 1));
+                    case 1 -> retreat.setImage(saveHairRetreatImage(j + 1));
+                    case 2 -> retreat.setImage(saveDentalRetreatImage(j + 1));
+                    case 3 -> retreat.setImage(saveMetabolicRetreatImage(j + 1));
+                    case 4 -> retreat.setImage(saveEyeRetreatImage(j + 1));
+                }
 
                 Department department = departmentService.getById(i + 1);
                 retreat.setDepartment(department);
 
                 ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
                 String retreatJson = objectMapper.writeValueAsString(retreat);
 
                 ResultActions result = mockMvc.perform(post(BASE_URL + "/retreat/add")
@@ -556,6 +638,7 @@ public class TestDataCreator {
             feedback.setRating(10 - i);
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String bookingJson = objectMapper.writeValueAsString(feedback);
 
             ResultActions result = mockMvc.perform(post(BASE_URL + "/feedback/add")
@@ -569,6 +652,8 @@ public class TestDataCreator {
 
     @Test
     @Order(16)
+    @Transactional
+    @Commit
     void createBooking() throws Exception {
         for (int i = 0; i < 5; i++) {
             Booking booking = new Booking();
@@ -579,8 +664,9 @@ public class TestDataCreator {
             booking.setPatient(patientService.getPatientById(i + 2));
             booking.setRetreat(retreatService.getRetreatById(i + 1));
             booking.setStatus("Active");
-            booking.setEndDate(LocalDate.of(2024, 3, 20));
+            booking.setEndDate(LocalDate.now().plusDays(1));
             booking.setStartDate(LocalDate.now());
+
             booking.setFeedback(feedbackService.getFeedbackById(i + 1));
 
             ObjectMapper objectMapper = new ObjectMapper();

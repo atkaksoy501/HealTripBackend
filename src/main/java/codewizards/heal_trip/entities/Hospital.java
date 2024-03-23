@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,11 @@ import java.util.List;
 @Table(name="hospitals")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hospital {
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Hospital.class)
+public class Hospital extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -25,9 +30,6 @@ public class Hospital {
     @Column(name = "active")
     private boolean active;
 
-    //@Column(name = "address_id")
-    //private int addressId;
-
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
@@ -36,19 +38,16 @@ public class Hospital {
     private String contactPhone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hospital")
     private List<HospitalDepartment> departments;
 
-    @JsonBackReference(value = "hospital-booking")
     @OneToMany(mappedBy = "hospital")
     private List<Booking> bookings;
 
-//    @JsonManagedReference(value = "doctor-hospital")
-    @OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hospital")
     private List<Doctor> doctors;
 
-//    @JsonManagedReference(value = "hospitalImage-hospital")
-    @OneToMany(mappedBy = "hospital", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hospital", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<HospitalImage> hospitalImages;
 
 }

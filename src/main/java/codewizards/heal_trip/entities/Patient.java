@@ -1,9 +1,6 @@
 package codewizards.heal_trip.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -15,6 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name="patients")
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Patient.class)
 public class Patient extends User{
 
     @Column(name = "birth_date")

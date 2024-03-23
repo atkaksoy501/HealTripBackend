@@ -1,5 +1,8 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,15 +11,15 @@ import lombok.*;
 @Table(name="feedbacks")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Feedback {
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Feedback.class)
+public class Feedback extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    private Booking booking;
 
     @Column(name = "comment")
     private String comment;

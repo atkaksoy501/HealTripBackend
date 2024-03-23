@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "hotelId",
         scope = Hotel.class)
-public class Hotel {
+public class Hotel extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -26,11 +27,8 @@ public class Hotel {
     @Column(name="hotel_name")
     private String hotelName;
 
-//    @Column(name="address_id")
-//    private int addressId;
-
     @OneToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id") //id = adresteki id
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @Column(name="contact_phone")
@@ -39,14 +37,10 @@ public class Hotel {
     @Column(name="bed_capacity")
     private int bedCapacity;
 
-//    @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL)
-//    private HotelOrganizer organizer;
-
     @JsonBackReference(value = "hotel-booking")
     @OneToMany(mappedBy = "hotel")
     private List<Booking> bookings;
 
-//    @JsonManagedReference(value = "hotelImage-hotel")
-    @OneToMany(mappedBy = "hotel", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hotel", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<HotelImage> hotelImages;
 }

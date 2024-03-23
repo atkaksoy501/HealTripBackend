@@ -1,8 +1,7 @@
 package codewizards.heal_trip.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import codewizards.heal_trip.core.entities.BaseEntity;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -14,7 +13,11 @@ import java.util.List;
 @Table(name="retreats")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Retreat {
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Retreat.class)
+public class Retreat extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,8 +26,6 @@ public class Retreat {
     @Column(name = "retreat_name")
     private String retreat_name;
 
-//    @JsonManagedReference(value = "retreat-department")
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
@@ -32,7 +33,7 @@ public class Retreat {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private RetreatImage image;
 
