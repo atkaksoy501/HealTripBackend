@@ -8,6 +8,7 @@ import codewizards.heal_trip.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -44,14 +45,17 @@ public class ImageService implements IImageService {
     }
 
     public void saveHotelImage(HotelImage hotelImage) {
+        hotelImage.setCreateDate(LocalDateTime.now());
         hotelImageDao.save(hotelImage);
     }
 
     public void saveHospitalImage(HospitalImage hospitalImage) {
+        hospitalImage.setCreateDate(LocalDateTime.now());
         hospitalImageDao.save(hospitalImage);
     }
 
     public void saveRetreatImage(RetreatImage retreatImage) {
+        retreatImage.setCreateDate(LocalDateTime.now());
         retreatImageDao.save(retreatImage);
     }
 

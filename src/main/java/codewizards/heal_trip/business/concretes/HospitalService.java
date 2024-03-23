@@ -6,6 +6,7 @@ import codewizards.heal_trip.entities.Hospital;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,6 +24,7 @@ public class HospitalService implements IHospitalService {
 
     @Override
     public Hospital registerHospital(Hospital hospital) {
+        hospital.setCreateDate(LocalDateTime.now());
         return hospitalDao.save(hospital);
     }
 

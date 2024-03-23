@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PatientService implements IPatientService {
 
@@ -25,6 +27,7 @@ public class PatientService implements IPatientService {
     public Integer registerPatient(Patient patient) {
         patient.setRoles("PATIENT");
         patient.setActive(true);
+        patient.setCreateDate(LocalDateTime.now());
         patient = patientDao.save(patient);
         return patient.getId();
     }

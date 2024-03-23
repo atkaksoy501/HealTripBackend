@@ -2,7 +2,9 @@ package codewizards.heal_trip.entities;
 
 import codewizards.heal_trip.core.entities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name="hospital_images")
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = HospitalImage.class)
 public class HospitalImage extends BaseEntity {
 
     @Id
@@ -24,7 +30,7 @@ public class HospitalImage extends BaseEntity {
     private byte[] image;
 
     @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
 

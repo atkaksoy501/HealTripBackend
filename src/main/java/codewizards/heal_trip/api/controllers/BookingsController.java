@@ -31,7 +31,7 @@ public class BookingsController {
     public ResponseEntity<String> add(@RequestBody Booking booking) throws IllegalArgumentException{
         try {
             Booking dbBooking = bookingService.add(booking);
-            emailService.sendAppointmentEmail(dbBooking);
+//            emailService.sendAppointmentEmail(dbBooking);
             return new ResponseEntity<>("Booking with id " + dbBooking.getId() + " has been registered. Email has ben sent to " + booking.getPatient().getEmail(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

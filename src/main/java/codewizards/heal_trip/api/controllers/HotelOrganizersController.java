@@ -39,7 +39,7 @@ public class HotelOrganizersController {
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestBody HotelOrganizer hotelOrganizer) {
         try {
-            emailService.sendWelcomeEmail(hotelOrganizer.getEmail(), hotelOrganizer.getFirst_name());
+//            emailService.sendWelcomeEmail(hotelOrganizer.getEmail(), hotelOrganizer.getFirst_name());
             hotelOrganizer.setPassword(new BCryptPasswordEncoder().encode(hotelOrganizer.getPassword()));
             Integer hotelOrganizerId = hotelOrganizerService.add(hotelOrganizer);
             return new ResponseEntity<>("Hotel Organizer with id " + hotelOrganizerId + " has been registered. Email has ben sent to " + hotelOrganizer.getEmail(), HttpStatus.OK);
