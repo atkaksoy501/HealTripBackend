@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.core.entities.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Entity(name = "User")
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "email_unique", columnNames = "email"))
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public class User extends BaseEntity {
     @Id
     @SequenceGenerator(
             name = "user_sequence",

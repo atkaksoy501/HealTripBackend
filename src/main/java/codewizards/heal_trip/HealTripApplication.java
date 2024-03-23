@@ -1,14 +1,17 @@
 package codewizards.heal_trip;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class HealTripApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HealTripApplication.class, args);
@@ -30,6 +33,11 @@ public class HealTripApplication {
 		props.put("mail.debug", "true");
 
 		return mailSender;
+	}
+
+	@Bean
+	public ModelMapper getModelMapper(){
+		return new ModelMapper();
 	}
 
 
