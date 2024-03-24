@@ -3,6 +3,7 @@ package codewizards.heal_trip.business.concretes;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import codewizards.heal_trip.business.DTOs.responses.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,20 @@ public class DepartmentService implements IDepartmentService {
     @Override
     public Department update(Department department) {
         return this.departmentDao.save(department);
+    }
+
+    @Override
+    public DepartmentDTO mapToDto(Department department) {
+        return this.modelMapperService.forResponse().map(department, DepartmentDTO.class);
+    }
+
+    @Override
+    public List<DepartmentDTO> mapAllToDto(List<Department> departments) {
+        List<DepartmentDTO> departmentDTOs = new ArrayList<>();
+        for (Department department : departments) {
+            DepartmentDTO departmentDTO = this.modelMapperService.forResponse().map(department, DepartmentDTO.class);
+            departmentDTOs.add(departmentDTO);
+        }
+        return departmentDTOs;
     }
 }
