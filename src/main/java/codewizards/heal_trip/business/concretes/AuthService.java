@@ -26,6 +26,8 @@ public class AuthService implements IAuthService {
         newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         newUser.setRoles(user.getRoles());
         newUser.setCreateDate(LocalDateTime.now());
+        newUser.setActive(true);
+        newUser.setPhone_number(user.getPhone_number());
         return Optional.of(userRepository.save(newUser));
     }
 }
