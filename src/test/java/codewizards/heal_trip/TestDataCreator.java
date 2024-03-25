@@ -660,7 +660,7 @@ public class TestDataCreator {
             booking.setBooking_date(LocalDate.now());
 //            booking.setHospital(hospitalService.getHospitalById(i + 1)); //todo: açılacak
             booking.setHotel(hotelService.getById(i + 1));
-            booking.setDoctor(doctorService.getDoctorById(i + 1));
+//            booking.setDoctor(doctorService.getDoctorById(i + 1)); //todo: açılacak
             booking.setPatient(patientService.getPatientById(i + 2));
             booking.setRetreat(retreatService.getRetreatById(i + 1));
             booking.setStatus("Active");
