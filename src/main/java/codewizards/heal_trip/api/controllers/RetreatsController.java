@@ -1,5 +1,6 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.responses.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.entities.Retreat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class RetreatsController {
     }
 
     @GetMapping(value = "/getByDepartmentId/{departmentId}")
-    public ResponseEntity<Iterable<Retreat>> getRetreatsByDepartmentId(@PathVariable int departmentId) {
+    public ResponseEntity<Iterable<GotRetreatByDepartmentIdResponse>> getRetreatsByDepartmentId(@PathVariable int departmentId) {
         return new ResponseEntity<>(retreatService.getRetreatsByDepartmentId(departmentId), HttpStatus.OK);
     }
 }
