@@ -1,5 +1,6 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.responses.GotHospitalByIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.GotHospitalsByDepartmentIdResponse;
 import codewizards.heal_trip.business.concretes.HospitalService;
 import codewizards.heal_trip.business.abstracts.IImageService;
@@ -27,8 +28,8 @@ public class HospitalsController {
     }
 
     @GetMapping(value="/get/{hospital_id}")
-    public ResponseEntity<Hospital> getHospitalById(@PathVariable int hospital_id) {
-        Hospital hospital = hospitalService.getHospitalById(hospital_id);
+    public ResponseEntity<GotHospitalByIdResponse> getHospitalById(@PathVariable int hospital_id) {
+        GotHospitalByIdResponse hospital = hospitalService.getHospitalById(hospital_id);
         if (hospital == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

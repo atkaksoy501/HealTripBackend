@@ -300,7 +300,7 @@ public class TestDataCreator {
 
             HospitalImage hospitalImage = new HospitalImage();
             hospitalImage.setImage(fileContent);
-            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
+//            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -373,7 +373,7 @@ public class TestDataCreator {
             hospitalOrganizer.setPassword("123456");
             hospitalOrganizer.setRoles("HOSPITAL_ORGANIZER");
             hospitalOrganizer.setActive(true);
-            hospitalOrganizer.setHospital(hospitalService.getHospitalById(i + 1));
+//            hospitalOrganizer.setHospital(hospitalService.getHospitalById(i + 1)); //todo: açılacak
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -442,7 +442,7 @@ public class TestDataCreator {
             doctor.setDepartment(departmentService.getById(i + 1));
             doctor.setExperience_year(10);
             doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
-            doctor.setHospital(hospitalService.getHospitalById(i + 1));
+//            doctor.setHospital(hospitalService.getHospitalById(i + 1)); //todo: açılacak
             doctor.setActive(true);
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -658,7 +658,7 @@ public class TestDataCreator {
         for (int i = 0; i < 5; i++) {
             Booking booking = new Booking();
             booking.setBooking_date(LocalDate.now());
-            booking.setHospital(hospitalService.getHospitalById(i + 1));
+//            booking.setHospital(hospitalService.getHospitalById(i + 1)); //todo: açılacak
             booking.setHotel(hotelService.getById(i + 1));
             booking.setDoctor(doctorService.getDoctorById(i + 1));
             booking.setPatient(patientService.getPatientById(i + 2));
