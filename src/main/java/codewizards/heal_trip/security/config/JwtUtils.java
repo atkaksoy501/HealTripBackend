@@ -1,5 +1,6 @@
 package codewizards.heal_trip.security.config;
 
+import codewizards.heal_trip.security.CustomUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -38,9 +39,12 @@ public class JwtUtils {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(CustomUserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("authorities",userDetails.getAuthorities());
+        claims.put("email",userDetails.getUsername());
+        claims.put("name", userDetails.getName());
+        claims.put("id", userDetails.getId());
         return createToken(claims, userDetails.getUsername());
     }
 
