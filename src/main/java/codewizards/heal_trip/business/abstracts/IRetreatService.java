@@ -1,5 +1,6 @@
 package codewizards.heal_trip.business.abstracts;
 
+import codewizards.heal_trip.business.DTOs.responses.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.entities.Retreat;
 
 public interface IRetreatService {
@@ -14,5 +15,5 @@ public interface IRetreatService {
 
     Iterable<Retreat> getAllRetreats();
 
-    Iterable<Retreat> getRetreatsByDepartmentId(int departmentId);
+    Iterable<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId);
 }
