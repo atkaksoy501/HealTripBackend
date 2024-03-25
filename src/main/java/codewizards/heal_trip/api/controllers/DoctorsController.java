@@ -1,5 +1,6 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.responses.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.concretes.DoctorService;
 import codewizards.heal_trip.entities.Doctor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class DoctorsController {
     }
 
     @GetMapping(value="/get/{doctor_id}")
-    public ResponseEntity<Doctor> getDoctorById(@PathVariable int doctor_id) {
-        Doctor doctor = doctorService.getDoctorById(doctor_id);
+    public ResponseEntity<DoctorDTOWithHospital> getDoctorById(@PathVariable int doctor_id) {
+        DoctorDTOWithHospital doctor = doctorService.getDoctorById(doctor_id);
         if (doctor == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
