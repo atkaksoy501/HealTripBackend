@@ -1,6 +1,8 @@
 package codewizards.heal_trip;
 
 import codewizards.heal_trip.DTO.UserDTO;
+import codewizards.heal_trip.business.DTOs.responses.DoctorDTOWithHospital;
+import codewizards.heal_trip.business.DTOs.responses.GotHospitalByIdResponse;
 import codewizards.heal_trip.business.abstracts.*;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
@@ -300,7 +302,7 @@ public class TestDataCreator {
 
             HospitalImage hospitalImage = new HospitalImage();
             hospitalImage.setImage(fileContent);
-            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
+//            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -373,7 +375,8 @@ public class TestDataCreator {
             hospitalOrganizer.setPassword("123456");
             hospitalOrganizer.setRoles("HOSPITAL_ORGANIZER");
             hospitalOrganizer.setActive(true);
-            hospitalOrganizer.setHospital(hospitalService.getHospitalById(i + 1));
+            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
+            hospitalOrganizer.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -442,7 +445,8 @@ public class TestDataCreator {
             doctor.setDepartment(departmentService.getById(i + 1));
             doctor.setExperience_year(10);
             doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
-            doctor.setHospital(hospitalService.getHospitalById(i + 1));
+            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
+            doctor.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
             doctor.setActive(true);
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -658,9 +662,11 @@ public class TestDataCreator {
         for (int i = 0; i < 5; i++) {
             Booking booking = new Booking();
             booking.setBooking_date(LocalDate.now());
-            booking.setHospital(hospitalService.getHospitalById(i + 1));
+            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
+            booking.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
             booking.setHotel(hotelService.getById(i + 1));
-            booking.setDoctor(doctorService.getDoctorById(i + 1));
+            DoctorDTOWithHospital doctor = doctorService.getDoctorById(i + 1);
+            booking.setDoctor(modelMapperService.forResponse().map(doctor, Doctor.class));
             booking.setPatient(patientService.getPatientById(i + 2));
             booking.setRetreat(retreatService.getRetreatById(i + 1));
             booking.setStatus("Active");
