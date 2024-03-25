@@ -2,13 +2,12 @@ package codewizards.heal_trip.security;
 
 import codewizards.heal_trip.entities.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public class UserSecurity implements UserDetails {
+public class UserSecurity implements CustomUserDetails {
     private final User user;
 
 
@@ -51,5 +50,15 @@ public class UserSecurity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return user.getFirst_name() + " " + user.getLast_name();
+    }
+
+    @Override
+    public int getId() {
+        return user.getId();
     }
 }
