@@ -1,5 +1,6 @@
 package codewizards.heal_trip.business.concretes;
 
+import codewizards.heal_trip.business.DTOs.responses.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.dataAccess.RetreatDao;
 import codewizards.heal_trip.entities.Retreat;
@@ -9,6 +10,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RetreatService implements IRetreatService {
@@ -57,7 +60,12 @@ public class RetreatService implements IRetreatService {
     }
 
     // get retreats by department id
-    public Iterable<Retreat> getRetreatsByDepartmentId(int departmentId) {
-        return retreatDao.findByDepartmentId(departmentId);
+    public Iterable<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId) {
+        List<Retreat> retreats = retreatDao.findByDepartmentId(departmentId);
+        List<GotRetreatByDepartmentIdResponse> response = new ArrayList<>();
+        for (Retreat retreat : retreats) {
+            response.add(new GotRetreatByDepartmentIdResponse(retreat.getId(), retreat.getRetreat_name(), retreat.getDescription(), retreat.getImage()));
+        }
+        return response;
     }
 }

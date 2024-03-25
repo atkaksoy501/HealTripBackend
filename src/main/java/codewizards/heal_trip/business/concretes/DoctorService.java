@@ -1,6 +1,8 @@
 package codewizards.heal_trip.business.concretes;
 
+import codewizards.heal_trip.business.DTOs.responses.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
+import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.DoctorDao;
 import codewizards.heal_trip.entities.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +14,18 @@ import java.util.List;
 @Service
 public class DoctorService implements IDoctorService {
     private DoctorDao doctorDao;
+    private ModelMapperService modelMapperService;
 
     @Autowired
-    public DoctorService(DoctorDao doctorDao) {
+    public DoctorService(DoctorDao doctorDao, ModelMapperService modelMapperService) {
         this.doctorDao = doctorDao;
+        this.modelMapperService = modelMapperService;
     }
 
     @Override
-    public Doctor getDoctorById(int doctor_id) {
-        return doctorDao.findById(doctor_id).orElse(null);
+    public DoctorDTOWithHospital getDoctorById(int doctor_id) {
+        Doctor doctor = doctorDao.findById(doctor_id).orElse(null);
+        return modelMapperService.forResponse().map(doctor, DoctorDTOWithHospital.class);
     }
     @Override
     public Doctor registerDoctor(Doctor doctor) {
