@@ -6,6 +6,7 @@ import codewizards.heal_trip.business.DTOs.requests.CreateAddressRequest;
 import codewizards.heal_trip.business.DTOs.requests.UpdateAddressRequest;
 import codewizards.heal_trip.business.abstracts.IAddressService;
 import codewizards.heal_trip.entities.Address;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class AddressesController {
     }
     
     @PostMapping("/add")
-    public Address add(@RequestBody CreateAddressRequest address) {
+    public Address add(@Valid @RequestBody CreateAddressRequest address) {
         return this.addressService.add(address);
     }
     
@@ -40,7 +41,7 @@ public class AddressesController {
     }
     
     @PutMapping("/update")
-    public Address update(@RequestBody UpdateAddressRequest address){
+    public Address update(@Valid @RequestBody UpdateAddressRequest address){
         return this.addressService.update(address);
     }
 }
