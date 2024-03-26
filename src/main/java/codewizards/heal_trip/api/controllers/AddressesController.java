@@ -2,6 +2,8 @@ package codewizards.heal_trip.api.controllers;
 
 import java.util.*;
 
+import codewizards.heal_trip.business.DTOs.requests.CreateAddressRequest;
+import codewizards.heal_trip.business.DTOs.requests.UpdateAddressRequest;
 import codewizards.heal_trip.business.abstracts.IAddressService;
 import codewizards.heal_trip.entities.Address;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class AddressesController {
     }
     
     @PostMapping("/add")
-    public Address add(@RequestBody Address address) {
+    public Address add(@RequestBody CreateAddressRequest address) {
         return this.addressService.add(address);
     }
     
@@ -38,7 +40,7 @@ public class AddressesController {
     }
     
     @PutMapping("/update")
-    public Address update(@RequestBody Address address){
+    public Address update(@RequestBody UpdateAddressRequest address){
         return this.addressService.update(address);
     }
 }
