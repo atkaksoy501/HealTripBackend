@@ -3,6 +3,8 @@ package codewizards.heal_trip.business.concretes;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import codewizards.heal_trip.business.DTOs.requests.CreateAddressRequest;
+import codewizards.heal_trip.business.DTOs.requests.UpdateAddressRequest;
 import codewizards.heal_trip.business.abstracts.IAddressService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ public class AddressService implements IAddressService {
     }
     
     @Override
-    public Address add(Address address) {
+    public Address add(CreateAddressRequest address) {
         Address newAddress = this.modelMapperService.forRequest().map(address, Address.class);
         newAddress.setCreateDate(LocalDateTime.now());
         Address savedAddress = this.addressDao.save(newAddress);
@@ -52,19 +54,18 @@ public class AddressService implements IAddressService {
     }
     
     @Override
-    public Address update(Address address){
+    public Address update(UpdateAddressRequest address){
         //get current address
-        int id = address.getId();
-        Address currentAddress = this.addressDao.findById(id).orElse(null);
+        Address currentAddress = this.addressDao.findById(address.getId()).orElse(null);
         if(currentAddress == null){
             throw new IllegalArgumentException("Address not found");
         }
         //update address
         Address updatedAddress = this.modelMapperService.forResponse().map(address, Address.class);
         updatedAddress.setUpdateDate(LocalDateTime.now());
-        updatedAddress.setId(id);
+        updatedAddress.setCreateDate(currentAddress.getCreateDate());
+        updatedAddress.setId(address.getId());
         Address savedAddress = this.addressDao.save(updatedAddress);
-        savedAddress.setUpdateDate(updatedAddress.getUpdateDate());
         return this.modelMapperService.forResponse().map(savedAddress, Address.class);
     }
 }
