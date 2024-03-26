@@ -1,6 +1,6 @@
 package codewizards.heal_trip.business.abstracts;
 
-import codewizards.heal_trip.business.DTOs.responses.GotRetreatByDepartmentIdResponse;
+import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.entities.Retreat;
 
 public interface IRetreatService {

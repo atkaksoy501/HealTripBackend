@@ -2,7 +2,7 @@ package codewizards.heal_trip.api.controllers;
 
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.responses.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

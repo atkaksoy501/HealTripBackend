@@ -1,4 +1,4 @@
-package codewizards.heal_trip.business.DTOs.responses;
+package codewizards.heal_trip.business.DTOs.responses.department;
 
 import lombok.*;
 

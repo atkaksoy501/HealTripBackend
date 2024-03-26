@@ -1,7 +1,7 @@
 package codewizards.heal_trip.business.abstracts;
 
-import codewizards.heal_trip.business.DTOs.requests.CreateAddressRequest;
-import codewizards.heal_trip.business.DTOs.requests.UpdateAddressRequest;
+import codewizards.heal_trip.business.DTOs.requests.address.CreateAddressRequest;
+import codewizards.heal_trip.business.DTOs.requests.address.UpdateAddressRequest;
 import codewizards.heal_trip.entities.Address;
 
 import java.util.*;
