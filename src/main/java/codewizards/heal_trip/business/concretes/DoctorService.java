@@ -1,26 +1,27 @@
 package codewizards.heal_trip.business.concretes;
 
-import codewizards.heal_trip.business.DTOs.responses.DoctorDTOWithHospital;
+import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
+import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
+import codewizards.heal_trip.business.abstracts.IHospitalService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.DoctorDao;
 import codewizards.heal_trip.entities.Doctor;
-import org.springframework.beans.factory.annotation.Autowired;
+import codewizards.heal_trip.entities.Hospital;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class DoctorService implements IDoctorService {
     private DoctorDao doctorDao;
     private ModelMapperService modelMapperService;
-
-    @Autowired
-    public DoctorService(DoctorDao doctorDao, ModelMapperService modelMapperService) {
-        this.doctorDao = doctorDao;
-        this.modelMapperService = modelMapperService;
-    }
+    private IHospitalService hospitalService;
+    private IDepartmentService departmentService;
 
     @Override
     public DoctorDTOWithHospital getDoctorById(int doctor_id) {
@@ -28,9 +29,14 @@ public class DoctorService implements IDoctorService {
         return modelMapperService.forResponse().map(doctor, DoctorDTOWithHospital.class);
     }
     @Override
-    public Doctor registerDoctor(Doctor doctor) {
-        doctor.setCreateDate(LocalDateTime.now());
-        return doctorDao.save(doctor);
+    public Doctor registerDoctor(CreateDoctorRequest doctor) {
+        Doctor newDoctor = modelMapperService.forRequest().map(doctor, Doctor.class);
+        newDoctor.setHospital(modelMapperService.forRequest()
+                .map(hospitalService.getHospitalById(doctor.getHospital_id()), Hospital.class));
+        newDoctor.setDepartment(departmentService.getById(doctor.getDepartment_id()));
+        newDoctor.setCreateDate(LocalDateTime.now());
+        newDoctor.setActive(true);
+        return doctorDao.save(newDoctor);
     }
     @Override
     public boolean deleteDoctor(int doctor_id) {

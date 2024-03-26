@@ -1,7 +1,6 @@
 package codewizards.heal_trip.business.abstracts;
 
-import codewizards.heal_trip.business.DTOs.responses.GotHospitalByIdResponse;
-import codewizards.heal_trip.entities.Doctor;
+import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
 import codewizards.heal_trip.entities.Hospital;
 
 import java.util.List;
