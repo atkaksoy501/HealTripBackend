@@ -1,4 +1,4 @@
-package codewizards.heal_trip.business.DTOs.requests;
+package codewizards.heal_trip.business.DTOs.requests.address;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

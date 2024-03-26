@@ -1,7 +1,7 @@
 package codewizards.heal_trip.business.concretes;
 
-import codewizards.heal_trip.business.DTOs.responses.GotHospitalByIdResponse;
-import codewizards.heal_trip.business.DTOs.responses.GotHospitalsByDepartmentIdResponse;
+import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
+import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalsByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IHospitalService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDao;

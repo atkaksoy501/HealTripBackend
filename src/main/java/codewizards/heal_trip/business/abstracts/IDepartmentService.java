@@ -2,7 +2,7 @@ package codewizards.heal_trip.business.abstracts;
 
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.responses.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.entities.Department;
 
 public interface IDepartmentService {

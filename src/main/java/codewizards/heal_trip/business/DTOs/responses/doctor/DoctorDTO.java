@@ -1,6 +1,7 @@
-package codewizards.heal_trip.business.DTOs.responses;
+package codewizards.heal_trip.business.DTOs.responses.doctor;
 
-import codewizards.heal_trip.entities.Hospital;
+
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorDTOWithHospital {
+public class DoctorDTO {
     private int id;
 
     private int experience_year;
@@ -18,6 +19,4 @@ public class DoctorDTOWithHospital {
     private byte[] doctorImage;
 
     private DepartmentDTO department;
-
-    private HospitalForDoctorResponse hospital;
 }

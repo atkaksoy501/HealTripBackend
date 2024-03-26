@@ -4,7 +4,7 @@ import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.abstracts.IAuthService;
 import codewizards.heal_trip.security.CustomUserDetails;
 import codewizards.heal_trip.security.config.JwtUtils;
-import codewizards.heal_trip.business.DTOs.requests.AuthenticationRequest;
+import codewizards.heal_trip.business.DTOs.requests.authentication.AuthenticationRequest;
 import codewizards.heal_trip.security.JpaUserDetailsService;
 import codewizards.heal_trip.security.UserSecurity;
 import jakarta.servlet.http.Cookie;
