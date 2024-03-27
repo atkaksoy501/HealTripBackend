@@ -57,7 +57,8 @@ public class RetreatsController {
     }
 
     @GetMapping(value = "/getByDepartmentId/{departmentId}")
-    public ResponseEntity<List<GotRetreatByDepartmentIdResponse>> getRetreatsByDepartmentId(@PathVariable int departmentId) {
-        return new ResponseEntity<>(retreatService.getRetreatsByDepartmentId(departmentId), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(@PathVariable int departmentId) {
+        return retreatService.getRetreatsByDepartmentId(departmentId);
     }
 }
