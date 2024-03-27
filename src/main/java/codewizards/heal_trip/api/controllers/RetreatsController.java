@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/retreat")
 @CrossOrigin
@@ -55,7 +57,7 @@ public class RetreatsController {
     }
 
     @GetMapping(value = "/getByDepartmentId/{departmentId}")
-    public ResponseEntity<Iterable<GotRetreatByDepartmentIdResponse>> getRetreatsByDepartmentId(@PathVariable int departmentId) {
+    public ResponseEntity<List<GotRetreatByDepartmentIdResponse>> getRetreatsByDepartmentId(@PathVariable int departmentId) {
         return new ResponseEntity<>(retreatService.getRetreatsByDepartmentId(departmentId), HttpStatus.OK);
     }
 }
