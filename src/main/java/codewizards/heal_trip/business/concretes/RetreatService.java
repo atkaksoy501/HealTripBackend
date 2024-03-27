@@ -60,7 +60,7 @@ public class RetreatService implements IRetreatService {
     }
 
     // get retreats by department id
-    public Iterable<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId) {
+    public List<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId) {
         List<Retreat> retreats = retreatDao.findByDepartmentId(departmentId);
         List<GotRetreatByDepartmentIdResponse> response = new ArrayList<>();
         for (Retreat retreat : retreats) {

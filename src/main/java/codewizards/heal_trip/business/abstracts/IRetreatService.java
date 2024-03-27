@@ -3,6 +3,8 @@ package codewizards.heal_trip.business.abstracts;
 import codewizards.heal_trip.business.DTOs.responses.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.entities.Retreat;
 
+import java.util.List;
+
 public interface IRetreatService {
 
     Retreat getRetreatById(int retreat_id);
@@ -15,5 +17,5 @@ public interface IRetreatService {
 
     Iterable<Retreat> getAllRetreats();
 
-    Iterable<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId);
+    List<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId);
 }
