@@ -27,17 +27,22 @@ public class SecurityConfig {
 
     private final JpaUserDetailsService jpaUserDetailsService;
 
+    private static final String[] WHITE_LIST_URLS = {
+        "/swagger-ui/**",
+        "/auth/register",
+        "/auth/authenticate"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/authenticate", "/**")
-                        .permitAll()
-                        .requestMatchers("/swagger-ui/index.html").hasRole("ADMIN")
-                        .anyRequest()
-                        .authenticated())
+                        .requestMatchers(WHITE_LIST_URLS).permitAll()
+//                        .requestMatchers("/swagger-ui/index.html").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .userDetailsService(jpaUserDetailsService)
