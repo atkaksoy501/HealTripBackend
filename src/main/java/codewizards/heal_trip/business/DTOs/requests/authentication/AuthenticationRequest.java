@@ -1,4 +1,4 @@
-package codewizards.heal_trip.business.DTOs.requests;
+package codewizards.heal_trip.business.DTOs.requests.authentication;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

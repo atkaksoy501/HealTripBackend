@@ -1,7 +1,7 @@
 package codewizards.heal_trip.api.controllers;
 
-import codewizards.heal_trip.business.DTOs.responses.GotHospitalByIdResponse;
-import codewizards.heal_trip.business.DTOs.responses.GotHospitalsByDepartmentIdResponse;
+import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
+import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalsByDepartmentIdResponse;
 import codewizards.heal_trip.business.concretes.HospitalService;
 import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.entities.Hospital;

@@ -1,6 +1,6 @@
 package codewizards.heal_trip.api.controllers;
 
-import codewizards.heal_trip.business.DTOs.responses.GotRetreatByDepartmentIdResponse;
+import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.entities.Retreat;
 import org.springframework.beans.factory.annotation.Autowired;

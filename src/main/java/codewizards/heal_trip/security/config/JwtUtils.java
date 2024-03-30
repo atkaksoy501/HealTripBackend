@@ -4,6 +4,7 @@ import codewizards.heal_trip.security.CustomUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
@@ -16,8 +17,10 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtils {
-    private SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+//    private SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
