@@ -3,7 +3,7 @@ package codewizards.heal_trip.business.concretes;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import codewizards.heal_trip.business.DTOs.responses.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import org.springframework.beans.factory.annotation.Autowired;

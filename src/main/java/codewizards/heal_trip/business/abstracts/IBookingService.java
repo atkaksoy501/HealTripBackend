@@ -1,6 +1,9 @@
 package codewizards.heal_trip.business.abstracts;
 
 import java.util.*;
+
+import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
+import codewizards.heal_trip.business.DTOs.responses.booking.CreatedBookingResponse;
 import codewizards.heal_trip.entities.*;
 
 public interface IBookingService {
@@ -8,7 +11,7 @@ public interface IBookingService {
     
     Booking getById(int id);
     
-    Booking add(Booking booking);
+    CreatedBookingResponse add(CreateBookingRequest booking);
     
     void deleteById(int id);
     
