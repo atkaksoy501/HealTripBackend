@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -28,9 +30,12 @@ public class SecurityConfig {
     private final JpaUserDetailsService jpaUserDetailsService;
 
     private static final String[] WHITE_LIST_URLS = {
-        "/swagger-ui/**",
-        "/auth/register",
-        "/auth/authenticate"
+            "/swagger-ui/**",
+            "/v2/api-docs/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs/**",
+            "/auth/register",
+            "/auth/authenticate"
     };
 
     @Bean
@@ -48,6 +53,16 @@ public class SecurityConfig {
                 .userDetailsService(jpaUserDetailsService)
                 .httpBasic(Customizer.withDefaults())
                 .build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider()
+    {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(jpaUserDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        // TODO: User Service'i coredan gelecek şekilde entegre et.
+        return authenticationProvider;
     }
 
     @Bean
