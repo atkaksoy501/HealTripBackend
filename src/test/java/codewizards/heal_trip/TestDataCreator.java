@@ -1,8 +1,9 @@
 package codewizards.heal_trip;
 
 import codewizards.heal_trip.DTO.UserDTO;
-import codewizards.heal_trip.business.DTOs.responses.DoctorDTOWithHospital;
-import codewizards.heal_trip.business.DTOs.responses.GotHospitalByIdResponse;
+import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
+import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
 import codewizards.heal_trip.business.abstracts.*;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
@@ -24,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.NoSuchFileException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -269,56 +269,6 @@ public class TestDataCreator {
         }
     }
 
-//    @Test
-    @Order(7)
-    void createHotelImage() throws Exception {
-        for (int i = 1; i <= 5; i++) {
-            int hotelId = i;
-            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hotelImages/" + i + ".jpeg"));
-
-            HotelImage hotelImage = new HotelImage();
-            hotelImage.setImage(fileContent);
-            hotelImage.setHotel(hotelService.getById(hotelId));
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            String hotelImageJson = objectMapper.writeValueAsString(hotelImage);
-
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hotel/save")
-                    .headers(createHeader())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(hotelImageJson));
-
-            result.andExpect(status().isOk());
-        }
-    }
-
-//    @Test
-    @Order(8)
-    void createHospitalImage() throws Exception {
-        for (int i = 1; i <= 5; i++) {
-            int hospitalId = i;
-            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hospitalImages/" + i + ".jpeg"));
-
-            HospitalImage hospitalImage = new HospitalImage();
-            hospitalImage.setImage(fileContent);
-//            hospitalImage.setHospital(hospitalService.getHospitalById(hospitalId));
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            String hospitalImageJson = objectMapper.writeValueAsString(hospitalImage);
-
-            hospitalImage = entityManager.merge(hospitalImage);
-
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/image/hospital/save")
-                    .headers(createHeader())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(hospitalImageJson));
-
-            result.andExpect(status().isOk());
-        }
-    }
-
     @Test
     @Order(9)
     void createHospital() throws Exception {
@@ -438,16 +388,22 @@ public class TestDataCreator {
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
         for (int i = 0; i < 5; i++) {
-            Doctor doctor = new Doctor();
+//            Doctor doctor = new Doctor();
             byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/doctorImages/" + (i + 1) + ".jpeg"));
+//            doctor.setDoctorImage(fileContent);
+//            doctor.setActive(true);
+//            doctor.setDepartment(departmentService.getById(i + 1));
+//            doctor.setExperience_year(10);
+//            doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
+//            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
+//            doctor.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
+//            doctor.setActive(true);
+            CreateDoctorRequest doctor = new CreateDoctorRequest();
             doctor.setDoctorImage(fileContent);
-            doctor.setActive(true);
-            doctor.setDepartment(departmentService.getById(i + 1));
-            doctor.setExperience_year(10);
             doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
-            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
-            doctor.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
-            doctor.setActive(true);
+            doctor.setDepartment_id(i + 1);
+            doctor.setHospital_id(i + 1);
+            doctor.setExperience_year(10);
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -501,83 +457,6 @@ public class TestDataCreator {
         eyeRetreatImage.setImage(eyeFileContent);
         eyeRetreatImage.setCreateDate(LocalDateTime.now());
         return eyeRetreatImage;
-    }
-
-//    @Test
-    @Order(13)
-    void createRetreatImage() throws Exception{
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            for (int i = 1; i <= 5; i++) {
-                byte[] aestheticFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/aesthetic/" + (i) + ".jpg"));
-                byte[] hairFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/hair/" + (i) + ".jpg"));
-                byte[] dentalFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/dental/" + (i) + ".jpg"));
-
-                if (i <= 3) {
-                    byte[] metabolicFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/metabolic/" + (i) + ".jpg"));
-                    RetreatImage metabolicRetreatImage = new RetreatImage();
-                    metabolicRetreatImage.setImage(metabolicFileContent);
-                    String metabolicRetreatImageJson = objectMapper.writeValueAsString(metabolicRetreatImage);
-
-                    ResultActions metabolicResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
-                            .headers(createHeader())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(metabolicRetreatImageJson));
-
-                    metabolicResult.andExpect(status().isOk());
-                }
-
-                if (i == 1) {
-                    byte[] eyeFileContent = FileUtils.readFileToByteArray(new File("src/test/retreatImages/eye/" + (i) + ".jpg"));
-                    RetreatImage eyeRetreatImage = new RetreatImage();
-                    eyeRetreatImage.setImage(eyeFileContent);
-                    String eyeRetreatImageJson = objectMapper.writeValueAsString(eyeRetreatImage);
-
-                    ResultActions eyeResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
-                            .headers(createHeader())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(eyeRetreatImageJson));
-
-                    eyeResult.andExpect(status().isOk());
-                }
-
-                RetreatImage aestheticRetreatImage = new RetreatImage();
-                aestheticRetreatImage.setImage(aestheticFileContent);
-
-                RetreatImage hairRetreatImage = new RetreatImage();
-                hairRetreatImage.setImage(hairFileContent);
-
-                RetreatImage dentalRetreatImage = new RetreatImage();
-                dentalRetreatImage.setImage(dentalFileContent);
-
-
-                String aestheticRetreatImageJson = objectMapper.writeValueAsString(aestheticRetreatImage);
-                String hairRetreatImageJson = objectMapper.writeValueAsString(hairRetreatImage);
-                String dentalRetreatImageJson = objectMapper.writeValueAsString(dentalRetreatImage);
-
-
-                ResultActions aestheticResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
-                        .headers(createHeader())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(aestheticRetreatImageJson));
-
-                ResultActions hairResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
-                        .headers(createHeader())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(hairRetreatImageJson));
-
-                ResultActions dentalResult = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
-                        .headers(createHeader())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(dentalRetreatImageJson));
-
-
-                aestheticResult.andExpect(status().isOk());
-                hairResult.andExpect(status().isOk());
-                dentalResult.andExpect(status().isOk());
-            }
-        } catch (NoSuchFileException ignored) {}
     }
 
     @Test
@@ -660,20 +539,29 @@ public class TestDataCreator {
     @Commit
     void createBooking() throws Exception {
         for (int i = 0; i < 5; i++) {
-            Booking booking = new Booking();
-            booking.setBooking_date(LocalDate.now());
-            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
-            booking.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
-            booking.setHotel(hotelService.getById(i + 1));
-            DoctorDTOWithHospital doctor = doctorService.getDoctorById(i + 1);
-            booking.setDoctor(modelMapperService.forResponse().map(doctor, Doctor.class));
-            booking.setPatient(patientService.getPatientById(i + 2));
-            booking.setRetreat(retreatService.getRetreatById(i + 1));
-            booking.setStatus("Active");
-            booking.setEndDate(LocalDate.now().plusDays(1));
+//            Booking booking = new Booking();
+//            booking.setBooking_date(LocalDate.now());
+//            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
+//            booking.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
+//            booking.setHotel(hotelService.getById(i + 1));
+//            DoctorDTOWithHospital doctor = doctorService.getDoctorById(i + 1);
+//            booking.setDoctor(modelMapperService.forResponse().map(doctor, Doctor.class));
+//            booking.setPatient(patientService.getPatientById(i + 2));
+//            booking.setRetreat(retreatService.getRetreatById(i + 1));
+//            booking.setStatus("Active");
+//            booking.setEndDate(LocalDate.now().plusDays(1));
+//            booking.setStartDate(LocalDate.now());
+
+            CreateBookingRequest booking = new CreateBookingRequest();
+            booking.setDoctor_id(i + 1);
+            booking.setHospital_id(i + 1);
+            booking.setEndDate(LocalDate.now().plusDays(i + 1));
+            booking.setHotel_id(i + 1);
+            booking.setRetreat_id(i + 1);
+            booking.setPatient_id(i + 2);
             booking.setStartDate(LocalDate.now());
 
-            booking.setFeedback(feedbackService.getFeedbackById(i + 1));
+//            booking.setFeedback(feedbackService.getFeedbackById(i + 1));
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());

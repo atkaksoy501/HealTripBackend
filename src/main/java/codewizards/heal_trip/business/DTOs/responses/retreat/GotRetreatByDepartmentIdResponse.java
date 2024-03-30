@@ -1,4 +1,4 @@
-package codewizards.heal_trip.business.DTOs.responses;
+package codewizards.heal_trip.business.DTOs.responses.retreat;
 
 import codewizards.heal_trip.entities.RetreatImage;
 import lombok.AllArgsConstructor;

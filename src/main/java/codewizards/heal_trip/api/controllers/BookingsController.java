@@ -1,7 +1,11 @@
 package codewizards.heal_trip.api.controllers;
 
 import java.util.*;
+
+import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
+import codewizards.heal_trip.business.DTOs.responses.booking.CreatedBookingResponse;
 import codewizards.heal_trip.business.abstracts.IEmailService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +32,13 @@ public class BookingsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> add(@RequestBody Booking booking) throws IllegalArgumentException{
+    public ResponseEntity<CreatedBookingResponse> add(@Valid @RequestBody CreateBookingRequest booking) throws IllegalArgumentException{
         try {
-            Booking dbBooking = bookingService.add(booking);
-//            emailService.sendAppointmentEmail(dbBooking);
-            return new ResponseEntity<>("Booking with id " + dbBooking.getId() + " has been registered. Email has ben sent to " + booking.getPatient().getEmail(), HttpStatus.OK);
+            CreatedBookingResponse dbBooking = bookingService.add(booking);
+//            emailService.sendAppointmentEmail(dbBooking); //todo: uncomment this line
+            return new ResponseEntity<>(dbBooking, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     

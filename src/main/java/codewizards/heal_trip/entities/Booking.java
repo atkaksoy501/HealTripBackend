@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import codewizards.heal_trip.core.entities.BaseEntity;
+import codewizards.heal_trip.entities.enums.BookingStatus;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,7 +40,7 @@ public class Booking extends BaseEntity {
     private LocalDate booking_date;
     
     @Column(name = "status")
-    private String status;
+    private BookingStatus status;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
