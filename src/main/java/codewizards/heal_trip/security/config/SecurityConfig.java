@@ -35,7 +35,12 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/v3/api-docs/**",
             "/auth/register",
-            "/auth/authenticate"
+            "/auth/authenticate",
+            "/department/getAll",
+            "/department/getAllSorted",
+            "/department/getAllByPage",
+            "/retreat/getAll",
+            "/retreat/getByDepartmentId"
     };
 
     @Bean
