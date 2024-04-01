@@ -40,7 +40,7 @@ public class SecurityConfig {
             "/department/getAllSorted",
             "/department/getAllByPage",
             "/retreat/getAll",
-            "/retreat/getByDepartmentId"
+            "/retreat/getByDepartmentId/**"
     };
 
     @Bean
