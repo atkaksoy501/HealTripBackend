@@ -1,15 +1,13 @@
-package codewizards.heal_trip.security.config;
+package codewizards.heal_trip.core.security.config;
 
-import codewizards.heal_trip.security.CustomUserDetails;
+import codewizards.heal_trip.core.security.CustomUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

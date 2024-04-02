@@ -1,4 +1,4 @@
-package codewizards.heal_trip.security;
+package codewizards.heal_trip.core.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
