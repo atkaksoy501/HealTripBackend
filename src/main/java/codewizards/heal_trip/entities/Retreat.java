@@ -28,7 +28,7 @@ public class Retreat extends BaseEntity {
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1000)
     private String description;
 
     @OneToOne(cascade = CascadeType.PERSIST)
