@@ -11,10 +11,8 @@ import codewizards.heal_trip.core.utilities.exceptions.types.BusinessException;
 import codewizards.heal_trip.dataAccess.UserDao;
 import codewizards.heal_trip.entities.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,20 +27,6 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
     private final JpaUserDetailsService jpaUserDetailsService;
     private final JwtUtils jwtUtils;
-
-    private static final String[] WHITE_LIST_URLS = {
-            "/swagger-ui/**",
-            "/v2/api-docs/**",
-            "/v3/api-docs/**",
-            "/v3/api-docs/**",
-            "/auth/register",
-            "/auth/authenticate",
-            "/department/getAll",
-            "/department/getAllSorted",
-            "/department/getAllByPage",
-            "/retreat/getAll",
-            "/retreat/getByDepartmentId/**"
-    };
 
     public String login (AuthenticationRequest request) {
         Authentication authentication = authenticationManager
@@ -67,16 +51,5 @@ public class AuthService implements IAuthService {
         newUser.setActive(true);
         newUser.setPhone_number(user.getPhone_number());
         return Optional.of(userRepository.save(newUser));
-    }
-
-    @Override
-    public HttpSecurity configureSecurity(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(WHITE_LIST_URLS).permitAll()
-//                        .requestMatchers("/swagger-ui/index.html").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET).permitAll()
-                        .anyRequest().authenticated()
-        );
-        return http;
     }
 }
