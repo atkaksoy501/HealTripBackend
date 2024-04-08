@@ -1,8 +1,11 @@
 package codewizards.heal_trip.entities;
 
 import codewizards.heal_trip.core.entities.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -45,6 +48,11 @@ public class User extends BaseEntity {
 
     @Column(name = "active")
     private boolean active;
+
+    @Column(name = "birth_date")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate birth_date;
 
 
 }
