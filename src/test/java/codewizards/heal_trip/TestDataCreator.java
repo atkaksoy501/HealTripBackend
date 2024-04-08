@@ -8,6 +8,7 @@ import codewizards.heal_trip.business.abstracts.*;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
 import codewizards.heal_trip.entities.*;
+import codewizards.heal_trip.entities.enums.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.EntityManager;
@@ -150,7 +151,7 @@ public class TestDataCreator {
             patient.setPhone_number("1234567890");
             patient.setPassword("123456");
             patient.setBirth_date(java.time.LocalDate.of(2002, 1, 4));
-            patient.setGender('M');
+            patient.setGender(Gender.MALE);
             patient.setPatient_height(190);
             patient.setPatient_weight(110);
             patient.setRoles("PATIENT");

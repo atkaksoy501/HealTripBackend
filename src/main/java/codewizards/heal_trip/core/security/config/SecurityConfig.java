@@ -1,10 +1,11 @@
-package codewizards.heal_trip.security.config;
+package codewizards.heal_trip.core.security.config;
 
-import codewizards.heal_trip.security.JpaUserDetailsService;
+import codewizards.heal_trip.business.abstracts.IAuthService;
+import codewizards.heal_trip.core.security.JpaUserDetailsService;
+import codewizards.heal_trip.core.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,41 +31,25 @@ public class SecurityConfig {
 
     private final JpaUserDetailsService jpaUserDetailsService;
 
-    private static final String[] WHITE_LIST_URLS = {
-            "/swagger-ui/**",
-            "/v2/api-docs/**",
-            "/v3/api-docs/**",
-            "/v3/api-docs/**",
-            "/auth/register",
-            "/auth/authenticate",
-            "/department/getAll",
-            "/department/getAllSorted",
-            "/department/getAllByPage",
-            "/retreat/getAll",
-            "/retreat/getByDepartmentId/**"
-    };
+    private final SecurityService securityService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(WHITE_LIST_URLS).permitAll()
-//                        .requestMatchers("/swagger-ui/index.html").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .userDetailsService(jpaUserDetailsService)
-                .httpBasic(Customizer.withDefaults())
-                .build();
+        http.cors(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable);
+
+        securityService.configureSecurity(http);
+
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .userDetailsService(jpaUserDetailsService)
+            .httpBasic(Customizer.withDefaults());
+
+        return http.build();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider()
-    {
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(jpaUserDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());

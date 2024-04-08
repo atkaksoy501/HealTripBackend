@@ -1,7 +1,7 @@
-package codewizards.heal_trip.security.config;
+package codewizards.heal_trip.core.security.config;
 
-import codewizards.heal_trip.core.services.JwtService;
-import codewizards.heal_trip.security.JpaUserDetailsService;
+import codewizards.heal_trip.core.security.JwtService;
+import codewizards.heal_trip.core.security.JpaUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @Entity
 @Table(name="retreats")
@@ -30,7 +28,7 @@ public class Retreat extends BaseEntity {
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1000)
     private String description;
 
     @OneToOne(cascade = CascadeType.PERSIST)

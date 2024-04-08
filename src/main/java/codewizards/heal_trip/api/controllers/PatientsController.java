@@ -33,17 +33,14 @@ public class PatientsController {
             return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/add")
-    public ResponseEntity<String> registerPatient(@RequestBody Patient patient) throws IllegalArgumentException {
-        try {
-//            emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
-            patient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
-            Integer patientId = patientService.registerPatient(patient);
-            return new ResponseEntity<>("Patient with id " + patientId + " has been registered. Email has ben sent to " + patient.getEmail(), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @PostMapping(value = "/add")
+//    public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient) throws IllegalArgumentException {
+//
+////            emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
+////            Patient dbPatient = patientService.registerPatient(patient);
+////            return new ResponseEntity<>(dbPatient, HttpStatus.OK);
+//
+//    }
 
     @PutMapping(value = "/update/{patient_id}")
     public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient, @PathVariable int patient_id) {
