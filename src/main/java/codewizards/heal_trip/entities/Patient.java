@@ -1,5 +1,6 @@
 package codewizards.heal_trip.entities;
 
+import codewizards.heal_trip.entities.enums.Gender;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
@@ -18,13 +19,13 @@ import java.util.List;
         scope = Patient.class)
 public class Patient extends User{
 
-    @Column(name = "birth_date")
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate birth_date;
+//    @Column(name = "birth_date")
+//    @Temporal(TemporalType.DATE)
+//    @JsonFormat(pattern = "dd/MM/yyyy")
+//    private LocalDate birth_date;
 
     @Column(name = "gender")
-    private char gender;
+    private Gender gender;
     
     @Column(name = "patient_height")
     private int patient_height;

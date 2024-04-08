@@ -1,7 +1,6 @@
 package codewizards.heal_trip.entities;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import codewizards.heal_trip.core.entities.BaseEntity;
 import codewizards.heal_trip.entities.enums.BookingStatus;
