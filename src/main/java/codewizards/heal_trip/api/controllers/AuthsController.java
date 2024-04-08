@@ -4,6 +4,7 @@ import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.abstracts.IAuthService;
 import codewizards.heal_trip.business.DTOs.requests.authentication.AuthenticationRequest;
 import codewizards.heal_trip.core.security.UserSecurity;
+import codewizards.heal_trip.entities.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,11 @@ public class AuthsController {
     @PostMapping("/register")
     public ResponseEntity<UserSecurity> register(@RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(authService.AddUser(user).map(UserSecurity::new).orElseThrow(() -> new Exception("Unknown")));
+    }
+
+    @PostMapping("/register/patient")
+    public ResponseEntity<UserSecurity> registerPatient(@RequestBody UserDTO patient) throws Exception {
+        return ResponseEntity.ok(authService.addPatient(patient).map(UserSecurity::new).orElseThrow(() -> new Exception("Unknown")));
     }
 
 }

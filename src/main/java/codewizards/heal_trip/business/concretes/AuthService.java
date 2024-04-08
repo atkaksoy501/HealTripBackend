@@ -3,12 +3,14 @@ package codewizards.heal_trip.business.concretes;
 import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.DTOs.requests.authentication.AuthenticationRequest;
 import codewizards.heal_trip.business.abstracts.IAuthService;
+import codewizards.heal_trip.business.abstracts.IPatientService;
 import codewizards.heal_trip.business.messages.AuthMessages;
 import codewizards.heal_trip.core.security.CustomUserDetails;
 import codewizards.heal_trip.core.security.JpaUserDetailsService;
 import codewizards.heal_trip.core.security.config.JwtUtils;
 import codewizards.heal_trip.core.utilities.exceptions.types.BusinessException;
 import codewizards.heal_trip.dataAccess.UserDao;
+import codewizards.heal_trip.entities.Patient;
 import codewizards.heal_trip.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +29,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
     private final JpaUserDetailsService jpaUserDetailsService;
     private final JwtUtils jwtUtils;
+    private final IPatientService patientService;
 
     public String login (AuthenticationRequest request) {
         Authentication authentication = authenticationManager
@@ -51,5 +54,9 @@ public class AuthService implements IAuthService {
         newUser.setActive(true);
         newUser.setPhone_number(user.getPhone_number());
         return Optional.of(userRepository.save(newUser));
+    }
+
+    public Optional<Patient> addPatient(UserDTO patient) {
+        return Optional.of(patientService.registerPatient(patient));
     }
 }
