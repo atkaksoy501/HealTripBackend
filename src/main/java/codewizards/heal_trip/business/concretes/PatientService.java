@@ -1,9 +1,13 @@
 package codewizards.heal_trip.business.concretes;
 
+import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.abstracts.IPatientService;
+import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.PatientDao;
 import codewizards.heal_trip.entities.Patient;
+import codewizards.heal_trip.entities.enums.Gender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +20,9 @@ public class PatientService implements IPatientService {
     private PatientDao patientDao;
 
     @Autowired
+    private ModelMapperService modelMapperService;
+
+    @Autowired
     public PatientService(PatientDao patientDao) {
         this.patientDao = patientDao;
     }
@@ -24,12 +31,14 @@ public class PatientService implements IPatientService {
         return patientDao.findById(patient_id).orElse(null);
     }
 
-    public Integer registerPatient(Patient patient) {
-        patient.setRoles("PATIENT");
-        patient.setActive(true);
-        patient.setCreateDate(LocalDateTime.now());
-        patient = patientDao.save(patient);
-        return patient.getId();
+    public Patient registerPatient(UserDTO patient) {
+        Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
+        dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
+        dbPatient.setRoles("PATIENT");
+        dbPatient.setActive(true);
+        dbPatient.setCreateDate(LocalDateTime.now());
+        dbPatient.setGender(Gender.UNDEFINED);
+        return patientDao.save(dbPatient);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -48,7 +57,7 @@ public class PatientService implements IPatientService {
                 dbPatient.setPassword(patient.getPassword());
             if (patient.getBirth_date() != null)
                 dbPatient.setBirth_date(patient.getBirth_date());
-            if (patient.getGender() != 0)
+            if (patient.getGender() == Gender.UNDEFINED)
                 dbPatient.setGender(patient.getGender());
             if (patient.getPatient_height() != 0)
                 dbPatient.setPatient_height(patient.getPatient_height());

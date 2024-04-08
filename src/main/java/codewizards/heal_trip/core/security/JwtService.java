@@ -1,4 +1,4 @@
-package codewizards.heal_trip.core.services;
+package codewizards.heal_trip.core.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
