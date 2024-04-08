@@ -11,6 +11,4 @@ public interface IAuthService {
 
     String login (AuthenticationRequest request);
     Optional<User> AddUser(UserDTO user);
-
-    HttpSecurity configureSecurity(HttpSecurity http) throws Exception;
 }
