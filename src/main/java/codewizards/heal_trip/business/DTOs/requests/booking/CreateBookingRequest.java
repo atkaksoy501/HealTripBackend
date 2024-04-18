@@ -13,16 +13,22 @@ import java.time.LocalDate;
 public class CreateBookingRequest {
     @NotNull
     private LocalDate startDate;
+
     @NotNull
     private LocalDate endDate;
+
     @NotNull
     private int patient_id;
-    @NotNull
-    private int hospital_id;
-    @NotNull
-    private int hotel_id;
-    @NotNull
-    private int doctor_id;
+
     @NotNull
     private int retreat_id;
+
+    @NotNull
+    private String description;
+
+    private int hospital_id;
+
+    private int hotel_id;
+
+    private int doctor_id;
 }
