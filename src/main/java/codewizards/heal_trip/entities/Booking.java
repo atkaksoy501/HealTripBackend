@@ -64,4 +64,7 @@ public class Booking extends BaseEntity {
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "feedback_id", referencedColumnName = "id")
     private Feedback feedback;
+
+    @Column(name = "description")
+    private String description;
 }
