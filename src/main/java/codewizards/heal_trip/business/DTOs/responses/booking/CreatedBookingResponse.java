@@ -21,5 +21,6 @@ public class CreatedBookingResponse {
     private HotelForBookingResponse hotel;
     private DoctorForBookingResponse doctor;
     private RetreatForBookingResponse retreat;
+    private String description;
 
 }

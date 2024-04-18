@@ -57,6 +57,7 @@ public class BookingService implements IBookingService {
         newBooking.setCreateDate(LocalDateTime.now());
         newBooking.setBooking_date(LocalDate.now());
         newBooking.setStatus(BookingStatus.NEW);
+        newBooking.setDescription(booking.getDescription());
         return modelMapperService.forResponse().map(bookingDao.save(newBooking), CreatedBookingResponse.class);
     }
     
