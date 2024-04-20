@@ -2,8 +2,10 @@ package codewizards.heal_trip.api.controllers;
 
 import java.util.*;
 
+import codewizards.heal_trip.business.DTOs.requests.department.AddDepartmentRequest;
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import codewizards.heal_trip.entities.Department;
@@ -25,7 +27,7 @@ public class DepartmentsController {
     }
     
     @PostMapping("/add")
-    public Department add(@RequestBody Department department) {
+    public DepartmentDTO add(@Valid @RequestBody AddDepartmentRequest department) {
         return this.departmentService.add(department);
     }
     
