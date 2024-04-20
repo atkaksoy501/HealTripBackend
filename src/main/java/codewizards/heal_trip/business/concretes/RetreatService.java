@@ -1,9 +1,18 @@
 package codewizards.heal_trip.business.concretes;
 
+import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
+import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
+import codewizards.heal_trip.business.abstracts.IDepartmentService;
+import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
+import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.RetreatDao;
+import codewizards.heal_trip.entities.Department;
 import codewizards.heal_trip.entities.Retreat;
+import codewizards.heal_trip.entities.RetreatImage;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,24 +23,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class RetreatService implements IRetreatService {
 
     private RetreatDao retreatDao;
+    private ModelMapperService modelMapperService;
+    private IImageService imageService;
+    private IDepartmentService departmentService;
 
-    @Autowired
-    public RetreatService(RetreatDao retreatDao) {
-        this.retreatDao = retreatDao;
-    }
 
     public Retreat getRetreatById(int retreat_id) {
         return retreatDao.findById(retreat_id).orElse(null);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public int addRetreat(Retreat retreat) {
-        retreat.setCreateDate(LocalDateTime.now());
-        retreat = retreatDao.save(retreat);
-        return retreat.getId();
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public AddedRetreatResponse addRetreat(AddRetreatRequest retreat) {
+        Retreat dbRetreat = new Retreat();
+        dbRetreat.setDescription(retreat.getDescription());
+        dbRetreat.setRetreat_name(retreat.getName());
+
+        RetreatImage image = imageService.getRetreatImageById(retreat.getImageId());
+        dbRetreat.setImage(image);
+
+        Department department = departmentService.getById(retreat.getDepartmentId());
+        dbRetreat.setDepartment(department);
+
+        dbRetreat.setCreateDate(LocalDateTime.now());
+        dbRetreat = retreatDao.save(dbRetreat);
+        AddedRetreatResponse response = modelMapperService.forResponse().map(dbRetreat, AddedRetreatResponse.class);
+        return response;
     }
 
     public boolean deleteRetreat(int retreat_id) {

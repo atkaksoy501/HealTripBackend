@@ -1,5 +1,7 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
+import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.entities.Retreat;
@@ -47,7 +49,7 @@ public class RetreatsController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<Integer> addRetreat(@RequestBody Retreat retreat) {
+    public ResponseEntity<AddedRetreatResponse> addRetreat(@RequestBody AddRetreatRequest retreat) {
         return new ResponseEntity<>(retreatService.addRetreat(retreat), HttpStatus.OK);
     }
 
