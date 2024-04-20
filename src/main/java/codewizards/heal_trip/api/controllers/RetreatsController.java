@@ -1,8 +1,11 @@
 package codewizards.heal_trip.api.controllers;
 
-import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
+import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
+import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
+import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.entities.Retreat;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +27,8 @@ public class RetreatsController {
     }
 
     @GetMapping(value = "/get/{retreat_id}")
-    public ResponseEntity<Retreat> getRetreatById(@PathVariable int retreat_id) {
-        Retreat retreat = retreatService.getRetreatById(retreat_id);
+    public ResponseEntity<GetRetreatByIdResponse> getRetreatById(@PathVariable int retreat_id) {
+        GetRetreatByIdResponse retreat = retreatService.getRetreatById(retreat_id);
         if (retreat == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else
@@ -42,17 +45,17 @@ public class RetreatsController {
     }
 
     @PutMapping(value = "/update/{retreat_id}")
-    public ResponseEntity<Retreat> updateRetreat(@RequestBody Retreat retreat, @PathVariable int retreat_id) {
+    public ResponseEntity<UpdatedRetreatResponse> updateRetreat(@Valid @RequestBody UpdateRetreatRequest retreat, @PathVariable int retreat_id) {
         return new ResponseEntity<>(retreatService.updateRetreat(retreat, retreat_id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<Integer> addRetreat(@RequestBody Retreat retreat) {
+    public ResponseEntity<AddedRetreatResponse> addRetreat(@Valid @RequestBody AddRetreatRequest retreat) {
         return new ResponseEntity<>(retreatService.addRetreat(retreat), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getAll")
-    public ResponseEntity<Iterable<Retreat>> getAllRetreats() {
+    public ResponseEntity<Iterable<GetAllRetreatsResponse>> getAllRetreats() {
         return new ResponseEntity<>(retreatService.getAllRetreats(), HttpStatus.OK);
     }
 
