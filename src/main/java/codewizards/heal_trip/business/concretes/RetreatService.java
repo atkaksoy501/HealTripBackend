@@ -2,6 +2,7 @@ package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
+import codewizards.heal_trip.business.DTOs.responses.retreat.GetAllRetreatsResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
@@ -74,8 +75,9 @@ public class RetreatService implements IRetreatService {
         return dbRetreat;
     }
 
-    public Iterable<Retreat> getAllRetreats() {
-        return retreatDao.findAll();
+    public Iterable<GetAllRetreatsResponse> getAllRetreats() {
+        List<Retreat> retreats =  retreatDao.findAll();
+        return retreats.stream().map(retreat -> modelMapperService.forResponse().map(retreat, GetAllRetreatsResponse.class)).toList();
     }
 
     // get retreats by department id
