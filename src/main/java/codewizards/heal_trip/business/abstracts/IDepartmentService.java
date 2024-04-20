@@ -2,6 +2,7 @@ package codewizards.heal_trip.business.abstracts;
 
 import java.util.*;
 
+import codewizards.heal_trip.business.DTOs.requests.department.AddDepartmentRequest;
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.entities.Department;
 
@@ -12,7 +13,7 @@ public interface IDepartmentService {
     
     List<Department> getAllSorted();
     
-    Department add(Department department);
+    DepartmentDTO add(AddDepartmentRequest department);
     Department getByDepartmentName(String departmentName);
     
     Department getById(int id);
