@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetRetreatByIdResponse {
+public class UpdatedRetreatResponse {
     private int id;
 
     private String retreat_name;

@@ -7,18 +7,14 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AddRetreatRequest {
-    @NotNull
+public class UpdateRetreatRequest {
     @Size(min = 3, max = 50)
     private String retreat_name;
 
-    @NotNull
     @Size(min = 3, max = 1000)
     private String description;
 
-    @NotNull
     private int departmentId;
 
-    @NotNull
     private int imageId;
 }
