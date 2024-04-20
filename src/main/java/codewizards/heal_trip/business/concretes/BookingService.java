@@ -6,6 +6,7 @@ import java.util.*;
 
 import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
 import codewizards.heal_trip.business.DTOs.responses.booking.CreatedBookingResponse;
+import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
 import codewizards.heal_trip.business.abstracts.*;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.entities.*;
@@ -45,7 +46,7 @@ public class BookingService implements IBookingService {
         Hotel hotel = hotelService.getById(booking.getHotel_id());
         Doctor doctor = modelMapperService.forRequest()
                 .map(doctorService.getDoctorById(booking.getDoctor_id()), Doctor.class);
-        Retreat retreat = retreatService.getRetreatById(booking.getRetreat_id());
+        GetRetreatByIdResponse retreat = retreatService.getRetreatById(booking.getRetreat_id());
 
 
         Booking newBooking = this.modelMapperService.forRequest().map(booking, Booking.class);
@@ -53,7 +54,7 @@ public class BookingService implements IBookingService {
         newBooking.setHospital(hospital);
         newBooking.setHotel(hotel);
         newBooking.setDoctor(doctor);
-        newBooking.setRetreat(retreat);
+        newBooking.setRetreat(modelMapperService.forRequest().map(retreat, Retreat.class));
         newBooking.setCreateDate(LocalDateTime.now());
         newBooking.setBooking_date(LocalDate.now());
         newBooking.setStatus(BookingStatus.NEW);

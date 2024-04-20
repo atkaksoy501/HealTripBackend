@@ -2,6 +2,7 @@ package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
+import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IImageService;
@@ -32,8 +33,9 @@ public class RetreatService implements IRetreatService {
     private IDepartmentService departmentService;
 
 
-    public Retreat getRetreatById(int retreat_id) {
-        return retreatDao.findById(retreat_id).orElse(null);
+    public GetRetreatByIdResponse getRetreatById(int retreat_id) {
+        Retreat retreat = retreatDao.findById(retreat_id).orElse(null);
+        return modelMapperService.forResponse().map(retreat, GetRetreatByIdResponse.class);
     }
 
 //    @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -57,10 +59,7 @@ public class RetreatService implements IRetreatService {
     public boolean deleteRetreat(int retreat_id) {
         retreatDao.deleteById(retreat_id);
         Retreat retreat = retreatDao.findById(retreat_id).orElse(null);
-        if (retreat == null)
-            return true;
-        else
-            return false;
+        return retreat == null;
     }
 
     public Retreat updateRetreat(Retreat retreat, int retreat_id) {

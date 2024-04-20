@@ -2,9 +2,11 @@ package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
+import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.entities.Retreat;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,8 @@ public class RetreatsController {
     }
 
     @GetMapping(value = "/get/{retreat_id}")
-    public ResponseEntity<Retreat> getRetreatById(@PathVariable int retreat_id) {
-        Retreat retreat = retreatService.getRetreatById(retreat_id);
+    public ResponseEntity<GetRetreatByIdResponse> getRetreatById(@PathVariable int retreat_id) {
+        GetRetreatByIdResponse retreat = retreatService.getRetreatById(retreat_id);
         if (retreat == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else
@@ -49,7 +51,7 @@ public class RetreatsController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<AddedRetreatResponse> addRetreat(@RequestBody AddRetreatRequest retreat) {
+    public ResponseEntity<AddedRetreatResponse> addRetreat(@Valid @RequestBody AddRetreatRequest retreat) {
         return new ResponseEntity<>(retreatService.addRetreat(retreat), HttpStatus.OK);
     }
 
