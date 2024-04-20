@@ -3,26 +3,24 @@ package codewizards.heal_trip.business.concretes;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import codewizards.heal_trip.business.DTOs.converters.DepartmentDbDtoConverter;
+import codewizards.heal_trip.business.DTOs.requests.department.AddDepartmentRequest;
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
-import org.springframework.beans.factory.annotation.Autowired;
+import codewizards.heal_trip.entities.*;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import codewizards.heal_trip.dataAccess.DepartmentDao;
-import codewizards.heal_trip.entities.Department;
 
 @Service
+@AllArgsConstructor
 public class DepartmentService implements IDepartmentService {
     private DepartmentDao departmentDao;
     private ModelMapperService modelMapperService;
-    
-    @Autowired
-    public DepartmentService(DepartmentDao departmentDao, ModelMapperService modelMapperService) {
-        this.departmentDao = departmentDao;
-        this.modelMapperService = modelMapperService;
-    }
-    
+    private DepartmentDbDtoConverter departmentDbDtoConverter;
+
     @Override
     public List<Department> getAll() {
         List<Department> departments = this.departmentDao.findAll();
@@ -47,10 +45,11 @@ public class DepartmentService implements IDepartmentService {
     }
     
     @Override
-    public Department add(Department department) {
-        department.setCreateDate(LocalDateTime.now());
-        this.departmentDao.save(department);
-        return department;
+    public DepartmentDTO add(AddDepartmentRequest department) {
+        Department dbDepartment = departmentDbDtoConverter.toDbObj(department);
+        dbDepartment.setCreateDate(LocalDateTime.now());
+        dbDepartment = this.departmentDao.save(dbDepartment);
+        return modelMapperService.forResponse().map(dbDepartment, DepartmentDTO.class);
     }
     
     @Override
