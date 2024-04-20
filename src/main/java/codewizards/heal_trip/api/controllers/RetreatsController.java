@@ -2,6 +2,7 @@ package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
+import codewizards.heal_trip.business.DTOs.responses.retreat.GetAllRetreatsResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
@@ -56,7 +57,7 @@ public class RetreatsController {
     }
 
     @GetMapping(value = "/getAll")
-    public ResponseEntity<Iterable<Retreat>> getAllRetreats() {
+    public ResponseEntity<Iterable<GetAllRetreatsResponse>> getAllRetreats() {
         return new ResponseEntity<>(retreatService.getAllRetreats(), HttpStatus.OK);
     }
 
