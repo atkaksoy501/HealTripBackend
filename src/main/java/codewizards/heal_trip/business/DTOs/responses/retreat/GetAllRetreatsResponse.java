@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class GetAllRetreatsResponse {
     private int id;
 
-    private String name;
+    private String retreat_name;
 
     private DepartmentDTO department;
 

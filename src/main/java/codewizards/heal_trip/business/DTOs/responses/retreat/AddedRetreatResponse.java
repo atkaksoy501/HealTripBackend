@@ -13,7 +13,7 @@ public class AddedRetreatResponse {
 
     private int id;
 
-    private String name;
+    private String retreat_name;
 
     private DepartmentDTO department;
 

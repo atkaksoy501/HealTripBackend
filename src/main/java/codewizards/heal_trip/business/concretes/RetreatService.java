@@ -1,10 +1,8 @@
 package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
-import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
-import codewizards.heal_trip.business.DTOs.responses.retreat.GetAllRetreatsResponse;
-import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
-import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
+import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
+import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
@@ -43,7 +41,7 @@ public class RetreatService implements IRetreatService {
     public AddedRetreatResponse addRetreat(AddRetreatRequest retreat) {
         Retreat dbRetreat = new Retreat();
         dbRetreat.setDescription(retreat.getDescription());
-        dbRetreat.setRetreat_name(retreat.getName());
+        dbRetreat.setRetreat_name(retreat.getRetreat_name());
 
         RetreatImage image = imageService.getRetreatImageById(retreat.getImageId());
         dbRetreat.setImage(image);
@@ -63,16 +61,23 @@ public class RetreatService implements IRetreatService {
         return retreat == null;
     }
 
-    public Retreat updateRetreat(Retreat retreat, int retreat_id) {
+    public UpdatedRetreatResponse updateRetreat(UpdateRetreatRequest retreat, int retreat_id) {
         Retreat dbRetreat = retreatDao.findById(retreat_id).orElse(null);
         if (dbRetreat != null) {
             if (retreat.getRetreat_name() != null)
                 dbRetreat.setRetreat_name(retreat.getRetreat_name());
             if (retreat.getDescription() != null)
                 dbRetreat.setDescription(retreat.getDescription());
+            if (retreat.getImageId() != 0) {
+                dbRetreat.setImage(imageService.getRetreatImageById(retreat.getImageId()));
+            }
+            if (retreat.getDepartmentId() != 0) {
+                dbRetreat.setDepartment(departmentService.getById(retreat.getDepartmentId()));
+            }
+            dbRetreat.setUpdateDate(LocalDateTime.now());
             dbRetreat = retreatDao.save(dbRetreat);
         }
-        return dbRetreat;
+        return modelMapperService.forResponse().map(dbRetreat, UpdatedRetreatResponse.class);
     }
 
     public Iterable<GetAllRetreatsResponse> getAllRetreats() {

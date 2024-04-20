@@ -1,10 +1,8 @@
 package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
-import codewizards.heal_trip.business.DTOs.responses.retreat.AddedRetreatResponse;
-import codewizards.heal_trip.business.DTOs.responses.retreat.GetAllRetreatsResponse;
-import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
-import codewizards.heal_trip.business.DTOs.responses.retreat.GotRetreatByDepartmentIdResponse;
+import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
+import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.entities.Retreat;
 import jakarta.validation.Valid;
@@ -47,7 +45,7 @@ public class RetreatsController {
     }
 
     @PutMapping(value = "/update/{retreat_id}")
-    public ResponseEntity<Retreat> updateRetreat(@RequestBody Retreat retreat, @PathVariable int retreat_id) {
+    public ResponseEntity<UpdatedRetreatResponse> updateRetreat(@Valid @RequestBody UpdateRetreatRequest retreat, @PathVariable int retreat_id) {
         return new ResponseEntity<>(retreatService.updateRetreat(retreat, retreat_id), HttpStatus.OK);
     }
 
