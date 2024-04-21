@@ -41,15 +41,12 @@ jobs:
             app-name: healtrip
             publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
             package: '*.jar'
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  restart_web_app:
     runs-on: windows-latest
-    name: Close Pull Request Job
+    needs: deploy
     steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: azure/webapps-deploy@v2
+      - name: Restart Azure Web App
+        uses: azure/webapps-restart@v2
         with:
           app-name: healtrip
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          action: 'close'
