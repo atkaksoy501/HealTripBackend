@@ -1,7 +1,7 @@
 package codewizards.heal_trip.business.DTOs.responses.hospital;
 
 import codewizards.heal_trip.business.DTOs.responses.address.AddressForHospitalResponse;
-import codewizards.heal_trip.business.DTOs.responses.images.hospitalImage.HospitalImageForHospitalResponse;
+import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponse;
 import codewizards.heal_trip.entities.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,5 +27,5 @@ public class HospitalForDepartmentResponse {
 
     private List<Doctor> doctors;
 
-    private List<HospitalImageForHospitalResponse> hospitalImages;
+    private List<GetImageResponse> hospitalImages;
 }

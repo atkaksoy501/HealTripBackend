@@ -2,6 +2,7 @@ package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
+import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IImageService;
@@ -90,7 +91,8 @@ public class RetreatService implements IRetreatService {
         List<Retreat> retreats = retreatDao.findByDepartmentId(departmentId);
         List<GotRetreatByDepartmentIdResponse> response = new ArrayList<>();
         for (Retreat retreat : retreats) {
-            response.add(new GotRetreatByDepartmentIdResponse(retreat.getId(), retreat.getRetreat_name(), retreat.getDescription(), retreat.getImage()));
+            response.add(new GotRetreatByDepartmentIdResponse(retreat.getId(), retreat.getRetreat_name(), retreat.getDescription(),
+                    modelMapperService.forResponse().map(retreat.getImage(), GetImageResponse.class)));
         }
         return response;
     }
