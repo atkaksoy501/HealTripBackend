@@ -3,6 +3,7 @@ package codewizards.heal_trip.api.controllers;
 import java.util.*;
 
 import codewizards.heal_trip.business.DTOs.requests.department.AddDepartmentRequest;
+import codewizards.heal_trip.business.DTOs.requests.department.UpdateDepartmentRequest;
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import jakarta.validation.Valid;
@@ -32,12 +33,12 @@ public class DepartmentsController {
     }
     
     @GetMapping("/getAllByPage")
-    public List<Department> getAll(int pageNo, int pageSize){
+    public List<DepartmentDTO> getAll(int pageNo, int pageSize){
         return this.departmentService.getAll(pageNo,pageSize);
     }
     
     @GetMapping("/getAllSorted")
-    public List<Department> getAllSorted(){
+    public List<DepartmentDTO> getAllSorted(){
         return this.departmentService.getAllSorted();
     }
     
@@ -57,7 +58,7 @@ public class DepartmentsController {
     }
     
     @PutMapping("/update/{id}")
-    public Department update(@RequestBody Department department, @PathVariable int departmentId){
-        return this.departmentService.update(department);
+    public DepartmentDTO update(@Valid @RequestBody UpdateDepartmentRequest department, @PathVariable int id){
+        return this.departmentService.update(department, id);
     }
 }

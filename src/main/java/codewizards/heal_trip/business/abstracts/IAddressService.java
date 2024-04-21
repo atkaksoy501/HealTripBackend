@@ -15,5 +15,5 @@ public interface IAddressService {
     
     void deleteById(int id);
     
-    Address update(UpdateAddressRequest address);
+    Address update(UpdateAddressRequest address, int id);
 }
