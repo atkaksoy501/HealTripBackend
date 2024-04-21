@@ -54,9 +54,9 @@ public class AddressService implements IAddressService {
     }
     
     @Override
-    public Address update(UpdateAddressRequest address){
+    public Address update(UpdateAddressRequest address, int id){
         //get current address
-        Address currentAddress = this.addressDao.findById(address.getId()).orElse(null);
+        Address currentAddress = this.addressDao.findById(id).orElse(null);
         if(currentAddress == null){
             throw new IllegalArgumentException("Address not found");
         }
