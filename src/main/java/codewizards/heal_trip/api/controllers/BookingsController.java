@@ -6,7 +6,7 @@ import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest
 import codewizards.heal_trip.business.DTOs.responses.booking.CreatedBookingResponse;
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +16,10 @@ import codewizards.heal_trip.entities.*;
 @RestController
 @RequestMapping("/booking")
 @CrossOrigin
+@AllArgsConstructor
 public class BookingsController {
     private IBookingService bookingService;
     private IEmailService emailService;
-    
-    @Autowired
-    public BookingsController(IBookingService bookingService, IEmailService emailService){
-        this.bookingService = bookingService;
-        this.emailService = emailService;
-    }
     
     @GetMapping("/getAll")
     public List<Booking> getAll() {
