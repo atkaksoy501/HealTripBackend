@@ -49,20 +49,23 @@ public class DepartmentDbDtoConverter{
 
         Department dbDepartment = new Department();
         dbDepartment.setDepartmentName(request.getDepartmentName());
+        if (request.getHospital_ids() != null) {
+            dbDepartment.setHospitals(request.getHospital_ids().stream().map(hospitalId -> {
+                GotHospitalByIdResponse hospital = hospitalService.getHospitalById(hospitalId);
+                HospitalDepartment hospitalDepartment = new HospitalDepartment();
+                hospitalDepartment.setHospital(modelMapperService.forRequest().map(hospital, Hospital.class));
+                hospitalDepartment.setDepartment(dbDepartment);
+                hospitalDepartment.setCreateDate(LocalDateTime.now());
+                return hospitalDepartment;
+            }).toList());
+        }
 
-        dbDepartment.setHospitals(request.getHospital_ids().stream().map(hospitalId -> {
-            GotHospitalByIdResponse hospital = hospitalService.getHospitalById(hospitalId);
-            HospitalDepartment hospitalDepartment = new HospitalDepartment();
-            hospitalDepartment.setHospital(modelMapperService.forRequest().map(hospital, Hospital.class));
-            hospitalDepartment.setDepartment(dbDepartment);
-            hospitalDepartment.setCreateDate(LocalDateTime.now());
-            return hospitalDepartment;
-        }).toList());
-
-        dbDepartment.setRetreats(request.getRetreat_ids().stream().map(retreatId -> {
-            GetRetreatByIdResponse retreat = retreatService.getRetreatById(retreatId);
-            return modelMapperService.forRequest().map(retreat, Retreat.class);
-        }).toList());
+        if (request.getRetreat_ids() != null) {
+            dbDepartment.setRetreats(request.getRetreat_ids().stream().map(retreatId -> {
+                GetRetreatByIdResponse retreat = retreatService.getRetreatById(retreatId);
+                return modelMapperService.forRequest().map(retreat, Retreat.class);
+            }).toList());
+        }
 
         return dbDepartment;
     }
