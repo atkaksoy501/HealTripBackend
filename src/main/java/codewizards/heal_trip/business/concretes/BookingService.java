@@ -11,22 +11,34 @@ import codewizards.heal_trip.business.abstracts.*;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.entities.*;
 import codewizards.heal_trip.entities.enums.BookingStatus;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import codewizards.heal_trip.dataAccess.*;
 
 @Service
-@AllArgsConstructor
 public class BookingService implements IBookingService {
-    private BookingDao bookingDao;
-    private ModelMapperService modelMapperService;
-    private IPatientService patientService;
-    private IHospitalService hospitalService;
-    private IHotelService hotelService;
+    private final BookingDao bookingDao;
+    private final ModelMapperService modelMapperService;
+    private final IPatientService patientService;
+    private final IHospitalService hospitalService;
+    private final IHotelService hotelService;
     private IDoctorService doctorService;
-    private IRetreatService retreatService;
-    private IFeedbackService feedbackService;
+    private final IRetreatService retreatService;
 
+    public BookingService(BookingDao bookingDao, ModelMapperService modelMapperService, IPatientService patientService, IHospitalService hospitalService, IHotelService hotelService, IDoctorService doctorService, IRetreatService retreatService) {
+        this.bookingDao = bookingDao;
+        this.modelMapperService = modelMapperService;
+        this.patientService = patientService;
+        this.hospitalService = hospitalService;
+        this.hotelService = hotelService;
+        this.doctorService = doctorService;
+        this.retreatService = retreatService;
+    }
+
+    @Autowired
+    public void setDoctorService(IDoctorService doctorService) {
+        this.doctorService = doctorService;
+    }
     
     @Override
     public List<Booking> getAll() {

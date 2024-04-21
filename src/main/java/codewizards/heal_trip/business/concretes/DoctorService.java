@@ -1,18 +1,15 @@
 package codewizards.heal_trip.business.concretes;
 
+import codewizards.heal_trip.business.DTOs.converters.DoctorDbDtoConverter;
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
-import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
-import codewizards.heal_trip.business.abstracts.IHospitalService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.DoctorDao;
 import codewizards.heal_trip.entities.Doctor;
-import codewizards.heal_trip.entities.Hospital;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,8 +17,7 @@ import java.util.List;
 public class DoctorService implements IDoctorService {
     private DoctorDao doctorDao;
     private ModelMapperService modelMapperService;
-    private IHospitalService hospitalService;
-    private IDepartmentService departmentService;
+    private DoctorDbDtoConverter doctorDbDtoConverter;
 
     @Override
     public DoctorDTOWithHospital getDoctorById(int doctor_id) {
@@ -30,12 +26,7 @@ public class DoctorService implements IDoctorService {
     }
     @Override
     public Doctor registerDoctor(CreateDoctorRequest doctor) {
-        Doctor newDoctor = modelMapperService.forRequest().map(doctor, Doctor.class);
-        newDoctor.setHospital(modelMapperService.forRequest()
-                .map(hospitalService.getHospitalById(doctor.getHospital_id()), Hospital.class));
-        newDoctor.setDepartment(departmentService.getById(doctor.getDepartment_id()));
-        newDoctor.setCreateDate(LocalDateTime.now());
-        newDoctor.setActive(true);
+        Doctor newDoctor = doctorDbDtoConverter.toDbObj(doctor);
         return doctorDao.save(newDoctor);
     }
     @Override
