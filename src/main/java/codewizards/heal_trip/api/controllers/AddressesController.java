@@ -40,8 +40,8 @@ public class AddressesController {
         this.addressService.deleteById(id);
     }
     
-    @PutMapping("/update")
-    public Address update(@Valid @RequestBody UpdateAddressRequest address){
-        return this.addressService.update(address);
+    @PutMapping("/update/{id}")
+    public Address update(@Valid @RequestBody UpdateAddressRequest address, @PathVariable int id){
+        return this.addressService.update(address, id);
     }
 }

@@ -5,11 +5,13 @@ import java.util.*;
 
 import codewizards.heal_trip.business.DTOs.converters.DepartmentDbDtoConverter;
 import codewizards.heal_trip.business.DTOs.requests.department.AddDepartmentRequest;
+import codewizards.heal_trip.business.DTOs.requests.department.UpdateDepartmentRequest;
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.entities.*;
 import lombok.AllArgsConstructor;
+import org.hibernate.sql.Update;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import codewizards.heal_trip.dataAccess.DepartmentDao;
@@ -33,15 +35,17 @@ public class DepartmentService implements IDepartmentService {
     }
     
     @Override
-    public List<Department> getAll(int pageNo, int pageSize) {
+    public List<DepartmentDTO> getAll(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo-1, pageSize);
-        return this.departmentDao.findAll(pageable).getContent();
+        List<Department> departments = this.departmentDao.findAll(pageable).getContent();
+        return departments.stream().map(department -> this.modelMapperService.forResponse().map(department, DepartmentDTO.class)).toList();
     }
     
     @Override
-    public List<Department> getAllSorted() {
+    public List<DepartmentDTO> getAllSorted() {
         Sort sort = Sort.by(Sort.Direction.ASC, "departmentName");
-        return this.departmentDao.findAll(sort);
+        List<Department> departments = this.departmentDao.findAll(sort);
+        return departments.stream().map(department -> this.modelMapperService.forResponse().map(department, DepartmentDTO.class)).toList();
     }
     
     @Override
@@ -68,8 +72,11 @@ public class DepartmentService implements IDepartmentService {
     }
     
     @Override
-    public Department update(Department department) {
-        return this.departmentDao.save(department);
+    public DepartmentDTO update(UpdateDepartmentRequest department, int id) {
+        Department dbDepartment = getById(id);
+        dbDepartment = departmentDbDtoConverter.toDbObj(dbDepartment, department, id);
+        dbDepartment.setUpdateDate(LocalDateTime.now());
+        return modelMapperService.forResponse().map(this.departmentDao.save(dbDepartment), DepartmentDTO.class);
     }
 
     @Override
