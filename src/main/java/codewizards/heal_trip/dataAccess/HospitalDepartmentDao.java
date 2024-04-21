@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface HospitalDepartmentDao extends JpaRepository<HospitalDepartment, Integer>{
     List<HospitalDepartment> getAllByDepartmentId(int departmentId);
+    void deleteAllByDepartmentId(int departmentId);
+    void deleteAllByHospitalId(int hospitalId);
 }

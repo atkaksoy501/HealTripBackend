@@ -362,9 +362,9 @@ public class TestDataCreator {
 
         List<Hospital> hospitals = hospitalService.getAllHospitals();
 
-        for (int i = 0; i < names.size(); i++) {
+        for (String name : names) {
             AddDepartmentRequest department = new AddDepartmentRequest();
-            department.setDepartmentName(names.get(i));
+            department.setDepartmentName(name);
 
             List<Integer> hospitalIds = new ArrayList<>();
             for (Hospital hospital : hospitals) {

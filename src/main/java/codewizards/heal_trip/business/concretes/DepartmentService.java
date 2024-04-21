@@ -74,9 +74,8 @@ public class DepartmentService implements IDepartmentService {
     @Override
     public DepartmentDTO update(UpdateDepartmentRequest department, int id) {
         Department dbDepartment = getById(id);
-        dbDepartment = departmentDbDtoConverter.toDbObj(dbDepartment, department, id);
-        dbDepartment.setUpdateDate(LocalDateTime.now());
-        return modelMapperService.forResponse().map(this.departmentDao.save(dbDepartment), DepartmentDTO.class);
+        departmentDbDtoConverter.toDbObj(dbDepartment, department);
+        return modelMapperService.forResponse().map(dbDepartment, DepartmentDTO.class);
     }
 
     @Override
