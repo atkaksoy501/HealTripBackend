@@ -1,6 +1,6 @@
 package codewizards.heal_trip.business.DTOs.responses.retreat;
 
-import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentForRetreatResponse;
 import codewizards.heal_trip.entities.RetreatImage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ public class GetRetreatByIdResponse {
 
     private String retreat_name;
 
-    private DepartmentDTO department;
+    private DepartmentForRetreatResponse department;
 
     private String description;
 
