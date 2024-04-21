@@ -3,7 +3,7 @@ package codewizards.heal_trip.business.DTOs.responses.hospital;
 import codewizards.heal_trip.business.DTOs.responses.address.AddressForHospitalResponse;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.hospitalDepartment.DepartmentForHospitalDepartmentResponse;
-import codewizards.heal_trip.entities.*;
+import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GotHospitalByIdResponse {
+public class AddedHospitalResponse {
     private int id;
 
     private int bed_capacity;
@@ -28,5 +28,5 @@ public class GotHospitalByIdResponse {
 
     private List<DoctorDTO> doctors;
 
-    private List<HospitalImage> hospitalImages;
+    private List<GetImageResponse> hospitalImages;
 }
