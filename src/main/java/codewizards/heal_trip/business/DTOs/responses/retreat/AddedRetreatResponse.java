@@ -1,6 +1,7 @@
 package codewizards.heal_trip.business.DTOs.responses.retreat;
 
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponse;
 import codewizards.heal_trip.entities.RetreatImage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,5 +20,5 @@ public class AddedRetreatResponse {
 
     private String description;
 
-    private RetreatImage image;
+    private GetImageResponse image;
 }
