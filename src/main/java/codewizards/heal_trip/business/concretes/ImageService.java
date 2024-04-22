@@ -1,5 +1,6 @@
 package codewizards.heal_trip.business.concretes;
 
+import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponseAsBase64;
 import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.core.converter.Base64ToByteConverter;
 import codewizards.heal_trip.core.converter.ByteToBase64Converter;
@@ -41,9 +42,12 @@ public class ImageService implements IImageService {
         return hospitalImageDao.findAll();
     }
 
-    public String getHotelImageAsBase64ById(int image_id) {
+    public GetImageResponseAsBase64 getHotelImageAsBase64ById(int image_id) {
         HotelImage image = hotelImageDao.findById(image_id).orElse(null);
-        return ByteToBase64Converter.convert(image.getImage());
+        GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
+        response.setId(image.getId());
+        response.setImage(ByteToBase64Converter.convert(image.getImage()));
+        return response;
     }
 
     public List<String> getAllHotelImagesAsBase64() {
@@ -51,9 +55,12 @@ public class ImageService implements IImageService {
         return images.stream().map(image -> ByteToBase64Converter.convert(image.getImage())).toList();
     }
 
-    public String getHospitalImageAsBase64ById(int image_id) {
+    public GetImageResponseAsBase64 getHospitalImageAsBase64ById(int image_id) {
         HospitalImage image = hospitalImageDao.findById(image_id).orElse(null);
-        return ByteToBase64Converter.convert(image.getImage());
+        GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
+        response.setId(image.getId());
+        response.setImage(ByteToBase64Converter.convert(image.getImage()));
+        return response;
     }
 
     public List<String> getAllHospitalImagesAsBase64() {
@@ -75,9 +82,12 @@ public class ImageService implements IImageService {
         return retreatImageDao.findById(image_id).orElse(null);
     }
 
-    public String getRetreatImageAsBase64ById(int image_id) {
+    public GetImageResponseAsBase64 getRetreatImageAsBase64ById(int image_id) {
         RetreatImage image = retreatImageDao.findById(image_id).orElse(null);
-        return ByteToBase64Converter.convert(image.getImage());
+        GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
+        response.setId(image.getId());
+        response.setImage(ByteToBase64Converter.convert(image.getImage()));
+        return response;
     }
 
     public void saveHotelImage(HotelImage hotelImage) {
@@ -109,11 +119,11 @@ public class ImageService implements IImageService {
         hospitalImageDao.save(hospitalImage);
     }
 
-    public void saveRetreatImage(String base64RetreatImage) {
+    public Integer saveRetreatImage(String base64RetreatImage) {
         RetreatImage retreatImage = new RetreatImage();
         retreatImage.setImage(Base64ToByteConverter.convert(base64RetreatImage));
         retreatImage.setCreateDate(LocalDateTime.now());
-        retreatImageDao.save(retreatImage);
+        return retreatImageDao.save(retreatImage).getId();
     }
 
     public void deleteHotelImage(int image_id) {
