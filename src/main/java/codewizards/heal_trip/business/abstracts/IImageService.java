@@ -1,5 +1,6 @@
 package codewizards.heal_trip.business.abstracts;
 
+import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponseAsBase64;
 import codewizards.heal_trip.entities.HospitalImage;
 import codewizards.heal_trip.entities.HotelImage;
 import codewizards.heal_trip.entities.RetreatImage;
@@ -17,13 +18,13 @@ public interface IImageService {
 
     RetreatImage getRetreatImageById(int image_id);
 
-    String getRetreatImageAsBase64ById(int image_id);
+    GetImageResponseAsBase64 getRetreatImageAsBase64ById(int image_id);
 
     void saveHotelImage(HotelImage hotelImage);
 
     void saveHospitalImage(HospitalImage hospitalImage);
 
-    void saveRetreatImage(String base64RetreatImage);
+    Integer saveRetreatImage(String base64RetreatImage);
 
     void deleteHotelImage(int image_id);
 
@@ -31,9 +32,9 @@ public interface IImageService {
 
     void deleteRetreatImage(int image_id);
 
- String getHotelImageAsBase64ById(int image_id);
+    GetImageResponseAsBase64 getHotelImageAsBase64ById(int image_id);
 
-    String getHospitalImageAsBase64ById(int image_id);
+    GetImageResponseAsBase64 getHospitalImageAsBase64ById(int image_id);
 
     List<String> getAllHotelImagesAsBase64();
 

@@ -16,7 +16,7 @@ public class DoctorDTO {
 
     private String doctorName;
 
-    private byte[] doctorImage;
+    private String doctorImage;
 
     private DepartmentDTO department;
 }

@@ -1,8 +1,14 @@
 package codewizards.heal_trip.business.DTOs.converters;
 
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
+import codewizards.heal_trip.business.DTOs.responses.doctor.HospitalForDoctorResponse;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IHospitalService;
+import codewizards.heal_trip.core.converter.Base64ToByteConverter;
+import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.entities.Doctor;
 import codewizards.heal_trip.entities.Hospital;
@@ -30,12 +36,26 @@ public class DoctorDbDtoConverter {
     }
 
     public Doctor toDbObj(CreateDoctorRequest dto) {
-        Doctor newDoctor = modelMapperService.forRequest().map(dto, Doctor.class);
+        Doctor newDoctor = new Doctor();
+        newDoctor.setExperience_year(dto.getExperience_year());
+        newDoctor.setDoctorName(dto.getDoctorName());
+        newDoctor.setDoctorImage(Base64ToByteConverter.convert(dto.getDoctorImage()));
         newDoctor.setHospital(modelMapperService.forRequest()
                 .map(hospitalService.getHospitalById(dto.getHospital_id()), Hospital.class));
         newDoctor.setDepartment(departmentService.getById(dto.getDepartment_id()));
         newDoctor.setCreateDate(LocalDateTime.now());
         newDoctor.setActive(true);
         return newDoctor;
+    }
+
+    public DoctorDTOWithHospital toDto(Doctor dbObj) {
+        DoctorDTOWithHospital dto = new DoctorDTOWithHospital();
+        dto.setId(dbObj.getId());
+        dto.setExperience_year(dbObj.getExperience_year());
+        dto.setDoctorName(dbObj.getDoctorName());
+        dto.setDoctorImage(ByteToBase64Converter.convert(dbObj.getDoctorImage()));
+        dto.setHospital(modelMapperService.forResponse().map(dbObj.getHospital(), HospitalForDoctorResponse.class));
+        dto.setDepartment(modelMapperService.forResponse().map(dbObj.getDepartment(), DepartmentDTO.class));
+        return dto;
     }
 }
