@@ -1,8 +1,10 @@
 package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.requests.doctor.UpdateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
+import codewizards.heal_trip.business.DTOs.responses.doctor.UpdatedDoctorResponse;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
 import codewizards.heal_trip.business.concretes.DoctorService;
 import codewizards.heal_trip.entities.Doctor;
@@ -43,8 +45,8 @@ public class DoctorsController {
         else
             return new ResponseEntity<>("Doctor with id " + doctor_id + " does not exist", HttpStatus.NOT_FOUND);
     }
-    @PutMapping("/update/{doctor_id}")
-    public Doctor updateDoctor(@RequestBody Doctor newDoctor, @PathVariable int doctorId){
-        return new ResponseEntity<>(doctorService.updateDoctor(newDoctor), HttpStatus.OK).getBody();
+    @PutMapping("/update/{id}")
+    public UpdatedDoctorResponse updateDoctor(@Valid @RequestBody UpdateDoctorRequest newDoctor, @PathVariable int id){
+        return new ResponseEntity<>(doctorService.updateDoctor(newDoctor, id), HttpStatus.OK).getBody();
     }
 }
