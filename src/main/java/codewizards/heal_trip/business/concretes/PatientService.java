@@ -1,31 +1,32 @@
 package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.DTO.UserDTO;
+import codewizards.heal_trip.business.DTOs.requests.patient.CreatePatientRequest;
+import codewizards.heal_trip.business.DTOs.requests.patient.UpdatePatientRequest;
+import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientResponse;
+import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
+import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.business.abstracts.IPatientService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.PatientDao;
+import codewizards.heal_trip.entities.Booking;
 import codewizards.heal_trip.entities.Patient;
 import codewizards.heal_trip.entities.enums.Gender;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class PatientService implements IPatientService {
 
     private PatientDao patientDao;
-
-    @Autowired
+    private IEmailService emailService;
     private ModelMapperService modelMapperService;
-
-    @Autowired
-    public PatientService(PatientDao patientDao) {
-        this.patientDao = patientDao;
-    }
 
     public Patient getPatientById(int patient_id) {
         return patientDao.findById(patient_id).orElse(null);
@@ -41,31 +42,47 @@ public class PatientService implements IPatientService {
         return patientDao.save(dbPatient);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Patient updatePatient(int patient_id, Patient patient) {
+    public CreatedPatientResponse registerPatient(CreatePatientRequest patient) {
+        Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
+        dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
+        dbPatient.setRoles("PATIENT");
+        dbPatient.setActive(true);
+        dbPatient.setCreateDate(LocalDateTime.now());
+        CreatedPatientResponse response = modelMapperService.forResponse().map(patientDao.save(dbPatient), CreatedPatientResponse.class);
+//        emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
+        return response;
+    }
+
+    public UpdatedPatientResponse updatePatient(int patient_id, UpdatePatientRequest patient) {
         Patient dbPatient = patientDao.findById(patient_id).orElse(null);
-        if (dbPatient != null) {
-            if (patient.getFirst_name() != null)
-                dbPatient.setFirst_name(patient.getFirst_name());
-            if (patient.getLast_name() != null)
-                dbPatient.setLast_name(patient.getLast_name());
-            if (patient.getEmail() != null)
-                dbPatient.setEmail(patient.getEmail());
-            if (patient.getPhone_number() != null)
-                dbPatient.setPhone_number(patient.getPhone_number());
-            if (patient.getPassword() != null)
-                dbPatient.setPassword(patient.getPassword());
-            if (patient.getBirth_date() != null)
-                dbPatient.setBirth_date(patient.getBirth_date());
-            if (patient.getGender() == Gender.UNDEFINED)
-                dbPatient.setGender(patient.getGender());
-            if (patient.getPatient_height() != 0)
-                dbPatient.setPatient_height(patient.getPatient_height());
-            if (patient.getPatient_weight() != 0)
-                dbPatient.setPatient_weight(patient.getPatient_weight());
-            dbPatient = patientDao.save(dbPatient);
+        modelMapperService.forUpdate().map(patient, dbPatient);
+        dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
+        List<Booking> bookings = new ArrayList<>();
+        if (patient.getBooking_ids() != null) {
+            for (Integer booking_id : patient.getBooking_ids()) {
+                Booking booking = new Booking();
+                booking.setId(booking_id);
+                bookings.add(booking);
+            }
         }
-        return dbPatient;
+        dbPatient.setBookings(bookings);
+        dbPatient.setUpdateDate(LocalDateTime.now());
+        Patient updatedPatient = patientDao.save(dbPatient);
+
+        UpdatedPatientResponse response = new UpdatedPatientResponse();
+        response.setId(updatedPatient.getId());
+        response.setFirst_name(updatedPatient.getFirst_name());
+        response.setLast_name(updatedPatient.getLast_name());
+        response.setEmail(updatedPatient.getEmail());
+        response.setPhone_number(updatedPatient.getPhone_number());
+        response.setBirth_date(updatedPatient.getBirth_date());
+        response.setGender(updatedPatient.getGender());
+        response.setPatient_height(updatedPatient.getPatient_height());
+        response.setPatient_weight(updatedPatient.getPatient_weight());
+        response.setBooking_ids(updatedPatient.getBookings().stream().map(Booking::getId).toList());
+        response.setUpdateDate(updatedPatient.getUpdateDate());
+
+        return response;
     }
 
     public boolean deletePatient(int patient_id) {
