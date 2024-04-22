@@ -1,8 +1,11 @@
 package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.DTO.UserDTO;
+import codewizards.heal_trip.business.DTOs.requests.patient.CreatePatientRequest;
 import codewizards.heal_trip.business.DTOs.requests.patient.UpdatePatientRequest;
+import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientResponse;
 import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
+import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.business.abstracts.IPatientService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.PatientDao;
@@ -22,7 +25,7 @@ import java.util.List;
 public class PatientService implements IPatientService {
 
     private PatientDao patientDao;
-
+    private IEmailService emailService;
     private ModelMapperService modelMapperService;
 
     public Patient getPatientById(int patient_id) {
@@ -37,6 +40,17 @@ public class PatientService implements IPatientService {
         dbPatient.setCreateDate(LocalDateTime.now());
         dbPatient.setGender(Gender.UNDEFINED);
         return patientDao.save(dbPatient);
+    }
+
+    public CreatedPatientResponse registerPatient(CreatePatientRequest patient) {
+        Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
+        dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
+        dbPatient.setRoles("PATIENT");
+        dbPatient.setActive(true);
+        dbPatient.setCreateDate(LocalDateTime.now());
+        CreatedPatientResponse response = modelMapperService.forResponse().map(patientDao.save(dbPatient), CreatedPatientResponse.class);
+//        emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
+        return response;
     }
 
     public UpdatedPatientResponse updatePatient(int patient_id, UpdatePatientRequest patient) {
