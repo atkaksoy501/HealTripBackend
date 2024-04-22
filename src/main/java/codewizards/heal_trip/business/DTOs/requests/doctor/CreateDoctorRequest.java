@@ -17,7 +17,8 @@ public class CreateDoctorRequest {
     @Size(min = 2, max = 30)
     private String doctorName;
 
-    private byte[] doctorImage;
+    @NotNull
+    private String doctorImage;
 
     @NotNull
     private int hospital_id;
