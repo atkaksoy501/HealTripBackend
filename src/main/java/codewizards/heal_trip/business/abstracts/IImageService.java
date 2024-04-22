@@ -17,15 +17,35 @@ public interface IImageService {
 
     RetreatImage getRetreatImageById(int image_id);
 
+    String getRetreatImageAsBase64ById(int image_id);
+
     void saveHotelImage(HotelImage hotelImage);
 
     void saveHospitalImage(HospitalImage hospitalImage);
 
-    void saveRetreatImage(RetreatImage retreatImage);
+    void saveRetreatImage(String base64RetreatImage);
 
     void deleteHotelImage(int image_id);
 
     void deleteHospitalImage(int image_id);
 
     void deleteRetreatImage(int image_id);
+
+ String getHotelImageAsBase64ById(int image_id);
+
+    String getHospitalImageAsBase64ById(int image_id);
+
+    List<String> getAllHotelImagesAsBase64();
+
+    List<String> getAllHospitalImagesAsBase64();
+
+    List<RetreatImage> getAllRetreatImages();
+
+    List<String> getAllRetreatImagesAsBase64();
+
+    void saveRetreatImage(RetreatImage retreatImage);
+
+ void saveHotelImage(String base64HotelImage);
+
+ void saveHospitalImage(String base64HospitalImage);
 }
