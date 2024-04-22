@@ -2,6 +2,7 @@ package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.converters.DoctorDbDtoConverter;
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
@@ -25,9 +26,10 @@ public class DoctorService implements IDoctorService {
         return modelMapperService.forResponse().map(doctor, DoctorDTOWithHospital.class);
     }
     @Override
-    public Doctor registerDoctor(CreateDoctorRequest doctor) {
+    public DoctorDTOWithHospital registerDoctor(CreateDoctorRequest doctor) {
         Doctor newDoctor = doctorDbDtoConverter.toDbObj(doctor);
-        return doctorDao.save(newDoctor);
+        Doctor dbDoctor = doctorDao.save(newDoctor);
+        return doctorDbDtoConverter.toDto(dbDoctor);
     }
     @Override
     public boolean deleteDoctor(int doctor_id) {

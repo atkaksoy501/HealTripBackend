@@ -54,7 +54,7 @@ public class HospitalService implements IHospitalService {
     @Override
     public GotHospitalByIdResponse getHospitalById(int hospital_id) {
         Hospital hospital = hospitalDao.findById(hospital_id).orElse(null);
-        return modelMapperService.forResponse().map(hospital, GotHospitalByIdResponse.class);
+        return modelMapperService.forRequest().map(hospital, GotHospitalByIdResponse.class);
     }
 
     @Override
