@@ -109,8 +109,9 @@ public class HospitalService implements IHospitalService {
     }
 
     //get all
-    public List<Hospital> getAllHospitals() {
-        return hospitalDao.findAll();
+    public List<GotHospitalByIdResponse> getAllHospitals() {
+        return hospitalDao.findAll().stream().map(
+                        hospital1 -> modelMapperService.forRequest().map(hospital1, GotHospitalByIdResponse.class)).toList();
     }
 
     // get all by departmentId
