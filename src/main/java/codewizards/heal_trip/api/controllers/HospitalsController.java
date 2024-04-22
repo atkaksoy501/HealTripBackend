@@ -7,7 +7,6 @@ import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdRes
 import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalsByDepartmentIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.hospital.UpdatedHospitalResponse;
 import codewizards.heal_trip.business.abstracts.IHospitalService;
-import codewizards.heal_trip.entities.Hospital;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,8 +51,8 @@ public class HospitalsController {
     }
 
     @GetMapping(value="/getAll")
-    public ResponseEntity<List<Hospital>> getAllHospitals() {
-        List<Hospital> hospitals = hospitalService.getAllHospitals();
+    public ResponseEntity<List<GotHospitalByIdResponse>> getAllHospitals() {
+        List<GotHospitalByIdResponse> hospitals = hospitalService.getAllHospitals();
         if (hospitals.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

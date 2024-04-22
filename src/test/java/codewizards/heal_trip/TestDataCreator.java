@@ -4,15 +4,14 @@ import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
 import codewizards.heal_trip.business.DTOs.requests.department.AddDepartmentRequest;
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.requests.images.AddImageRequestAsBase64;
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
 import codewizards.heal_trip.business.abstracts.*;
-import codewizards.heal_trip.core.converter.Base64ToByteConverter;
 import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
 import codewizards.heal_trip.entities.*;
-import codewizards.heal_trip.entities.enums.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.EntityManager;
@@ -34,7 +33,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,37 +53,13 @@ public class TestDataCreator {
     private IHospitalService hospitalService;
 
     @Autowired
-    private IDepartmentService departmentService;
-
-    @Autowired
     private IHotelService hotelService;
     
-    @Autowired
-    private IBookingService bookingService;
-  
     @Autowired
     private IDoctorService doctorService;
 
     @Autowired
-    private IPatientService patientService;
-
-    @Autowired
-    private IRetreatService retreatService;
-
-    @Autowired
-    private IFeedbackService feedbackService;
-
-    @Autowired
     private IAddressService addressService;
-
-    @Autowired
-    private IImageService imageService;
-
-    @Autowired
-    private HospitalDepartmentDao hospitalDepartmentDao;
-
-    @Autowired
-    private EntityManager entityManager;
 
     @Autowired
     private ModelMapperService modelMapperService;
@@ -151,18 +125,6 @@ public class TestDataCreator {
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
         for (int i = 0; i < 5; i++) {
-//            Patient patient = new Patient();
-//            patient.setFirst_name(names.get(i));
-//            patient.setLast_name(surnames.get(i));
-//            patient.setEmail("patient_" + i + "@gmail.com");
-//            patient.setPhone_number("1234567890");
-//            patient.setPassword("123456");
-//            patient.setBirth_date(java.time.LocalDate.of(2002, 1, 4));
-//            patient.setGender(Gender.MALE);
-//            patient.setPatient_height(190);
-//            patient.setPatient_weight(110);
-//            patient.setRoles("PATIENT");
-//            patient.setActive(true);
             UserDTO patient = new UserDTO();
             patient.setFirst_name(names.get(i));
             patient.setLast_name(surnames.get(i));
@@ -366,15 +328,17 @@ public class TestDataCreator {
     void createDepartment() throws Exception {
         List<String> names = List.of("Aesthetic Surgery", "Hair Treatments", "Dental Treatments", "Metabolic Surgery", "Eye Diseases");
 
-        List<Hospital> hospitals = hospitalService.getAllHospitals();
+        List<GotHospitalByIdResponse> hospitals = hospitalService.getAllHospitals();
 
         for (String name : names) {
             AddDepartmentRequest department = new AddDepartmentRequest();
             department.setDepartmentName(name);
 
+            Random random = new Random();
             List<Integer> hospitalIds = new ArrayList<>();
-            for (Hospital hospital : hospitals) {
-                hospitalIds.add(hospital.getId());
+            for (int i = 0; i < hospitals.size(); i++) {
+                int randomId = random.nextInt(5) + 1; // This will generate random numbers between 1 and 5
+                hospitalIds.add(randomId);
             }
             department.setHospital_ids(hospitalIds);
 
@@ -400,16 +364,7 @@ public class TestDataCreator {
         List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
 
         for (int i = 0; i < 5; i++) {
-//            Doctor doctor = new Doctor();
-            byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/doctorImages/" + (i + 1) + ".jpeg"));
-//            doctor.setDoctorImage(fileContent);
-//            doctor.setActive(true);
-//            doctor.setDepartment(departmentService.getById(i + 1));
-//            doctor.setExperience_year(10);
-//            doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
-//            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
-//            doctor.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
-//            doctor.setActive(true);
+            byte[] fileContent = Files.readAllBytes(Paths.get("src/test/doctorImages/" + (i + 1) + ".jpeg"));
             CreateDoctorRequest doctor = new CreateDoctorRequest();
             doctor.setDoctorImage(ByteToBase64Converter.convert(fileContent));
             doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
@@ -433,11 +388,17 @@ public class TestDataCreator {
 
     private Integer saveAestheticRetreatImage(int index) throws Exception {
         byte[] aestheticFileContent = Files.readAllBytes(Paths.get("src/test/retreatImages/aesthetic/" + (index) + ".jpg"));
+        AddImageRequestAsBase64 image = new AddImageRequestAsBase64();
+        image.setImage(ByteToBase64Converter.convert(aestheticFileContent));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String imageJson = objectMapper.writeValueAsString(image);
 
         MvcResult result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
                         .headers(createHeader())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(ByteToBase64Converter.convert(aestheticFileContent)))
+                        .content(imageJson))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -447,11 +408,17 @@ public class TestDataCreator {
 
     private Integer saveHairRetreatImage(int index) throws Exception {
         byte[] hairFileContent = Files.readAllBytes(Paths.get("src/test/retreatImages/hair/" + (index) + ".jpg"));
+        AddImageRequestAsBase64 image = new AddImageRequestAsBase64();
+        image.setImage(ByteToBase64Converter.convert(hairFileContent));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String imageJson = objectMapper.writeValueAsString(image);
 
         MvcResult result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
                         .headers(createHeader())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(ByteToBase64Converter.convert(hairFileContent)))
+                        .content(imageJson))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -462,11 +429,17 @@ public class TestDataCreator {
 
     private Integer saveDentalRetreatImage(int index) throws Exception {
         byte[] dentalFileContent = Files.readAllBytes(Paths.get("src/test/retreatImages/dental/" + (index) + ".jpg"));
+        AddImageRequestAsBase64 image = new AddImageRequestAsBase64();
+        image.setImage(ByteToBase64Converter.convert(dentalFileContent));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String imageJson = objectMapper.writeValueAsString(image);
 
         MvcResult result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
                         .headers(createHeader())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(ByteToBase64Converter.convert(dentalFileContent)))
+                        .content(imageJson))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -477,11 +450,17 @@ public class TestDataCreator {
 
     private Integer saveMetabolicRetreatImage(int index) throws Exception {
         byte[] metabolicFileContent = Files.readAllBytes(Paths.get("src/test/retreatImages/metabolic/" + (index) + ".jpg"));
+        AddImageRequestAsBase64 image = new AddImageRequestAsBase64();
+        image.setImage(ByteToBase64Converter.convert(metabolicFileContent));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String imageJson = objectMapper.writeValueAsString(image);
 
         MvcResult result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
                         .headers(createHeader())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(ByteToBase64Converter.convert(metabolicFileContent)))
+                        .content(imageJson))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -492,11 +471,17 @@ public class TestDataCreator {
 
     private Integer saveEyeRetreatImage(int index) throws Exception {
         byte[] eyeFileContent = Files.readAllBytes(Paths.get("src/test/retreatImages/eye/" + (index) + ".jpg"));
+        AddImageRequestAsBase64 image = new AddImageRequestAsBase64();
+        image.setImage(ByteToBase64Converter.convert(eyeFileContent));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String imageJson = objectMapper.writeValueAsString(image);
 
         MvcResult result = mockMvc.perform(post(BASE_URL + "/image/retreat/save")
                         .headers(createHeader())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(ByteToBase64Converter.convert(eyeFileContent)))
+                        .content(imageJson))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -518,26 +503,8 @@ public class TestDataCreator {
 
         List<List<String>> retreats = List.of(aesthetic, hair, dental, metabolic, eye);
 
-
-
         for (int i = 0; i < retreats.size(); i++) {
             for (int j = 0; j < retreats.get(i).size(); j++) {
-
-
-
-//                Retreat retreat = new Retreat();
-//                retreat.setRetreat_name(retreats.get(i).get(j));
-//                retreat.setDescription(retreats.get(i).get(j));
-//                switch (i) {
-//                    case 0 -> retreat.setImage(saveAestheticRetreatImage(j + 1));
-//                    case 1 -> retreat.setImage(saveHairRetreatImage(j + 1));
-//                    case 2 -> retreat.setImage(saveDentalRetreatImage(j + 1));
-//                    case 3 -> retreat.setImage(saveMetabolicRetreatImage(j + 1));
-//                    case 4 -> retreat.setImage(saveEyeRetreatImage(j + 1));
-//                }
-//
-//                Department department = departmentService.getById(i + 1);
-//                retreat.setDepartment(department);
                 AddRetreatRequest retreat = new AddRetreatRequest();
                 retreat.setRetreat_name(retreats.get(i).get(j));
                 retreat.setDescription(retreats.get(i).get(j));
@@ -549,7 +516,6 @@ public class TestDataCreator {
                     case 3 -> retreat.setImageId(saveMetabolicRetreatImage(j + 1));
                     case 4 -> retreat.setImageId(saveEyeRetreatImage(j + 1));
                 }
-
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
@@ -596,19 +562,6 @@ public class TestDataCreator {
     @Commit
     void createBooking() throws Exception {
         for (int i = 0; i < 5; i++) {
-//            Booking booking = new Booking();
-//            booking.setBooking_date(LocalDate.now());
-//            GotHospitalByIdResponse hospitalById = hospitalService.getHospitalById(i + 1);
-//            booking.setHospital(modelMapperService.forResponse().map(hospitalById, Hospital.class));
-//            booking.setHotel(hotelService.getById(i + 1));
-//            DoctorDTOWithHospital doctor = doctorService.getDoctorById(i + 1);
-//            booking.setDoctor(modelMapperService.forResponse().map(doctor, Doctor.class));
-//            booking.setPatient(patientService.getPatientById(i + 2));
-//            booking.setRetreat(retreatService.getRetreatById(i + 1));
-//            booking.setStatus("Active");
-//            booking.setEndDate(LocalDate.now().plusDays(1));
-//            booking.setStartDate(LocalDate.now());
-
             CreateBookingRequest booking = new CreateBookingRequest();
             booking.setDoctor_id(i + 1);
             booking.setHospital_id(i + 1);
