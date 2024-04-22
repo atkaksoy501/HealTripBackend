@@ -1,6 +1,8 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.requests.patient.CreatePatientRequest;
 import codewizards.heal_trip.business.DTOs.requests.patient.UpdatePatientRequest;
+import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientResponse;
 import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.business.abstracts.IPatientService;
@@ -9,7 +11,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,14 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class PatientsController {
 
-    private IPatientService patientService;
-    private IEmailService emailService;
+    private final IPatientService patientService;
 
     @Autowired
-    public PatientsController(IPatientService patientService, IEmailService emailService) {
+    public PatientsController(IPatientService patientService) {
         super();
         this.patientService = patientService;
-        this.emailService = emailService;
     }
 
     @GetMapping(value = "/get/{patient_id}")
@@ -36,14 +35,11 @@ public class PatientsController {
             return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
-//    @PostMapping(value = "/add")
-//    public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient) throws IllegalArgumentException {
-//
-////            emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
-////            Patient dbPatient = patientService.registerPatient(patient);
-////            return new ResponseEntity<>(dbPatient, HttpStatus.OK);
-//
-//    }
+    @PostMapping(value = "/add")
+    public ResponseEntity<CreatedPatientResponse> registerPatient(@Valid @RequestBody CreatePatientRequest patient) throws IllegalArgumentException {
+        CreatedPatientResponse dbPatient = patientService.registerPatient(patient);
+        return new ResponseEntity<>(dbPatient, HttpStatus.OK);
+    }
 
     @PutMapping(value = "/update/{patient_id}")
     public ResponseEntity<UpdatedPatientResponse> updatePatient(@Valid @RequestBody UpdatePatientRequest patient, @PathVariable int patient_id) {
