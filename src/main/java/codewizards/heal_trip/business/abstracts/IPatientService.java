@@ -1,6 +1,10 @@
 package codewizards.heal_trip.business.abstracts;
 
 import codewizards.heal_trip.DTO.UserDTO;
+import codewizards.heal_trip.business.DTOs.requests.patient.CreatePatientRequest;
+import codewizards.heal_trip.business.DTOs.requests.patient.UpdatePatientRequest;
+import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientResponse;
+import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
 import codewizards.heal_trip.entities.Patient;
 
 public interface IPatientService {
@@ -9,7 +13,9 @@ public interface IPatientService {
 
     Patient registerPatient(UserDTO patient);
 
-    Patient updatePatient(int patient_id, Patient patient);
+    CreatedPatientResponse registerPatient(CreatePatientRequest patient);
+
+    UpdatedPatientResponse updatePatient(int patient_id, UpdatePatientRequest patient);
 
     boolean deletePatient(int patient_id);
 
