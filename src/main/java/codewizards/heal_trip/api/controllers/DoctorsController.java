@@ -1,6 +1,7 @@
 package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
 import codewizards.heal_trip.business.concretes.DoctorService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value="/doctor")
 @CrossOrigin
 public class DoctorsController {
-    private IDoctorService doctorService;
+    private final IDoctorService doctorService;
     @Autowired
     public DoctorsController(DoctorService doctorService) {
         super();
@@ -31,7 +32,7 @@ public class DoctorsController {
         else
             return new ResponseEntity<>(doctor, HttpStatus.OK);}
     @PostMapping(value = "/add")
-    public ResponseEntity<Doctor> registerDoctor(@Valid @RequestBody CreateDoctorRequest doctor) {
+    public ResponseEntity<DoctorDTOWithHospital> registerDoctor(@Valid @RequestBody CreateDoctorRequest doctor) {
         return new ResponseEntity<>(doctorService.registerDoctor(doctor), HttpStatus.OK);
     }
     @DeleteMapping(value = "/delete/{doctor_id}")

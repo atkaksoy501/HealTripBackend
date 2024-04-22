@@ -1,5 +1,7 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.requests.images.AddImageRequestAsBase64;
+import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponseAsBase64;
 import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.business.concretes.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,8 @@ public class ImagesController {
         this.imageService = imageService ;
     }
     @GetMapping(value = "/hotel/get/{image_id}")
-    public ResponseEntity<String> getHotelImageById(@PathVariable int image_id) {
-        String hotelImage = imageService.getHotelImageAsBase64ById(image_id);
+    public ResponseEntity<GetImageResponseAsBase64> getHotelImageById(@PathVariable int image_id) {
+        GetImageResponseAsBase64 hotelImage = imageService.getHotelImageAsBase64ById(image_id);
         if (hotelImage == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else
@@ -27,8 +29,8 @@ public class ImagesController {
     }
 
     @GetMapping(value = "/hospital/get/{image_id}")
-    public ResponseEntity<String> getHospitalImageById(@PathVariable int image_id) {
-        String hospitalImage = imageService.getHospitalImageAsBase64ById(image_id);
+    public ResponseEntity<GetImageResponseAsBase64> getHospitalImageById(@PathVariable int image_id) {
+        GetImageResponseAsBase64 hospitalImage = imageService.getHospitalImageAsBase64ById(image_id);
         if (hospitalImage == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else
@@ -36,8 +38,8 @@ public class ImagesController {
     }
 
     @GetMapping(value = "/retreat/get/{image_id}")
-    public ResponseEntity<String> getRetreatImageById(@PathVariable int image_id) {
-        String retreatImage = imageService.getRetreatImageAsBase64ById(image_id);
+    public ResponseEntity<GetImageResponseAsBase64> getRetreatImageById(@PathVariable int image_id) {
+        GetImageResponseAsBase64 retreatImage = imageService.getRetreatImageAsBase64ById(image_id);
         if (retreatImage == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else
@@ -45,21 +47,20 @@ public class ImagesController {
     }
 
     @PostMapping(value = "/hotel/save")
-    public ResponseEntity<String> saveHotelImage(@RequestBody String hotelImage) {
-        imageService.saveHotelImage(hotelImage);
-        return new ResponseEntity<>(hotelImage, HttpStatus.OK);
+    public ResponseEntity<Integer> saveHotelImage(@RequestBody AddImageRequestAsBase64 hotelImage) {
+        imageService.saveHotelImage(hotelImage.getImage());
+        return new ResponseEntity<>(-1, HttpStatus.OK);
     }
 
     @PostMapping(value = "/hospital/save")
-    public ResponseEntity<String> saveHospitalImage(@RequestBody String hospitalImage) {
-        imageService.saveHospitalImage(hospitalImage);
-        return new ResponseEntity<>(hospitalImage, HttpStatus.OK);
+    public ResponseEntity<Integer> saveHospitalImage(@RequestBody AddImageRequestAsBase64 hospitalImage) {
+        imageService.saveHospitalImage(hospitalImage.getImage());
+        return new ResponseEntity<>(-1, HttpStatus.OK);
     }
 
     @PostMapping(value = "/retreat/save")
-    public ResponseEntity<String> saveRetreatImage(@RequestBody String retreatImage) {
-        imageService.saveRetreatImage(retreatImage);
-        return new ResponseEntity<>(retreatImage, HttpStatus.OK);
+    public ResponseEntity<Integer> saveRetreatImage(@RequestBody AddImageRequestAsBase64 retreatImage) {
+        return new ResponseEntity<>(imageService.saveRetreatImage(retreatImage.getImage()), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/hotel/delete/{image_id}")
