@@ -19,11 +19,6 @@ import java.util.List;
         scope = Patient.class)
 public class Patient extends User{
 
-//    @Column(name = "birth_date")
-//    @Temporal(TemporalType.DATE)
-//    @JsonFormat(pattern = "dd/MM/yyyy")
-//    private LocalDate birth_date;
-
     @Column(name = "gender")
     private Gender gender;
     
