@@ -6,24 +6,24 @@ import codewizards.heal_trip.business.DTOs.requests.doctor.UpdateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.DTOs.responses.doctor.UpdatedDoctorResponse;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
-import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
+import codewizards.heal_trip.business.rules.DoctorBusinessRules;
 import codewizards.heal_trip.dataAccess.DoctorDao;
 import codewizards.heal_trip.entities.Doctor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class DoctorService implements IDoctorService {
-    private DoctorDao doctorDao;
-    private DoctorDbDtoConverter doctorDbDtoConverter;
-    private ModelMapperService modelMapperService;
+    private final DoctorDao doctorDao;
+    private final DoctorDbDtoConverter doctorDbDtoConverter;
+    private final DoctorBusinessRules doctorBusinessRules;
 
     @Override
     public DoctorDTOWithHospital getDoctorById(int doctor_id) {
+        doctorBusinessRules.checkIfDoctorExists(doctor_id);
         Doctor doctor = doctorDao.findById(doctor_id).orElse(null);
         return doctorDbDtoConverter.toDto(doctor);
     }
@@ -35,6 +35,7 @@ public class DoctorService implements IDoctorService {
     }
     @Override
     public boolean deleteDoctor(int doctor_id) {
+        doctorBusinessRules.checkIfDoctorExists(doctor_id);
         Doctor dbDoctor = doctorDao.findById(doctor_id).orElse(null);
         if (dbDoctor != null) {
             dbDoctor.setActive(false);
@@ -46,6 +47,7 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public UpdatedDoctorResponse updateDoctor(UpdateDoctorRequest doctor, int id) {
+        doctorBusinessRules.checkIfDoctorExists(id);
         Doctor dbDoctor = doctorDao.findById(id).orElse(null);
         Doctor updatedDoctor = doctorDbDtoConverter.toDbObj(dbDoctor, doctor);
         Doctor savedDoctor = doctorDao.save(updatedDoctor);

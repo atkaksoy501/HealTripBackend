@@ -2,26 +2,19 @@ package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.entities.Booking;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/email")
 @CrossOrigin
+@AllArgsConstructor
 public class EmailsController {
 
-    private IEmailService emailService;
-
-    @Autowired
-    public EmailsController(IEmailService emailService) {
-        super();
-        this.emailService = emailService;
-    }
+    private final IEmailService emailService;
 
     @GetMapping("/send")
     public ResponseEntity<String> sendEmail(String to, String subject, String text) throws IllegalArgumentException {
@@ -44,7 +37,7 @@ public class EmailsController {
     }
 
     @GetMapping("/sendAppointment")
-    public ResponseEntity<String> sendAppointmentEmail(Booking booking) throws IllegalArgumentException {
+    public ResponseEntity<String> sendAppointmentEmail(@Valid @RequestBody Booking booking) throws IllegalArgumentException {
         try {
             emailService.sendAppointmentEmail(booking);
             return new ResponseEntity<>("Appointment email sent to " + booking.getPatient().getEmail(), HttpStatus.OK);
