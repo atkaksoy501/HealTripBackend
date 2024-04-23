@@ -12,7 +12,7 @@ public class AddressBusinessRules {
     private final AddressDao addressDao;
 
     public void checkIfAddressExists(int id) {
-        if (addressDao.findById(id).isEmpty()) {
+        if (!addressDao.existsById(id)) {
             throw new BusinessException(AddressMessages.ADDRESS_NOT_FOUND);
         }
     }

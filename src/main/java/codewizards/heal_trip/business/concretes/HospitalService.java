@@ -15,6 +15,7 @@ import codewizards.heal_trip.business.abstracts.IAddressService;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IHospitalService;
 import codewizards.heal_trip.business.abstracts.IImageService;
+import codewizards.heal_trip.business.rules.HospitalBusinessRules;
 import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDao;
@@ -39,15 +40,17 @@ public class HospitalService implements IHospitalService {
     private final ModelMapperService modelMapperService;
     private final IImageService imageService;
     private final IAddressService addressService;
+    private final HospitalBusinessRules hospitalBusinessRules;
     private IDepartmentService departmentService;
     @Autowired
     public HospitalService(HospitalDao hospitalDao, HospitalDepartmentDao hospitalDepartmentDao, ModelMapperService modelMapperService,
-                           IImageService imageService, IAddressService addressService) {
+                           IImageService imageService, IAddressService addressService, HospitalBusinessRules hospitalBusinessRules) {
         this.hospitalDao = hospitalDao;
         this.hospitalDepartmentDao = hospitalDepartmentDao;
         this.modelMapperService = modelMapperService;
         this.imageService = imageService;
         this.addressService = addressService;
+        this.hospitalBusinessRules = hospitalBusinessRules;
     }
 
     @Autowired
@@ -58,6 +61,7 @@ public class HospitalService implements IHospitalService {
 
     @Override
     public GotHospitalByIdResponse getHospitalById(int hospital_id) {
+        hospitalBusinessRules.checkIfhospitalExists(hospital_id);
         Hospital hospital = hospitalDao.findById(hospital_id).orElse(null);
         GotHospitalByIdResponse response = new GotHospitalByIdResponse();
         response.setId(hospital.getId());
@@ -103,6 +107,7 @@ public class HospitalService implements IHospitalService {
 
     @Override
     public boolean deleteHospital(int hospital_id) {
+        hospitalBusinessRules.checkIfhospitalExists(hospital_id);
         Hospital dbHospital = hospitalDao.findById(hospital_id).orElse(null);
         if (dbHospital != null) {
             dbHospital.setActive(false);
@@ -115,6 +120,7 @@ public class HospitalService implements IHospitalService {
     @Override
     @Transactional
     public UpdatedHospitalResponse updateHospital(UpdateHospitalRequest hospital, int id) {
+        hospitalBusinessRules.checkIfhospitalExists(id);
         Hospital dbHospital = hospitalDao.findById(id).orElse(null);
         assert dbHospital != null;
         modelMapperService.forUpdate().map(hospital, dbHospital);
@@ -143,6 +149,7 @@ public class HospitalService implements IHospitalService {
 
     // get all by departmentId
     public List<GotHospitalsByDepartmentIdResponse> getAllHospitalsByDepartmentId(int departmentId) {
+        hospitalBusinessRules.checkIfHospitalsDepartmentExists(departmentId);
         List<HospitalDepartment> hospitalDepartments = hospitalDepartmentDao.getAllByDepartmentId(departmentId);
         return hospitalDepartments.stream().map(HospitalDepartment::getHospital).toList().stream().map(hospital -> {
             GotHospitalsByDepartmentIdResponse response = new GotHospitalsByDepartmentIdResponse();

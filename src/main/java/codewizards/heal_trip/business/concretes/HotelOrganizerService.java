@@ -1,9 +1,10 @@
 package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.abstracts.IHotelOrganizerService;
+import codewizards.heal_trip.business.rules.OrganizerBusinessRules;
 import codewizards.heal_trip.dataAccess.HotelOrganizerDao;
 import codewizards.heal_trip.entities.HotelOrganizer;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,15 +13,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class HotelOrganizerService implements IHotelOrganizerService {
 
-    private HotelOrganizerDao hotelOrganizerDao;
-
-    @Autowired
-    public HotelOrganizerService(HotelOrganizerDao hotelOrganizerDao) {
-        super();
-        this.hotelOrganizerDao = hotelOrganizerDao;
-    }
+    private final HotelOrganizerDao hotelOrganizerDao;
+    private final OrganizerBusinessRules organizerBusinessRules;
 
     @Override
     public List<HotelOrganizer> getAll() {
@@ -43,16 +40,19 @@ public class HotelOrganizerService implements IHotelOrganizerService {
 
     @Override
     public HotelOrganizer getById(int id) {
+        organizerBusinessRules.checkIfHotelOrganizerExists(id);
         return this.hotelOrganizerDao.findById(id).orElse(null);
     }
 
     @Override
     public void deleteById(int id) {
+        organizerBusinessRules.checkIfHotelOrganizerExists(id);
         this.hotelOrganizerDao.deleteById(id);
     }
 
     @Override
     public void update(HotelOrganizer hotelOrganizer) {
-        this.hotelOrganizerDao.save(hotelOrganizer);
+        organizerBusinessRules.checkIfHotelOrganizerExists(hotelOrganizer.getId());
+        this.hotelOrganizerDao.save(hotelOrganizer); //todo: implement
     }
 }
