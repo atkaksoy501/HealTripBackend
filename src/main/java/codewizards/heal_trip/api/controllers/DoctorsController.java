@@ -2,28 +2,21 @@ package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.requests.doctor.UpdateDoctorRequest;
-import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.DTOs.responses.doctor.UpdatedDoctorResponse;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
-import codewizards.heal_trip.business.concretes.DoctorService;
-import codewizards.heal_trip.entities.Doctor;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/doctor")
 @CrossOrigin
+@AllArgsConstructor
 public class DoctorsController {
     private final IDoctorService doctorService;
-    @Autowired
-    public DoctorsController(DoctorService doctorService) {
-        super();
-        this.doctorService = doctorService;
-    }
 
     @GetMapping(value="/get/{doctor_id}")
     public ResponseEntity<DoctorDTOWithHospital> getDoctorById(@PathVariable int doctor_id) {

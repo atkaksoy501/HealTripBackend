@@ -4,15 +4,15 @@ import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.abstracts.IAuthService;
 import codewizards.heal_trip.business.DTOs.requests.authentication.AuthenticationRequest;
 import codewizards.heal_trip.core.security.UserSecurity;
-import codewizards.heal_trip.entities.Patient;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
+@AllArgsConstructor
 @CrossOrigin
 public class AuthsController {
 
@@ -20,17 +20,17 @@ public class AuthsController {
 
     @PostMapping("/authenticate")
     @ResponseStatus(HttpStatus.OK)
-    public String authenticate(@RequestBody AuthenticationRequest request) {
+    public String authenticate(@Valid @RequestBody AuthenticationRequest request) {
         return authService.login(request);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserSecurity> register(@RequestBody UserDTO user) throws Exception {
+    public ResponseEntity<UserSecurity> register(@Valid @RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(authService.AddUser(user).map(UserSecurity::new).orElseThrow(() -> new Exception("Unknown")));
     }
 
     @PostMapping("/register/patient")
-    public ResponseEntity<UserSecurity> registerPatient(@RequestBody UserDTO patient) throws Exception {
+    public ResponseEntity<UserSecurity> registerPatient(@Valid @RequestBody UserDTO patient) throws Exception {
         return ResponseEntity.ok(authService.addPatient(patient).map(UserSecurity::new).orElseThrow(() -> new Exception("Unknown")));
     }
 

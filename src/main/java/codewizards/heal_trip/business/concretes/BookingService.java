@@ -8,14 +8,19 @@ import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest
 import codewizards.heal_trip.business.DTOs.responses.booking.CreatedBookingResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
 import codewizards.heal_trip.business.abstracts.*;
+import codewizards.heal_trip.business.messages.EmailMessages;
+import codewizards.heal_trip.business.rules.BookingBusinessRules;
+import codewizards.heal_trip.core.utilities.exceptions.types.BusinessException;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.entities.*;
 import codewizards.heal_trip.entities.enums.BookingStatus;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import codewizards.heal_trip.dataAccess.*;
 
 @Service
+@AllArgsConstructor
 public class BookingService implements IBookingService {
     private final BookingDao bookingDao;
     private final ModelMapperService modelMapperService;
@@ -24,16 +29,8 @@ public class BookingService implements IBookingService {
     private final IHotelService hotelService;
     private IDoctorService doctorService;
     private final IRetreatService retreatService;
-
-    public BookingService(BookingDao bookingDao, ModelMapperService modelMapperService, IPatientService patientService, IHospitalService hospitalService, IHotelService hotelService, IDoctorService doctorService, IRetreatService retreatService) {
-        this.bookingDao = bookingDao;
-        this.modelMapperService = modelMapperService;
-        this.patientService = patientService;
-        this.hospitalService = hospitalService;
-        this.hotelService = hotelService;
-        this.doctorService = doctorService;
-        this.retreatService = retreatService;
-    }
+    private final BookingBusinessRules bookingBusinessRules;
+    private final IEmailService emailService;
 
     @Autowired
     public void setDoctorService(IDoctorService doctorService) {
@@ -47,6 +44,7 @@ public class BookingService implements IBookingService {
     
     @Override
     public Booking getById(int id) {
+        bookingBusinessRules.checkIfBookingExists(id);
         return this.bookingDao.findById(id).orElse(null);
     }
     
@@ -60,7 +58,6 @@ public class BookingService implements IBookingService {
                 .map(doctorService.getDoctorById(booking.getDoctor_id()), Doctor.class);
         GetRetreatByIdResponse retreat = retreatService.getRetreatById(booking.getRetreat_id());
 
-
         Booking newBooking = this.modelMapperService.forRequest().map(booking, Booking.class);
         newBooking.setPatient(patient);
         newBooking.setHospital(hospital);
@@ -71,16 +68,24 @@ public class BookingService implements IBookingService {
         newBooking.setBooking_date(LocalDate.now());
         newBooking.setStatus(BookingStatus.NEW);
         newBooking.setDescription(booking.getDescription());
-        return modelMapperService.forResponse().map(bookingDao.save(newBooking), CreatedBookingResponse.class);
+        Booking dbBooking = bookingDao.save(newBooking);
+        try {
+            emailService.sendAppointmentEmail(dbBooking);
+        } catch (Exception e) {
+            throw new BusinessException(EmailMessages.EMAIL_COULD_NOT_BE_SENT);
+        }
+        return modelMapperService.forResponse().map(dbBooking, CreatedBookingResponse.class);
     }
     
     @Override
     public void deleteById(int id) {
+        bookingBusinessRules.checkIfBookingExists(id);
         this.bookingDao.deleteById(id);
     }
     
     @Override
     public Booking update(Booking booking) {
-        return this.bookingDao.save(booking);
+        bookingBusinessRules.checkIfBookingExists(booking.getId());
+        return this.bookingDao.save(booking); //todo: implement
     }
 }

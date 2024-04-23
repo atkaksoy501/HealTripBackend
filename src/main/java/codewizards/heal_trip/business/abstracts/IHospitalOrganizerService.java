@@ -1,7 +1,6 @@
 package codewizards.heal_trip.business.abstracts;
 
 import codewizards.heal_trip.entities.HospitalOrganizer;
-import codewizards.heal_trip.entities.Hotel;
 
 import java.util.List;
 

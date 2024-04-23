@@ -20,7 +20,7 @@ import java.util.List;
 @CrossOrigin
 @AllArgsConstructor
 public class HospitalsController {
-    private IHospitalService hospitalService;
+    private final IHospitalService hospitalService;
 
 
     @GetMapping(value="/get/{hospital_id}")
@@ -38,12 +38,9 @@ public class HospitalsController {
     }
 
     @DeleteMapping(value = "/delete/{hospital_id}")
-    public ResponseEntity<String> deleteHospital(@PathVariable int hospital_id) {
+    public ResponseEntity<Boolean> deleteHospital(@PathVariable int hospital_id) {
         boolean isHospitalActive = hospitalService.deleteHospital(hospital_id);
-        if (!isHospitalActive)
-            return new ResponseEntity<>("Hospital with id " + hospital_id + " has been deleted", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Hospital with id " + hospital_id + " does not exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(isHospitalActive, HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
     public UpdatedHospitalResponse updateHospital(@Valid @RequestBody UpdateHospitalRequest newHospital, @PathVariable int id){
