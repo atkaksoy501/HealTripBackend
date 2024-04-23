@@ -6,22 +6,19 @@ import java.util.*;
 import codewizards.heal_trip.business.DTOs.requests.address.CreateAddressRequest;
 import codewizards.heal_trip.business.DTOs.requests.address.UpdateAddressRequest;
 import codewizards.heal_trip.business.abstracts.IAddressService;
+import codewizards.heal_trip.business.rules.AddressBusinessRules;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import codewizards.heal_trip.dataAccess.*;
 import codewizards.heal_trip.entities.Address;
 
 @Service
+@AllArgsConstructor
 public class AddressService implements IAddressService {
-    private AddressDao addressDao;
-    private ModelMapperService modelMapperService;
-    
-    @Autowired
-    public AddressService(AddressDao addressDao, ModelMapperService modelMapperService) {
-        this.addressDao = addressDao;
-        this.modelMapperService = modelMapperService;
-    }
+    private final AddressDao addressDao;
+    private final ModelMapperService modelMapperService;
+    private final AddressBusinessRules addressBusinessRules;
     
     @Override
     public List<Address> getAll() {
@@ -36,6 +33,7 @@ public class AddressService implements IAddressService {
     
     @Override
     public Address getById(int id) {
+        addressBusinessRules.checkIfAddressExists(id);
         Address address = this.addressDao.findById(id).orElse(null);
         return this.modelMapperService.forResponse().map(address, Address.class);
     }
@@ -50,11 +48,13 @@ public class AddressService implements IAddressService {
     
     @Override
     public void deleteById(int id) {
+        addressBusinessRules.checkIfAddressExists(id);
         this.addressDao.deleteById(id);
     }
     
     @Override
     public Address update(UpdateAddressRequest address, int id){
+        addressBusinessRules.checkIfAddressExists(id);
         //get current address
         Address currentAddress = this.addressDao.findById(id).orElse(null);
         if(currentAddress == null){
