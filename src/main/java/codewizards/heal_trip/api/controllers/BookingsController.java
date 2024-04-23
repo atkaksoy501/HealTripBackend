@@ -4,7 +4,6 @@ import java.util.*;
 
 import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
 import codewizards.heal_trip.business.DTOs.responses.booking.CreatedBookingResponse;
-import codewizards.heal_trip.business.abstracts.IEmailService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,22 +18,16 @@ import codewizards.heal_trip.entities.*;
 @AllArgsConstructor
 public class BookingsController {
     private IBookingService bookingService;
-    private IEmailService emailService;
-    
+
     @GetMapping("/getAll")
     public List<Booking> getAll() {
         return this.bookingService.getAll();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CreatedBookingResponse> add(@Valid @RequestBody CreateBookingRequest booking) throws IllegalArgumentException{
-        try {
-            CreatedBookingResponse dbBooking = bookingService.add(booking);
-//            emailService.sendAppointmentEmail(dbBooking); //todo: uncomment this line
-            return new ResponseEntity<>(dbBooking, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<CreatedBookingResponse> add(@Valid @RequestBody CreateBookingRequest booking){
+        CreatedBookingResponse dbBooking = bookingService.add(booking);
+        return new ResponseEntity<>(dbBooking, HttpStatus.OK);
     }
     
     @GetMapping("/get/{id}")
@@ -48,7 +41,7 @@ public class BookingsController {
     }
     
     @PutMapping("/update/{id}")
-    public Booking update(@RequestBody Booking booking, @PathVariable int bookingId){
+    public Booking update(@Valid @RequestBody Booking booking, @PathVariable int bookingId){
         return this.bookingService.update(booking);
     }
 }

@@ -1,10 +1,9 @@
 package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.abstracts.IHotelService;
-import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.entities.Hotel;
-import codewizards.heal_trip.entities.HotelImage;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/hotel")
 @CrossOrigin
+@AllArgsConstructor
 public class HotelsController {
 
-    private IHotelService hotelService;
-    private IImageService imageService;
-
-    @Autowired
-    public HotelsController(IHotelService hotelService, IImageService imageService) {
-        super();
-        this.hotelService = hotelService;
-        this.imageService = imageService;
-    }
+    private final IHotelService hotelService;
 
     @GetMapping("/getAll")
     public List<Hotel> getAll(){
@@ -42,14 +34,7 @@ public class HotelsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Hotel> add(@RequestBody Hotel hotel) {
-        List<HotelImage> hotelImages = hotel.getHotelImages();
-        if (hotelImages != null && !hotelImages.isEmpty()) { // todo: servis içinde yazılacak
-            for (HotelImage hotelImage : hotelImages) {
-                hotelImage.setHotel(hotel);
-                imageService.saveHotelImage(hotelImage);
-            }
-        }
+    public ResponseEntity<Hotel> add(@Valid @RequestBody Hotel hotel) {
         return new ResponseEntity<>(this.hotelService.add(hotel), HttpStatus.OK);
     }
 
@@ -64,7 +49,7 @@ public class HotelsController {
     }
 
     @PutMapping("/update/{id}")
-    public void update(@RequestBody Hotel hotel, @PathVariable int hotelId){
+    public void update(@Valid @RequestBody Hotel hotel, @PathVariable int id){
         this.hotelService.update(hotel);
     }
 }
