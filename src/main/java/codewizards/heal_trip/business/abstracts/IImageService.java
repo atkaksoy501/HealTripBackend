@@ -8,9 +8,9 @@ import codewizards.heal_trip.entities.RetreatImage;
 import java.util.List;
 
 public interface IImageService {
-   HotelImage getHotelImageById(int image_id);
+    HotelImage getHotelImageById(int image_id);
 
-   List<HotelImage> getAllHotelImages();
+    List<HotelImage> getAllHotelImages();
 
     HospitalImage getHospitalImageById(int image_id);
 
@@ -24,7 +24,7 @@ public interface IImageService {
 
     void saveHospitalImage(HospitalImage hospitalImage);
 
-    Integer saveRetreatImage(String base64RetreatImage);
+    int saveRetreatImage(String base64RetreatImage);
 
     void deleteHotelImage(int image_id);
 
@@ -46,7 +46,7 @@ public interface IImageService {
 
     void saveRetreatImage(RetreatImage retreatImage);
 
- void saveHotelImage(String base64HotelImage);
+    int saveHotelImage(String base64HotelImage);
 
- void saveHospitalImage(String base64HospitalImage);
+    int saveHospitalImage(String base64HospitalImage);
 }

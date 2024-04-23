@@ -22,8 +22,7 @@ public class UserBusinessRules {
     }
 
     public void checkIfUserExists(int id) {
-        Optional<User> user = userDao.findById(id);
-        if (user.isEmpty()) {
+        if (!userDao.existsById(id)) {
             throw new BusinessException(UserMessages.USER_NOT_FOUND);
         }
     }

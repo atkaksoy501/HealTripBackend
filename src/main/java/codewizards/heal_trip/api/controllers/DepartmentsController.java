@@ -7,19 +7,16 @@ import codewizards.heal_trip.business.DTOs.requests.department.UpdateDepartmentR
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import codewizards.heal_trip.entities.Department;
 
 @RestController
 @RequestMapping("/department")
 @CrossOrigin
+@AllArgsConstructor
 public class DepartmentsController {
-    private IDepartmentService departmentService;
-    @Autowired
-    public DepartmentsController(IDepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
+    private final IDepartmentService departmentService;
     
     @GetMapping("/getAll")
     public List<DepartmentDTO> getAll() {

@@ -4,11 +4,10 @@ import codewizards.heal_trip.business.DTOs.requests.patient.CreatePatientRequest
 import codewizards.heal_trip.business.DTOs.requests.patient.UpdatePatientRequest;
 import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientResponse;
 import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
-import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.business.abstracts.IPatientService;
 import codewizards.heal_trip.entities.Patient;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/patient")
 @CrossOrigin
+@AllArgsConstructor
 public class PatientsController {
 
     private final IPatientService patientService;
-
-    @Autowired
-    public PatientsController(IPatientService patientService) {
-        super();
-        this.patientService = patientService;
-    }
 
     @GetMapping(value = "/get/{patient_id}")
     public ResponseEntity<Patient> getPatientById(@PathVariable int patient_id) {

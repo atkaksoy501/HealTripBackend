@@ -1,12 +1,11 @@
 package codewizards.heal_trip.api.controllers;
 
-import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.business.abstracts.IHotelOrganizerService;
 import codewizards.heal_trip.entities.HotelOrganizer;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,17 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/hotelOrganizer")
 @CrossOrigin
+@AllArgsConstructor
 public class HotelOrganizersController {
 
-    private IHotelOrganizerService hotelOrganizerService;
-    private IEmailService emailService;
-
-    @Autowired
-    public HotelOrganizersController(IHotelOrganizerService hotelOrganizerService, IEmailService emailService) {
-        super();
-        this.hotelOrganizerService = hotelOrganizerService;
-        this.emailService = emailService;
-    }
+    private final IHotelOrganizerService hotelOrganizerService;
 
     @GetMapping("/getAll")
     public List<HotelOrganizer> getAll(){
@@ -37,15 +29,9 @@ public class HotelOrganizersController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> add(@RequestBody HotelOrganizer hotelOrganizer) {
-        try {
-//            emailService.sendWelcomeEmail(hotelOrganizer.getEmail(), hotelOrganizer.getFirst_name());
-            hotelOrganizer.setPassword(new BCryptPasswordEncoder().encode(hotelOrganizer.getPassword()));
-            Integer hotelOrganizerId = hotelOrganizerService.add(hotelOrganizer);
-            return new ResponseEntity<>("Hotel Organizer with id " + hotelOrganizerId + " has been registered. Email has ben sent to " + hotelOrganizer.getEmail(), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> add(@Valid @RequestBody HotelOrganizer hotelOrganizer) {
+        Integer hotelOrganizerId = hotelOrganizerService.add(hotelOrganizer);
+        return new ResponseEntity<>("Hotel Organizer with id " + hotelOrganizerId + " has been registered. Email has ben sent to " + hotelOrganizer.getEmail(), HttpStatus.OK);
     }
 
     @GetMapping("/get/{id}")
@@ -59,7 +45,7 @@ public class HotelOrganizersController {
     }
 
     @PutMapping("/update/{id}")
-    public void update(@RequestBody HotelOrganizer hotelOrganizer, @PathVariable int hotelOrganizerId) {
+    public void update(@Valid @RequestBody HotelOrganizer hotelOrganizer, @PathVariable int id) {
         this.hotelOrganizerService.update(hotelOrganizer);
     }
 }
