@@ -1,24 +1,24 @@
 package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.abstracts.IFeedbackService;
+import codewizards.heal_trip.business.rules.FeedbackBusinessRules;
 import codewizards.heal_trip.entities.Feedback;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import codewizards.heal_trip.dataAccess.FeedbackDao;
 
 import java.time.LocalDateTime;
 
 @Service
+@AllArgsConstructor
 public class FeedbackService implements IFeedbackService {
-    private FeedbackDao feedbackDao;
+    private final FeedbackDao feedbackDao;
+    private final FeedbackBusinessRules feedbackBusinessRules;
 
-    @Autowired
-    public FeedbackService(FeedbackDao feedbackDao) {
-        this.feedbackDao = feedbackDao;
-    }
 
     @Override
     public Feedback getFeedbackById(int feedback_id) {
+        feedbackBusinessRules.checkIfFeedbackExists(feedback_id);
         return feedbackDao.findById(feedback_id).orElse(null);
     }
 
@@ -30,11 +30,13 @@ public class FeedbackService implements IFeedbackService {
 
     @Override
     public void deleteFeedback(int feedback_id) {
+        feedbackBusinessRules.checkIfFeedbackExists(feedback_id);
         feedbackDao.deleteById(feedback_id);
     }
 
     @Override
     public Feedback updateFeedback(Feedback feedback) {
-        return feedbackDao.save(feedback);
+        feedbackBusinessRules.checkIfFeedbackExists(feedback.getId());
+        return feedbackDao.save(feedback); //todo: implement
     }
 }
