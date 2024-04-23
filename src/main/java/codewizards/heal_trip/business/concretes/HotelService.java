@@ -1,9 +1,11 @@
 package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.abstracts.IHotelService;
+import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.business.rules.HotelBusinessRules;
 import codewizards.heal_trip.dataAccess.HotelDao;
 import codewizards.heal_trip.entities.Hotel;
+import codewizards.heal_trip.entities.HotelImage;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ public class HotelService implements IHotelService {
 
     private final HotelDao hotelDao;
     private final HotelBusinessRules hotelBusinessRules;
+    private final IImageService imageService;
 
     @Override
     public List<Hotel> getAll() {
@@ -41,6 +44,13 @@ public class HotelService implements IHotelService {
 
     @Override
     public Hotel add(Hotel hotel) {
+        List<HotelImage> hotelImages = hotel.getHotelImages();
+        if (hotelImages != null && !hotelImages.isEmpty()) {
+            for (HotelImage hotelImage : hotelImages) {
+                hotelImage.setHotel(hotel);
+                imageService.saveHotelImage(hotelImage);
+            }
+        }
         hotel.setCreateDate(LocalDateTime.now());
         return this.hotelDao.save(hotel);
     }
