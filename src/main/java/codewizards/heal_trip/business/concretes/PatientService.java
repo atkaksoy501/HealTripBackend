@@ -7,6 +7,7 @@ import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientRespo
 import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.business.abstracts.IPatientService;
+import codewizards.heal_trip.business.rules.PatientBusinessRules;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.PatientDao;
 import codewizards.heal_trip.entities.Booking;
@@ -27,12 +28,14 @@ public class PatientService implements IPatientService {
     private PatientDao patientDao;
     private IEmailService emailService;
     private ModelMapperService modelMapperService;
+    private PatientBusinessRules patientBusinessRules;
 
     public Patient getPatientById(int patient_id) {
         return patientDao.findById(patient_id).orElse(null);
     }
 
     public Patient registerPatient(UserDTO patient) {
+        patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
         dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
         dbPatient.setRoles("PATIENT");
@@ -43,6 +46,7 @@ public class PatientService implements IPatientService {
     }
 
     public CreatedPatientResponse registerPatient(CreatePatientRequest patient) {
+        patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
         dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
         dbPatient.setRoles("PATIENT");
@@ -54,6 +58,8 @@ public class PatientService implements IPatientService {
     }
 
     public UpdatedPatientResponse updatePatient(int patient_id, UpdatePatientRequest patient) {
+        patientBusinessRules.checkIfUserExists(patient_id);
+        patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = patientDao.findById(patient_id).orElse(null);
         modelMapperService.forUpdate().map(patient, dbPatient);
         dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
@@ -86,6 +92,7 @@ public class PatientService implements IPatientService {
     }
 
     public boolean deletePatient(int patient_id) {
+        patientBusinessRules.checkIfUserExists(patient_id);
         Patient dbPatient = patientDao.findById(patient_id).orElse(null);
         if (dbPatient != null) {
             dbPatient.setActive(false);
