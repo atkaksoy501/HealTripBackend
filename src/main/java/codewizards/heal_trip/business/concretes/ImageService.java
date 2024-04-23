@@ -108,21 +108,21 @@ public class ImageService implements IImageService {
         retreatImageDao.save(retreatImage);
     }
 
-    public void saveHotelImage(String base64HotelImage) {
+    public int saveHotelImage(String base64HotelImage) {
         HotelImage hotelImage = new HotelImage();
         hotelImage.setImage(Base64ToByteConverter.convert(base64HotelImage));
         hotelImage.setCreateDate(LocalDateTime.now());
-        hotelImageDao.save(hotelImage);
+        return hotelImageDao.save(hotelImage).getId();
     }
 
-    public void saveHospitalImage(String base64HospitalImage) {
+    public int saveHospitalImage(String base64HospitalImage) {
         HospitalImage hospitalImage = new HospitalImage();
         hospitalImage.setImage(Base64ToByteConverter.convert(base64HospitalImage));
         hospitalImage.setCreateDate(LocalDateTime.now());
-        hospitalImageDao.save(hospitalImage);
+        return hospitalImageDao.save(hospitalImage).getId();
     }
 
-    public Integer saveRetreatImage(String base64RetreatImage) {
+    public int saveRetreatImage(String base64RetreatImage) {
         RetreatImage retreatImage = new RetreatImage();
         retreatImage.setImage(Base64ToByteConverter.convert(base64RetreatImage));
         retreatImage.setCreateDate(LocalDateTime.now());

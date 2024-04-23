@@ -7,18 +7,15 @@ import codewizards.heal_trip.business.DTOs.requests.address.UpdateAddressRequest
 import codewizards.heal_trip.business.abstracts.IAddressService;
 import codewizards.heal_trip.entities.Address;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/address")
 @CrossOrigin
+@AllArgsConstructor
 public class AddressesController {
-    private IAddressService addressService;
-    @Autowired
-    public AddressesController(IAddressService addressService) {
-        this.addressService = addressService;
-    }
+    private final IAddressService addressService;
     
     @GetMapping("/getAll")
     public List<Address> getAll() {

@@ -4,9 +4,8 @@ import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
-import codewizards.heal_trip.entities.Retreat;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/retreat")
 @CrossOrigin
+@AllArgsConstructor
 public class RetreatsController {
 
-    private IRetreatService retreatService;
-
-    @Autowired
-    public RetreatsController(IRetreatService retreatService) {
-        super();
-        this.retreatService = retreatService;
-    }
+    private final IRetreatService retreatService;
 
     @GetMapping(value = "/get/{retreat_id}")
     public ResponseEntity<GetRetreatByIdResponse> getRetreatById(@PathVariable int retreat_id) {
