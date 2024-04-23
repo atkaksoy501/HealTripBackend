@@ -27,8 +27,7 @@ public class PatientBusinessRules extends UserBusinessRules{
 
     @Override
     public void checkIfUserExists(int id) {
-        Optional<Patient> patient = patientDao.findById(id);
-        if (patient.isEmpty()) {
+        if (!patientDao.existsById(id)) {
             throw new BusinessException(UserMessages.USER_NOT_FOUND);
         }
     }

@@ -2,31 +2,29 @@ package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponseAsBase64;
 import codewizards.heal_trip.business.abstracts.IImageService;
+import codewizards.heal_trip.business.rules.ImageBusinessRules;
 import codewizards.heal_trip.core.converter.Base64ToByteConverter;
 import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.dataAccess.HospitalImageDao;
 import codewizards.heal_trip.dataAccess.HotelImageDao;
 import codewizards.heal_trip.dataAccess.RetreatImageDao;
 import codewizards.heal_trip.entities.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ImageService implements IImageService {
-    private HotelImageDao hotelImageDao;
-    private HospitalImageDao hospitalImageDao;
-    private RetreatImageDao retreatImageDao;
+    private final HotelImageDao hotelImageDao;
+    private final HospitalImageDao hospitalImageDao;
+    private final RetreatImageDao retreatImageDao;
+    private final ImageBusinessRules imageBusinessRules;
 
-    @Autowired
-    public ImageService(HotelImageDao hotelImageDao, HospitalImageDao hospitalImageDao, RetreatImageDao retreatImageDao) {
-        this.hotelImageDao = hotelImageDao;
-        this.hospitalImageDao = hospitalImageDao;
-        this.retreatImageDao = retreatImageDao;
-    }
     public HotelImage getHotelImageById(int image_id) {
+        imageBusinessRules.checkIfHotelImageExists(image_id);
         return hotelImageDao.findById(image_id).orElse(null);
     }
 
@@ -35,6 +33,7 @@ public class ImageService implements IImageService {
     }
 
     public HospitalImage getHospitalImageById(int image_id) {
+        imageBusinessRules.checkIfHositalImageExists(image_id);
         return hospitalImageDao.findById(image_id).orElse(null);
     }
 
@@ -43,6 +42,7 @@ public class ImageService implements IImageService {
     }
 
     public GetImageResponseAsBase64 getHotelImageAsBase64ById(int image_id) {
+        imageBusinessRules.checkIfHotelImageExists(image_id);
         HotelImage image = hotelImageDao.findById(image_id).orElse(null);
         GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
         response.setId(image.getId());
@@ -56,6 +56,7 @@ public class ImageService implements IImageService {
     }
 
     public GetImageResponseAsBase64 getHospitalImageAsBase64ById(int image_id) {
+        imageBusinessRules.checkIfHositalImageExists(image_id);
         HospitalImage image = hospitalImageDao.findById(image_id).orElse(null);
         GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
         response.setId(image.getId());
@@ -79,10 +80,12 @@ public class ImageService implements IImageService {
 
 
     public RetreatImage getRetreatImageById(int image_id) {
+        imageBusinessRules.checkIfRetreatImageExists(image_id);
         return retreatImageDao.findById(image_id).orElse(null);
     }
 
     public GetImageResponseAsBase64 getRetreatImageAsBase64ById(int image_id) {
+        imageBusinessRules.checkIfRetreatImageExists(image_id);
         RetreatImage image = retreatImageDao.findById(image_id).orElse(null);
         GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
         response.setId(image.getId());
@@ -127,14 +130,17 @@ public class ImageService implements IImageService {
     }
 
     public void deleteHotelImage(int image_id) {
+        imageBusinessRules.checkIfHotelImageExists(image_id);
         hotelImageDao.deleteById(image_id);
     }
 
     public void deleteHospitalImage(int image_id) {
+        imageBusinessRules.checkIfHositalImageExists(image_id);
         hospitalImageDao.deleteById(image_id);
     }
 
     public void deleteRetreatImage(int image_id) {
+        imageBusinessRules.checkIfRetreatImageExists(image_id);
         retreatImageDao.deleteById(image_id);
     }
 }

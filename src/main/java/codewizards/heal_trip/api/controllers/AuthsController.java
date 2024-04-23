@@ -4,7 +4,6 @@ import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.abstracts.IAuthService;
 import codewizards.heal_trip.business.DTOs.requests.authentication.AuthenticationRequest;
 import codewizards.heal_trip.core.security.UserSecurity;
-import codewizards.heal_trip.entities.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
