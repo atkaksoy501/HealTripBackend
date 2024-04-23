@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserBusinessRules {
-    UserDao userDao;
+    private final UserDao userDao;
 
     public void checkIfUserExistsBefore(String email) {
         Optional<User> user = userDao.findByEmail(email);
