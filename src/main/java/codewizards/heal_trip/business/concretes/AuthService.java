@@ -5,6 +5,7 @@ import codewizards.heal_trip.business.DTOs.requests.authentication.Authenticatio
 import codewizards.heal_trip.business.abstracts.IAuthService;
 import codewizards.heal_trip.business.abstracts.IPatientService;
 import codewizards.heal_trip.business.messages.AuthMessages;
+import codewizards.heal_trip.business.rules.UserBusinessRules;
 import codewizards.heal_trip.core.security.CustomUserDetails;
 import codewizards.heal_trip.core.security.JpaUserDetailsService;
 import codewizards.heal_trip.core.security.config.JwtUtils;
@@ -30,6 +31,7 @@ public class AuthService implements IAuthService {
     private final JpaUserDetailsService jpaUserDetailsService;
     private final JwtUtils jwtUtils;
     private final IPatientService patientService;
+    private final UserBusinessRules userBusinessRules;
 
     public String login (AuthenticationRequest request) {
         Authentication authentication = authenticationManager
@@ -44,6 +46,7 @@ public class AuthService implements IAuthService {
     }
 
     public Optional<User> AddUser(UserDTO user) {
+        userBusinessRules.checkIfUserExistsBefore(user.getEmail());
         User newUser = new User();
         newUser.setFirst_name(user.getFirst_name());
         newUser.setLast_name(user.getLast_name());
