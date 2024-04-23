@@ -3,14 +3,19 @@ package codewizards.heal_trip.business.concretes;
 import codewizards.heal_trip.business.DTOs.requests.hospital.AddHospitalRequest;
 import codewizards.heal_trip.business.DTOs.requests.hospital.UpdateHospitalRequest;
 import codewizards.heal_trip.business.DTOs.requests.images.AddImageRequest;
+import codewizards.heal_trip.business.DTOs.responses.address.AddressForHospitalResponse;
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.hospital.AddedHospitalResponse;
 import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalsByDepartmentIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.hospital.UpdatedHospitalResponse;
+import codewizards.heal_trip.business.DTOs.responses.hospitalDepartment.DepartmentForHospitalDepartmentResponse;
 import codewizards.heal_trip.business.abstracts.IAddressService;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IHospitalService;
 import codewizards.heal_trip.business.abstracts.IImageService;
+import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDao;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
@@ -54,7 +59,29 @@ public class HospitalService implements IHospitalService {
     @Override
     public GotHospitalByIdResponse getHospitalById(int hospital_id) {
         Hospital hospital = hospitalDao.findById(hospital_id).orElse(null);
-        return modelMapperService.forRequest().map(hospital, GotHospitalByIdResponse.class);
+        GotHospitalByIdResponse response = new GotHospitalByIdResponse();
+        response.setId(hospital.getId());
+        response.setHospitalName(hospital.getHospitalName());
+        response.setAddress(modelMapperService.forRequest().map(hospital.getAddress(), AddressForHospitalResponse.class));
+        response.setContactPhone(hospital.getContactPhone());
+        response.setBed_capacity(hospital.getBed_capacity());
+        response.setDepartments(hospital.getDepartments().stream().map(hospitalDepartment -> {
+            Department department = hospitalDepartment.getDepartment();
+            return modelMapperService.forRequest().map(department, DepartmentForHospitalDepartmentResponse.class);
+        }).toList());
+        response.setDoctors(hospital.getDoctors().stream().map(
+                doctor -> {
+                    DoctorDTO doctorDTO = new DoctorDTO();
+                    doctorDTO.setId(doctor.getId());
+                    doctorDTO.setDoctorName(doctor.getDoctorName());
+                    doctorDTO.setExperience_year(doctor.getExperience_year());
+                    doctorDTO.setDoctorImage(ByteToBase64Converter.convert(doctor.getDoctorImage()));
+                    doctorDTO.setDepartment(modelMapperService.forRequest().map(doctor.getDepartment(), DepartmentDTO.class));
+                    return doctorDTO;
+                }
+        ).toList());
+        response.setHospitalImages(hospital.getHospitalImages());
+        return response;
     }
 
     @Override
