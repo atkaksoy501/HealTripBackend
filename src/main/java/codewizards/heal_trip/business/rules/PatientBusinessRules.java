@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class PatientBusinessRules extends UserBusinessRules{
-    PatientDao patientDao;
+    private final PatientDao patientDao;
     public PatientBusinessRules(UserDao userDao, PatientDao patientDao) {
         super(userDao);
         this.patientDao = patientDao;
