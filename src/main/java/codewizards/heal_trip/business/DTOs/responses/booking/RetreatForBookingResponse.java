@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RetreatForBookingResponse {
     private int id;
-    private String retreatName;
+    private String retreat_name;
 }

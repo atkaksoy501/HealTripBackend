@@ -57,7 +57,7 @@ public class Booking extends BaseEntity {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "retreat_id", referencedColumnName = "id")
     private Retreat retreat;
 
