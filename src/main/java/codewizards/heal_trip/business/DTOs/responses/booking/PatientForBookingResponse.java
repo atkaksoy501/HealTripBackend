@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientForBookingResponse {
     private int id;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
 }
