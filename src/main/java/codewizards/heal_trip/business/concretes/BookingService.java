@@ -51,18 +51,26 @@ public class BookingService implements IBookingService {
     @Override
     public CreatedBookingResponse add(CreateBookingRequest booking) {
         Patient patient = patientService.getPatientById(booking.getPatient_id());
-        Hospital hospital = modelMapperService.forRequest()
-                .map(hospitalService.getHospitalById(booking.getHospital_id()), Hospital.class);
-        Hotel hotel = hotelService.getById(booking.getHotel_id());
-        Doctor doctor = modelMapperService.forRequest()
-                .map(doctorService.getDoctorById(booking.getDoctor_id()), Doctor.class);
         GetRetreatByIdResponse retreat = retreatService.getRetreatById(booking.getRetreat_id());
 
         Booking newBooking = this.modelMapperService.forRequest().map(booking, Booking.class);
         newBooking.setPatient(patient);
-        newBooking.setHospital(hospital);
-        newBooking.setHotel(hotel);
-        newBooking.setDoctor(doctor);
+
+        if (bookingBusinessRules.checkIfBookingsHospitalExists(booking.getHospital_id())) {
+            Hospital hospital = modelMapperService.forRequest()
+                    .map(hospitalService.getHospitalById(booking.getHospital_id()), Hospital.class);
+            newBooking.setHospital(hospital);
+        }
+        if (bookingBusinessRules.checkIfBookingsHotelExists(booking.getHotel_id())) {
+            Hotel hotel = hotelService.getById(booking.getHotel_id());
+            newBooking.setHotel(hotel);
+        }
+        if (bookingBusinessRules.checkIfBookingsDoctorExists(booking.getDoctor_id())) {
+            Doctor doctor = modelMapperService.forRequest()
+                    .map(doctorService.getDoctorById(booking.getDoctor_id()), Doctor.class);
+            newBooking.setDoctor(doctor);
+        }
+
         newBooking.setRetreat(modelMapperService.forRequest().map(retreat, Retreat.class));
         newBooking.setCreateDate(LocalDateTime.now());
         newBooking.setBooking_date(LocalDate.now());
@@ -74,7 +82,7 @@ public class BookingService implements IBookingService {
         } catch (Exception e) {
             throw new BusinessException(EmailMessages.EMAIL_COULD_NOT_BE_SENT);
         }
-        return modelMapperService.forResponse().map(dbBooking, CreatedBookingResponse.class);
+        return modelMapperService.forRequest().map(dbBooking, CreatedBookingResponse.class);
     }
     
     @Override

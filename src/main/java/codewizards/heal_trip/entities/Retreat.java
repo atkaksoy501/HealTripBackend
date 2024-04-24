@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name="retreats")
@@ -34,5 +36,9 @@ public class Retreat extends BaseEntity {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private RetreatImage image;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "retreat")
+    private List<Booking> bookings;
 
 }
