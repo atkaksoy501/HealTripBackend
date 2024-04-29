@@ -28,7 +28,7 @@ public class Patient extends User{
     @Column(name = "patient_weight")
     private int patient_weight;
 
-    @JsonBackReference(value = "patient-booking")
+//    @JsonBackReference(value = "patient-booking")
     @OneToMany(mappedBy = "patient")
     private List<Booking> bookings;
 }

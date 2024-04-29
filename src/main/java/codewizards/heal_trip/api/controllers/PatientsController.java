@@ -3,6 +3,7 @@ package codewizards.heal_trip.api.controllers;
 import codewizards.heal_trip.business.DTOs.requests.patient.CreatePatientRequest;
 import codewizards.heal_trip.business.DTOs.requests.patient.UpdatePatientRequest;
 import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientResponse;
+import codewizards.heal_trip.business.DTOs.responses.patient.GetPatientResponse;
 import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
 import codewizards.heal_trip.business.abstracts.IPatientService;
 import codewizards.heal_trip.entities.Patient;
@@ -21,8 +22,8 @@ public class PatientsController {
     private final IPatientService patientService;
 
     @GetMapping(value = "/get/{patient_id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable int patient_id) {
-        Patient patient = patientService.getPatientById(patient_id);
+    public ResponseEntity<GetPatientResponse> getPatientById(@PathVariable int patient_id) {
+        GetPatientResponse patient = patientService.getPatientById(patient_id);
         if (patient == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else
@@ -50,7 +51,7 @@ public class PatientsController {
     }
 
     @GetMapping(value = "/getAll")
-    public ResponseEntity<Iterable<Patient>> getAllPatients() {
+    public ResponseEntity<Iterable<GetPatientResponse>> getAllPatients() {
         return new ResponseEntity<>(patientService.getAllPatients(), HttpStatus.OK);
     }
 }
