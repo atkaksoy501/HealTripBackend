@@ -2,12 +2,17 @@ package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
+import codewizards.heal_trip.business.DTOs.responses.department.DepartmentForRetreatResponse;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorForDepartmentResponse;
+import codewizards.heal_trip.business.DTOs.responses.hospital.HospitalForDepartmentResponse;
 import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
 import codewizards.heal_trip.business.rules.RetreatBusinessRules;
+import codewizards.heal_trip.core.converter.Base64ToByteConverter;
+import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.RetreatDao;
 import codewizards.heal_trip.entities.Department;
@@ -34,7 +39,27 @@ public class RetreatService implements IRetreatService {
     public GetRetreatByIdResponse getRetreatById(int retreat_id) {
         retreatBusinessRules.checkIfRetreatExists(retreat_id);
         Retreat retreat = retreatDao.findById(retreat_id).orElse(null);
-        return modelMapperService.forResponse().map(retreat, GetRetreatByIdResponse.class);
+        GetRetreatByIdResponse response = new GetRetreatByIdResponse();
+        response.setId(retreat.getId());
+        response.setRetreat_name(retreat.getRetreat_name());
+        response.setDescription(retreat.getDescription());
+        response.setImage(modelMapperService.forResponse().map(retreat.getImage(), GetImageResponse.class));
+        DepartmentForRetreatResponse department = new DepartmentForRetreatResponse();
+        department.setId(retreat.getDepartment().getId());
+        department.setDepartmentName(retreat.getDepartment().getDepartmentName());
+        List<HospitalForDepartmentResponse> hospitals = retreat.getDepartment().getHospitals().stream().map(h -> {
+            HospitalForDepartmentResponse hospital = modelMapperService.forResponse().map(h.getHospital(), HospitalForDepartmentResponse.class);
+            hospital.setId(h.getHospital().getId());
+            hospital.setDoctors(h.getHospital().getDoctors().stream().map(d -> {
+                DoctorForDepartmentResponse doctor = modelMapperService.forResponse().map(d, DoctorForDepartmentResponse.class);
+                doctor.setDoctorImage(ByteToBase64Converter.convert(d.getDoctorImage()));
+                return doctor;
+            }).toList());
+            return hospital;
+        }).toList();
+        department.setHospitals(hospitals);
+        response.setDepartment(department);
+        return response;
     }
 
     public AddedRetreatResponse addRetreat(AddRetreatRequest retreat) {
