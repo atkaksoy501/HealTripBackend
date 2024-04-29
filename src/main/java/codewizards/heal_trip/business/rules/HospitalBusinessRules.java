@@ -1,6 +1,7 @@
 package codewizards.heal_trip.business.rules;
 
 import codewizards.heal_trip.business.messages.HospitalMessages;
+import codewizards.heal_trip.core.utilities.exceptions.types.BusinessException;
 import codewizards.heal_trip.dataAccess.HospitalDao;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ public class HospitalBusinessRules {
     private final DepartmentBusinessRules departmentBusinessRules;
     public void checkIfhospitalExists(int hospitalId) {
         if (!hospitalDao.existsById(hospitalId)) {
-            throw new IllegalArgumentException(HospitalMessages.HOSPITAL_NOT_FOUND);
+            throw new BusinessException(HospitalMessages.HOSPITAL_NOT_FOUND);
         }
     }
 
