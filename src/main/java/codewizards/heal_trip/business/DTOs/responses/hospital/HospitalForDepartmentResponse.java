@@ -1,6 +1,8 @@
 package codewizards.heal_trip.business.DTOs.responses.hospital;
 
 import codewizards.heal_trip.business.DTOs.responses.address.AddressForHospitalResponse;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorForDepartmentResponse;
 import codewizards.heal_trip.business.DTOs.responses.images.GetImageResponse;
 import codewizards.heal_trip.entities.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +27,7 @@ public class HospitalForDepartmentResponse {
 
     private String contactPhone;
 
-    private List<Doctor> doctors;
+    private List<DoctorForDepartmentResponse> doctors;
 
     private List<GetImageResponse> hospitalImages;
 }
