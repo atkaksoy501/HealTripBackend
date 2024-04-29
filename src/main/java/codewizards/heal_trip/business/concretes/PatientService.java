@@ -4,6 +4,7 @@ import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.DTOs.requests.patient.CreatePatientRequest;
 import codewizards.heal_trip.business.DTOs.requests.patient.UpdatePatientRequest;
 import codewizards.heal_trip.business.DTOs.responses.patient.CreatedPatientResponse;
+import codewizards.heal_trip.business.DTOs.responses.patient.GetPatientResponse;
 import codewizards.heal_trip.business.DTOs.responses.patient.UpdatedPatientResponse;
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.business.abstracts.IPatientService;
@@ -30,8 +31,9 @@ public class PatientService implements IPatientService {
     private ModelMapperService modelMapperService;
     private PatientBusinessRules patientBusinessRules;
 
-    public Patient getPatientById(int patient_id) {
-        return patientDao.findById(patient_id).orElse(null);
+    public GetPatientResponse getPatientById(int patient_id) {
+        Patient patient = patientDao.findById(patient_id).orElse(null);
+        return modelMapperService.forResponse().map(patient, GetPatientResponse.class);
     }
 
     public Patient registerPatient(UserDTO patient) {
@@ -102,7 +104,8 @@ public class PatientService implements IPatientService {
         return true;
     }
 
-    public Iterable<Patient> getAllPatients() {
-        return patientDao.findAll();
+    public Iterable<GetPatientResponse> getAllPatients() {
+        return patientDao.findAll().stream().map(patient -> modelMapperService.forResponse().map(patient, GetPatientResponse.class)).toList();
+
     }
 }

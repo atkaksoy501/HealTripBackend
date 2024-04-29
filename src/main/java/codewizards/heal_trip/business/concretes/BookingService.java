@@ -6,6 +6,7 @@ import java.util.*;
 
 import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
 import codewizards.heal_trip.business.DTOs.responses.booking.CreatedBookingResponse;
+import codewizards.heal_trip.business.DTOs.responses.patient.GetPatientResponse;
 import codewizards.heal_trip.business.DTOs.responses.retreat.GetRetreatByIdResponse;
 import codewizards.heal_trip.business.abstracts.*;
 import codewizards.heal_trip.business.messages.EmailMessages;
@@ -50,11 +51,11 @@ public class BookingService implements IBookingService {
     
     @Override
     public CreatedBookingResponse add(CreateBookingRequest booking) {
-        Patient patient = patientService.getPatientById(booking.getPatient_id());
+        GetPatientResponse patient = patientService.getPatientById(booking.getPatient_id());
         GetRetreatByIdResponse retreat = retreatService.getRetreatById(booking.getRetreat_id());
 
         Booking newBooking = this.modelMapperService.forRequest().map(booking, Booking.class);
-        newBooking.setPatient(patient);
+        newBooking.setPatient(modelMapperService.forRequest().map(patient, Patient.class));
 
         if (bookingBusinessRules.checkIfBookingsHospitalExists(booking.getHospital_id())) {
             Hospital hospital = modelMapperService.forRequest()
