@@ -51,11 +51,11 @@ public class BookingService implements IBookingService {
     
     @Override
     public CreatedBookingResponse add(CreateBookingRequest booking) {
-        GetPatientResponse patient = patientService.getPatientById(booking.getPatient_id());
+        Patient patient = patientService.getPatient(booking.getPatient_id());
         GetRetreatByIdResponse retreat = retreatService.getRetreatById(booking.getRetreat_id());
 
         Booking newBooking = this.modelMapperService.forRequest().map(booking, Booking.class);
-        newBooking.setPatient(modelMapperService.forRequest().map(patient, Patient.class));
+        newBooking.setPatient(patient);
 
         if (bookingBusinessRules.checkIfBookingsHospitalExists(booking.getHospital_id())) {
             Hospital hospital = modelMapperService.forRequest()
