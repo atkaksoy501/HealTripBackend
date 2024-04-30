@@ -50,6 +50,15 @@ public class ImageService implements IImageService {
         return response;
     }
 
+    public GetImageResponseAsBase64 getHotelImageAsBase64ByHotelId(int hotel_id) {
+        imageBusinessRules.checkIfHotelImageExistsByHotelId(hotel_id);
+        HotelImage image = hotelImageDao.findByHotelHotelId(hotel_id);
+        GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
+        response.setId(image.getId());
+        response.setImage(ByteToBase64Converter.convert(image.getImage()));
+        return response;
+    }
+
     public List<String> getAllHotelImagesAsBase64() {
         List<HotelImage> images = hotelImageDao.findAll();
         return images.stream().map(image -> ByteToBase64Converter.convert(image.getImage())).toList();
