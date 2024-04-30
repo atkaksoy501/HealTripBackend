@@ -34,6 +34,8 @@ public interface IImageService {
 
     GetImageResponseAsBase64 getHotelImageAsBase64ById(int image_id);
 
+    GetImageResponseAsBase64 getHotelImageAsBase64ByHotelId(int hotel_id);
+
     GetImageResponseAsBase64 getHospitalImageAsBase64ById(int image_id);
 
     List<String> getAllHotelImagesAsBase64();
