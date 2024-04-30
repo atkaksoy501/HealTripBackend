@@ -12,6 +12,8 @@ public interface IPatientService {
 
     GetPatientResponse getPatientById(int patient_id);
 
+    Patient getPatient(int patient_id);
+
     Patient registerPatient(UserDTO patient);
 
     CreatedPatientResponse registerPatient(CreatePatientRequest patient);
