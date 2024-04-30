@@ -25,6 +25,15 @@ public class ImagesController {
             return new ResponseEntity<>(hotelImage, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/hotel/get/hotel/{hotel_id}")
+    public ResponseEntity<GetImageResponseAsBase64> getHotelImageByHotelId(@PathVariable int hotel_id) {
+        GetImageResponseAsBase64 hotelImage = imageService.getHotelImageAsBase64ByHotelId(hotel_id);
+        if (hotelImage == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(hotelImage, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/hospital/get/{image_id}")
     public ResponseEntity<GetImageResponseAsBase64> getHospitalImageById(@PathVariable int image_id) {
         GetImageResponseAsBase64 hospitalImage = imageService.getHospitalImageAsBase64ById(image_id);

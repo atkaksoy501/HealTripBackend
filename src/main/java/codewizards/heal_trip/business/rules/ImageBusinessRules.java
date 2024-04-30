@@ -13,6 +13,7 @@ public class ImageBusinessRules {
     private final HospitalImageDao hospitalImageDao;
     private final HotelImageDao hotelImageDao;
     private final RetreatImageDao retreatImageDao;
+    private final HotelBusinessRules hotelBusinessRules;
 
     public void checkIfHositalImageExists(int imageId) {
         if (!hospitalImageDao.existsById(imageId)) {
@@ -30,5 +31,9 @@ public class ImageBusinessRules {
         if (!retreatImageDao.existsById(imageId)) {
             throw new IllegalArgumentException(ImageMessages.IMAGE_NOT_FOUND);
         }
+    }
+
+    public void checkIfHotelImageExistsByHotelId(int hotelId) {
+        hotelBusinessRules.checkIfHotelExists(hotelId);
     }
 }
