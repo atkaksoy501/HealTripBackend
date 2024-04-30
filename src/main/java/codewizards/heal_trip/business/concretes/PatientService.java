@@ -36,6 +36,10 @@ public class PatientService implements IPatientService {
         return modelMapperService.forResponse().map(patient, GetPatientResponse.class);
     }
 
+    public Patient getPatient(int patient_id) {
+        return patientDao.findById(patient_id).orElse(null);
+    }
+
     public Patient registerPatient(UserDTO patient) {
         patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
@@ -106,6 +110,5 @@ public class PatientService implements IPatientService {
 
     public Iterable<GetPatientResponse> getAllPatients() {
         return patientDao.findAll().stream().map(patient -> modelMapperService.forResponse().map(patient, GetPatientResponse.class)).toList();
-
     }
 }
