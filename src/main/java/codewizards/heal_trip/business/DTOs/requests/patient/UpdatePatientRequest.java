@@ -28,6 +28,9 @@ public class UpdatePatientRequest {
     @Size(min = 6, max = 50)
     private String password;
 
+    @Size(min = 6, max = 50)
+    private String oldPassword;
+
     private LocalDate birth_date;
 
     private Gender gender;
