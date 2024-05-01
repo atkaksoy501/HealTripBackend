@@ -26,4 +26,11 @@ public class UserBusinessRules {
             throw new BusinessException(UserMessages.USER_NOT_FOUND);
         }
     }
+
+    public void checkIfOldPasswordIsCorrect(int id, String oldPassword) {
+        Optional<User> user = userDao.findById(id);
+        if (user.isEmpty() || !user.get().getPassword().equals(oldPassword)) {
+            throw new BusinessException(UserMessages.OLD_PASSWORD_IS_INCORRECT);
+        }
+    }
 }

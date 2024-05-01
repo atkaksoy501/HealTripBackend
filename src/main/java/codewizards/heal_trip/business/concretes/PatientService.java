@@ -15,7 +15,8 @@ import codewizards.heal_trip.entities.Booking;
 import codewizards.heal_trip.entities.Patient;
 import codewizards.heal_trip.entities.enums.Gender;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,8 @@ public class PatientService implements IPatientService {
     private IEmailService emailService;
     private ModelMapperService modelMapperService;
     private PatientBusinessRules patientBusinessRules;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public GetPatientResponse getPatientById(int patient_id) {
         Patient patient = patientDao.findById(patient_id).orElse(null);
@@ -43,7 +46,7 @@ public class PatientService implements IPatientService {
     public Patient registerPatient(UserDTO patient) {
         patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
-        dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
+        dbPatient.setPassword(passwordEncoder.encode(patient.getPassword()));
         dbPatient.setRoles("PATIENT");
         dbPatient.setActive(true);
         dbPatient.setCreateDate(LocalDateTime.now());
@@ -54,7 +57,7 @@ public class PatientService implements IPatientService {
     public CreatedPatientResponse registerPatient(CreatePatientRequest patient) {
         patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
-        dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
+        dbPatient.setPassword(passwordEncoder.encode(patient.getPassword()));
         dbPatient.setRoles("PATIENT");
         dbPatient.setActive(true);
         dbPatient.setCreateDate(LocalDateTime.now());
@@ -67,8 +70,15 @@ public class PatientService implements IPatientService {
         patientBusinessRules.checkIfUserExists(patient_id);
         patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = patientDao.findById(patient_id).orElse(null);
+        String newPassword = patient.getPassword();
+        String oldPassword = patient.getOldPassword();
+        patient.setPassword(null);
+        patient.setOldPassword(null);
         modelMapperService.forUpdate().map(patient, dbPatient);
-        dbPatient.setPassword(new BCryptPasswordEncoder().encode(patient.getPassword()));
+        if (newPassword != null) {
+            patientBusinessRules.checkIfOldPasswordIsCorrect(patient_id, oldPassword);
+            dbPatient.setPassword(passwordEncoder.encode(newPassword));
+        }
         List<Booking> bookings = new ArrayList<>();
         if (patient.getBooking_ids() != null) {
             for (Integer booking_id : patient.getBooking_ids()) {

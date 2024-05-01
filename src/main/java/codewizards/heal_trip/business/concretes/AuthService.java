@@ -14,10 +14,11 @@ import codewizards.heal_trip.dataAccess.UserDao;
 import codewizards.heal_trip.entities.Patient;
 import codewizards.heal_trip.entities.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,8 @@ public class AuthService implements IAuthService {
     private final JwtUtils jwtUtils;
     private final IPatientService patientService;
     private final UserBusinessRules userBusinessRules;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     public String login (AuthenticationRequest request) {
         Authentication authentication = authenticationManager
@@ -51,7 +54,7 @@ public class AuthService implements IAuthService {
         newUser.setFirst_name(user.getFirst_name());
         newUser.setLast_name(user.getLast_name());
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setRoles(user.getRoles());
         newUser.setCreateDate(LocalDateTime.now());
         newUser.setActive(true);
