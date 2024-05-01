@@ -8,9 +8,10 @@ import codewizards.heal_trip.core.utilities.exceptions.types.BusinessException;
 import codewizards.heal_trip.dataAccess.HospitalOrganizerDao;
 import codewizards.heal_trip.entities.HospitalOrganizer;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,8 @@ public class HospitalOrganizerService implements IHospitalOrganizerService {
     private final HospitalOrganizerDao hospitalOrganizerDao;
     private final OrganizerBusinessRules organizerBusinessRules;
     private final IEmailService emailService;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<HospitalOrganizer> getAll() {
@@ -39,7 +42,7 @@ public class HospitalOrganizerService implements IHospitalOrganizerService {
     @Override
     public Integer add(HospitalOrganizer hospitalOrganizer) {
 
-        hospitalOrganizer.setPassword(new BCryptPasswordEncoder().encode(hospitalOrganizer.getPassword()));
+        hospitalOrganizer.setPassword(passwordEncoder.encode(hospitalOrganizer.getPassword()));
         hospitalOrganizer.setCreateDate(LocalDateTime.now());
         HospitalOrganizer savedHospitalOrganizer = this.hospitalOrganizerDao.save(hospitalOrganizer);
         try {
