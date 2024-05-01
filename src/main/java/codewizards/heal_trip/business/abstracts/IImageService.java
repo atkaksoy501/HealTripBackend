@@ -38,6 +38,8 @@ public interface IImageService {
 
     GetImageResponseAsBase64 getHospitalImageAsBase64ById(int image_id);
 
+    GetImageResponseAsBase64 getHospitalImageAsBase64ByHospitalId(int hospital_id);
+
     List<String> getAllHotelImagesAsBase64();
 
     List<String> getAllHospitalImagesAsBase64();

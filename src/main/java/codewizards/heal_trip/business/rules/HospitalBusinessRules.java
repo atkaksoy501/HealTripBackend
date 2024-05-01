@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class HospitalBusinessRules {
     private final HospitalDao hospitalDao;
     private final DepartmentBusinessRules departmentBusinessRules;
-    public void checkIfhospitalExists(int hospitalId) {
+    public void checkHospitalExists(int hospitalId) {
         if (!hospitalDao.existsById(hospitalId)) {
             throw new BusinessException(HospitalMessages.HOSPITAL_NOT_FOUND);
         }
