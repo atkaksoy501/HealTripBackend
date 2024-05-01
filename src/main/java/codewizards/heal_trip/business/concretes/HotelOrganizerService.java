@@ -6,9 +6,10 @@ import codewizards.heal_trip.business.rules.OrganizerBusinessRules;
 import codewizards.heal_trip.dataAccess.HotelOrganizerDao;
 import codewizards.heal_trip.entities.HotelOrganizer;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,8 @@ public class HotelOrganizerService implements IHotelOrganizerService {
     private final HotelOrganizerDao hotelOrganizerDao;
     private final OrganizerBusinessRules organizerBusinessRules;
     private final IEmailService emailService;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<HotelOrganizer> getAll() {
@@ -37,7 +40,7 @@ public class HotelOrganizerService implements IHotelOrganizerService {
 
     @Override
     public Integer add(HotelOrganizer hotelOrganizer) {
-        hotelOrganizer.setPassword(new BCryptPasswordEncoder().encode(hotelOrganizer.getPassword()));
+        hotelOrganizer.setPassword(passwordEncoder.encode(hotelOrganizer.getPassword()));
         hotelOrganizer.setCreateDate(LocalDateTime.now());
         HotelOrganizer savedHotelOrganizer = this.hotelOrganizerDao.save(hotelOrganizer);
         emailService.sendWelcomeEmail(hotelOrganizer.getEmail(), hotelOrganizer.getFirst_name());

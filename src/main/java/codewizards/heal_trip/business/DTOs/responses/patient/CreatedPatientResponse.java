@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreatedPatientResponse {
+    private int id;
+
     private String first_name;
 
     private String last_name;

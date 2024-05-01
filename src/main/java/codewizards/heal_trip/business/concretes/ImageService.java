@@ -33,7 +33,7 @@ public class ImageService implements IImageService {
     }
 
     public HospitalImage getHospitalImageById(int image_id) {
-        imageBusinessRules.checkIfHositalImageExists(image_id);
+        imageBusinessRules.checkIfHospitalImageExists(image_id);
         return hospitalImageDao.findById(image_id).orElse(null);
     }
 
@@ -65,8 +65,17 @@ public class ImageService implements IImageService {
     }
 
     public GetImageResponseAsBase64 getHospitalImageAsBase64ById(int image_id) {
-        imageBusinessRules.checkIfHositalImageExists(image_id);
+        imageBusinessRules.checkIfHospitalImageExists(image_id);
         HospitalImage image = hospitalImageDao.findById(image_id).orElse(null);
+        GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
+        response.setId(image.getId());
+        response.setImage(ByteToBase64Converter.convert(image.getImage()));
+        return response;
+    }
+
+    public GetImageResponseAsBase64 getHospitalImageAsBase64ByHospitalId(int hospital_id) {
+        imageBusinessRules.checkIfHospitalImageExistsByHospitalId(hospital_id);
+        HospitalImage image = hospitalImageDao.findByHospitalId(hospital_id);
         GetImageResponseAsBase64 response = new GetImageResponseAsBase64();
         response.setId(image.getId());
         response.setImage(ByteToBase64Converter.convert(image.getImage()));
@@ -144,7 +153,7 @@ public class ImageService implements IImageService {
     }
 
     public void deleteHospitalImage(int image_id) {
-        imageBusinessRules.checkIfHositalImageExists(image_id);
+        imageBusinessRules.checkIfHospitalImageExists(image_id);
         hospitalImageDao.deleteById(image_id);
     }
 
