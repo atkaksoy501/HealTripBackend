@@ -61,7 +61,7 @@ public class HospitalService implements IHospitalService {
 
     @Override
     public GotHospitalByIdResponse getHospitalById(int hospital_id) {
-        hospitalBusinessRules.checkIfhospitalExists(hospital_id);
+        hospitalBusinessRules.checkHospitalExists(hospital_id);
         Hospital hospital = hospitalDao.findById(hospital_id).orElse(null);
         GotHospitalByIdResponse response = new GotHospitalByIdResponse();
         response.setId(hospital.getId());
@@ -107,7 +107,7 @@ public class HospitalService implements IHospitalService {
 
     @Override
     public boolean deleteHospital(int hospital_id) {
-        hospitalBusinessRules.checkIfhospitalExists(hospital_id);
+        hospitalBusinessRules.checkHospitalExists(hospital_id);
         Hospital dbHospital = hospitalDao.findById(hospital_id).orElse(null);
         if (dbHospital != null) {
             dbHospital.setActive(false);
@@ -120,7 +120,7 @@ public class HospitalService implements IHospitalService {
     @Override
     @Transactional
     public UpdatedHospitalResponse updateHospital(UpdateHospitalRequest hospital, int id) {
-        hospitalBusinessRules.checkIfhospitalExists(id);
+        hospitalBusinessRules.checkHospitalExists(id);
         Hospital dbHospital = hospitalDao.findById(id).orElse(null);
         assert dbHospital != null;
         modelMapperService.forUpdate().map(hospital, dbHospital);
