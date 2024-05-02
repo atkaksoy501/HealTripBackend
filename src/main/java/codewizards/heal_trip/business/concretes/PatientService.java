@@ -74,7 +74,21 @@ public class PatientService implements IPatientService {
         String oldPassword = patient.getOldPassword();
         patient.setPassword(null);
         patient.setOldPassword(null);
+        int oldHeight = dbPatient.getPatient_height();
+        int oldWeight = dbPatient.getPatient_weight();
         modelMapperService.forUpdate().map(patient, dbPatient);
+        if (patient.getPatient_weight() != 0) {
+            dbPatient.setPatient_weight(patient.getPatient_weight());
+        }
+        else {
+            dbPatient.setPatient_weight(oldWeight);
+        }
+        if (patient.getPatient_height() != 0) {
+            dbPatient.setPatient_height(patient.getPatient_height());
+        }
+        else {
+            dbPatient.setPatient_height(oldHeight);
+        }
         if (newPassword != null) {
             patientBusinessRules.checkIfOldPasswordIsCorrect(patient_id, oldPassword);
             dbPatient.setPassword(passwordEncoder.encode(newPassword));
