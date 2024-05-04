@@ -23,4 +23,6 @@ public class UpdateDoctorRequest {
     private int department_id;
 
     private List<Integer> booking_ids;
+
+    private String description;
 }
