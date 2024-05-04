@@ -16,7 +16,8 @@ public class SecurityManager implements SecurityService {
             "/retreat/getAll",
             "/retreat/getByDepartmentId/**",
             "/booking/add",
-            "/patient/update/**"
+            "/patient/update/**",
+            "/email/send"
     };
 
     private static final String[] SWAGGER_URLS = {
@@ -56,7 +57,6 @@ public class SecurityManager implements SecurityService {
             "/image/hotel/delete/**",
             "/image/hospital/save",
             "/image/hospital/delete/**",
-            "/email/send",
             "/email/sendWelcome",
             "/email/sendAppointment"
     };

@@ -1,6 +1,6 @@
 package codewizards.heal_trip.business.concretes;
 
-import codewizards.heal_trip.business.abstracts.IAddressService;
+import codewizards.heal_trip.business.DTOs.requests.email.SendEmailRequest;
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.entities.Address;
 import codewizards.heal_trip.entities.Booking;
@@ -15,19 +15,17 @@ import java.util.regex.Pattern;
 public class EmailService implements IEmailService {
 
     private JavaMailSender emailSender;
-    private IAddressService addressService;
     private String welcomeSubject = "Welcome to HealTrip";
     private String welcomeText = "Welcome to HealTrip, %s! \n\nWe are excited to have you on board. We are committed to providing you with the best healthcare services. We hope you have a great experience with us.";
     private String appointmentSubject = "Appointment Confirmation";
     private String appointmentText = "Hi %s, Your booking has been confirmed! \n\nWe are looking forward to seeing you on the scheduled date and time. You can find your booking details below. If you have any questions, feel free to contact us.";
 
     @Autowired
-    public EmailService(JavaMailSender emailSender, IAddressService addressService) {
+    public EmailService(JavaMailSender emailSender) {
         this.emailSender = emailSender;
-        this.addressService = addressService;
     }
 
-    public void sendEmail(String to, String subject, String text) {
+    private void sendEmail(String to, String subject, String text) {
         if (!patternMatches(to))
             throw new IllegalArgumentException("Invalid email address: " + to);
         SimpleMailMessage message = new SimpleMailMessage();
@@ -35,6 +33,20 @@ public class EmailService implements IEmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
+        emailSender.send(message);
+    }
+
+    public void sendContactEmail(SendEmailRequest sendEmailRequest) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(sendEmailRequest.getEmail());
+        message.setTo("healtrip.codewizards@gmail.com");
+        message.setSubject("Contact Request From " + sendEmailRequest.getFirstName() + " " + sendEmailRequest.getLastName());
+        message.setText("Name: " + sendEmailRequest.getFirstName() + " " + sendEmailRequest.getLastName() + "\n" +
+                        "Address: " + sendEmailRequest.getAddress() + "\n" +
+                        "Phone Number: " + sendEmailRequest.getPhoneNumber() + "\n" +
+                        "Email: " + sendEmailRequest.getEmail() + "\n" +
+                        "Message: " + sendEmailRequest.getMessage()
+        );
         emailSender.send(message);
     }
 
