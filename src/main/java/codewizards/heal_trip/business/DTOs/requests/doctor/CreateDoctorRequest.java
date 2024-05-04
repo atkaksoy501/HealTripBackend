@@ -25,4 +25,7 @@ public class CreateDoctorRequest {
 
     @NotNull
     private int department_id;
+
+    @NotNull
+    private String description;
 }

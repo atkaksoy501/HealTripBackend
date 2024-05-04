@@ -43,4 +43,7 @@ public class Doctor extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 }

@@ -20,4 +20,6 @@ public class DoctorDTOWithHospital {
     private DepartmentDTO department;
 
     private HospitalForDoctorResponse hospital;
+
+    private String description;
 }
