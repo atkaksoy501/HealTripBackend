@@ -55,6 +55,7 @@ public class DoctorDbDtoConverter {
         newDoctor.setHospital(modelMapperService.forRequest()
                 .map(hospitalService.getHospitalById(dto.getHospital_id()), Hospital.class));
         newDoctor.setDepartment(departmentService.getById(dto.getDepartment_id()));
+        newDoctor.setDescription(dto.getDescription());
         newDoctor.setCreateDate(LocalDateTime.now());
         newDoctor.setActive(true);
         return newDoctor;
@@ -71,6 +72,7 @@ public class DoctorDbDtoConverter {
             bookings.add(bookingService.getById(bookingId));
         }
         doctor.setBookings(bookings);
+        doctor.setDescription(dto.getDescription());
         doctor.setUpdateDate(LocalDateTime.now());
         return doctor;
     }
@@ -83,6 +85,7 @@ public class DoctorDbDtoConverter {
         dto.setDoctorImage(ByteToBase64Converter.convert(dbObj.getDoctorImage()));
         dto.setHospital(modelMapperService.forResponse().map(dbObj.getHospital(), HospitalForDoctorResponse.class));
         dto.setDepartment(modelMapperService.forResponse().map(dbObj.getDepartment(), DepartmentDTO.class));
+        dto.setDescription(dbObj.getDescription());
         return dto;
     }
 
@@ -95,6 +98,7 @@ public class DoctorDbDtoConverter {
         dto.setActive(dbObj.isActive());
         dto.setHospital(modelMapperService.forResponse().map(dbObj.getHospital(), HospitalForDoctorResponse.class));
         dto.setDepartment(modelMapperService.forResponse().map(dbObj.getDepartment(), DepartmentDTO.class));
+        dto.setDescription(dbObj.getDescription());
         dto.setUpdateDate(dbObj.getUpdateDate());
         List<Integer> bookingIds = new ArrayList<>();
         for (Booking booking : dbObj.getBookings()) {
