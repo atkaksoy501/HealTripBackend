@@ -1,9 +1,10 @@
 package codewizards.heal_trip.business.abstracts;
 
+import codewizards.heal_trip.business.DTOs.requests.email.SendEmailRequest;
 import codewizards.heal_trip.entities.Booking;
 
 public interface IEmailService {
-    void sendEmail(String to, String subject, String text);
+    void sendContactEmail(SendEmailRequest sendEmailRequest);
 
     boolean patternMatches(String emailAddress);
 

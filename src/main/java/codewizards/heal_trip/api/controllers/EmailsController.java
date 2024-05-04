@@ -1,5 +1,6 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.requests.email.SendEmailRequest;
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.entities.Booking;
 import jakarta.validation.Valid;
@@ -17,13 +18,9 @@ public class EmailsController {
     private final IEmailService emailService;
 
     @GetMapping("/send")
-    public ResponseEntity<String> sendEmail(String to, String subject, String text) throws IllegalArgumentException {
-        try {
-            emailService.sendEmail(to, subject, text);
-            return new ResponseEntity<>("Email sent to " + to, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmail(@Valid @RequestBody SendEmailRequest sendEmailRequest) {
+        emailService.sendContactEmail(sendEmailRequest);
     }
 
     @GetMapping("/sendWelcome")
