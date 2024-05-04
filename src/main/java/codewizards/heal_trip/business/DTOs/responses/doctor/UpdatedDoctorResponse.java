@@ -28,5 +28,7 @@ public class UpdatedDoctorResponse {
 
     private DepartmentDTO department;
 
+    private String description;
+
     private LocalDateTime updateDate;
 }
