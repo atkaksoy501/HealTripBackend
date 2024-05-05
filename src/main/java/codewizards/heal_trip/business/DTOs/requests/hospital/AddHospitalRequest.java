@@ -22,7 +22,7 @@ public class AddHospitalRequest {
     private String hospitalName;
 
     @NotNull
-    private CreateAddressRequest address;
+    private int addressId;
 
     @NotNull
     @Size(min = 11, max = 11)
@@ -32,5 +32,5 @@ public class AddHospitalRequest {
     private List<Integer> department_ids;
 
     @NotNull
-    private List<AddImageRequest> hospitalImages;
+    private List<Integer> hospitalImageIds;
 }
