@@ -268,7 +268,7 @@ public class TestDataCreator {
             hospital.setContactPhone("1234567890");
             hospital.setAddress(addressService.getById(i));
             hospital.setActive(true);
-            hospital.setDoctors(doctorService.getAllDoctors());
+            hospital.setDoctors(doctorService.getAllDoctors().stream().map(doctor -> modelMapperService.forResponse().map(doctor, Doctor.class)).toList());
             List<HospitalImage> hospitalImages = new ArrayList<>();
             hospitalImages.add(hospitalImage);
             hospital.setHospitalImages(hospitalImages);
