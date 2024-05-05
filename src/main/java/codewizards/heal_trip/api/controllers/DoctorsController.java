@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value="/doctor")
 @CrossOrigin
@@ -41,5 +43,10 @@ public class DoctorsController {
     @PutMapping("/update/{id}")
     public UpdatedDoctorResponse updateDoctor(@Valid @RequestBody UpdateDoctorRequest newDoctor, @PathVariable int id){
         return new ResponseEntity<>(doctorService.updateDoctor(newDoctor, id), HttpStatus.OK).getBody();
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<DoctorDTOWithHospital>> getAllDoctors() {
+        return new ResponseEntity<>(doctorService.getAllDoctors(), HttpStatus.OK);
     }
 }
