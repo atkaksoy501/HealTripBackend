@@ -1,5 +1,7 @@
 package codewizards.heal_trip;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +14,7 @@ import java.util.Properties;
 
 @SpringBootApplication
 @EnableTransactionManagement
+@OpenAPIDefinition(info = @Info(title = "HealTrip API", version = "v1", description = "HealTrip API by CodeWizards"))
 public class HealTripApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HealTripApplication.class, args);
