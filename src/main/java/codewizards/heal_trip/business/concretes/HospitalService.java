@@ -90,18 +90,16 @@ public class HospitalService implements IHospitalService {
 
     @Override
     public AddedHospitalResponse registerHospital(AddHospitalRequest hospital) {
-        List<AddImageRequest> hospitalImages = hospital.getHospitalImages();
+        List<Integer> hospitalImageIds = hospital.getHospitalImageIds();
         Hospital dbHospital = modelMapperService.forRequest().map(hospital, Hospital.class);
-        if (hospitalImages != null && !hospitalImages.isEmpty()) {
-            for (AddImageRequest hospitalImage : hospitalImages) {
-                HospitalImage dbHospitalImage = modelMapperService.forRequest().map(hospitalImage, HospitalImage.class);
-                dbHospitalImage.setHospital(dbHospital);
-                imageService.saveHospitalImage(dbHospitalImage);
-            }
-        }
+        dbHospital.setHospitalImages(hospitalImageIds.stream().map(imageId -> {
+            HospitalImage hospitalImage = imageService.getHospitalImageById(imageId);
+            hospitalImage.setHospital(dbHospital);
+            return hospitalImage;
+        }).toList());
         dbHospital.setCreateDate(LocalDateTime.now());
         dbHospital.setActive(true);
-        dbHospital.setAddress(addressService.add(hospital.getAddress()));
+        dbHospital.setAddress(addressService.getById(hospital.getAddressId()));
         return modelMapperService.forResponse().map(hospitalDao.save(dbHospital), AddedHospitalResponse.class);
     }
 
