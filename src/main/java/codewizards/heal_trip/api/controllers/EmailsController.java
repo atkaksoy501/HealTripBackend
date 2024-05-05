@@ -3,12 +3,15 @@ package codewizards.heal_trip.api.controllers;
 import codewizards.heal_trip.business.DTOs.requests.email.SendEmailRequest;
 import codewizards.heal_trip.business.abstracts.IEmailService;
 import codewizards.heal_trip.entities.Booking;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Email Management", description = "Email Management APIs")
 @RestController
 @RequestMapping("/email")
 @CrossOrigin
@@ -17,12 +20,14 @@ public class EmailsController {
 
     private final IEmailService emailService;
 
+    @Operation(summary = "Send Email")
     @GetMapping("/send")
     @ResponseStatus(HttpStatus.OK)
     public void sendEmail(@Valid @RequestBody SendEmailRequest sendEmailRequest) {
         emailService.sendContactEmail(sendEmailRequest);
     }
 
+    @Operation(summary = "Send Welcome Email")
     @GetMapping("/sendWelcome")
     public ResponseEntity<String> sendWelcomeEmail(String to, String firstName) throws IllegalArgumentException {
         try {
@@ -33,6 +38,7 @@ public class EmailsController {
         }
     }
 
+    @Operation(summary = "Send Appointment Email")
     @GetMapping("/sendAppointment")
     public ResponseEntity<String> sendAppointmentEmail(@Valid @RequestBody Booking booking) throws IllegalArgumentException {
         try {
