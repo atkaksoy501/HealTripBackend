@@ -15,5 +15,5 @@ public interface IDoctorService {
     boolean deleteDoctor(int doctor_id);
     UpdatedDoctorResponse updateDoctor(UpdateDoctorRequest doctor, int id);
 
-    List<Doctor> getAllDoctors();
+    List<DoctorDTOWithHospital> getAllDoctors();
 }
