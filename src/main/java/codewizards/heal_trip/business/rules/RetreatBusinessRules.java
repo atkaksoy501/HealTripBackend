@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class RetreatBusinessRules {
     private final RetreatDao retreatDao;
     private final DepartmentBusinessRules departmentBusinessRules;
+    private final HospitalBusinessRules hospitalBusinessRules;
 
     public void checkIfRetreatExists(int retreatId) {
         if (!retreatDao.existsById(retreatId)) {
@@ -19,5 +20,9 @@ public class RetreatBusinessRules {
 
     public void checkIfRetreatsDepartmentExists(int departmentId) {
         departmentBusinessRules.checkIfDepartmentExists(departmentId);
+    }
+
+    public void checkIfRetreatsHospitalExists(int hospitalId) {
+        hospitalBusinessRules.checkHospitalExists(hospitalId);
     }
 }
