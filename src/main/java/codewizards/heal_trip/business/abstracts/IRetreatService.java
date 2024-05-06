@@ -20,4 +20,6 @@ public interface IRetreatService {
     Iterable<GetAllRetreatsResponse> getAllRetreats();
 
     List<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId);
+
+    List<GetRetreatByHospitalIdResponse> getRetreatsByHospitalId(int hospitalId);
 }

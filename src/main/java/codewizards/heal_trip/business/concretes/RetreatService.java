@@ -122,4 +122,11 @@ public class RetreatService implements IRetreatService {
         }
         return response;
     }
+
+    @Override
+    public List<GetRetreatByHospitalIdResponse> getRetreatsByHospitalId(int hospitalId) {
+        retreatBusinessRules.checkIfRetreatsHospitalExists(hospitalId);
+        List<Retreat> retreats = retreatDao.findByDepartmentHospitalsHospitalId(hospitalId);
+        return retreats.stream().map(retreat -> modelMapperService.forResponse().map(retreat, GetRetreatByHospitalIdResponse.class)).toList();
+    }
 }
