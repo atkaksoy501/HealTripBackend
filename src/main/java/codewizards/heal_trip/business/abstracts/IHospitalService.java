@@ -6,6 +6,7 @@ import codewizards.heal_trip.business.DTOs.responses.hospital.AddedHospitalRespo
 import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalsByDepartmentIdResponse;
 import codewizards.heal_trip.business.DTOs.responses.hospital.UpdatedHospitalResponse;
+import codewizards.heal_trip.entities.Hospital;
 
 import java.util.List;
 
@@ -21,5 +22,7 @@ public interface IHospitalService {
     List<GotHospitalByIdResponse> getAllHospitals();
 
     List<GotHospitalsByDepartmentIdResponse> getAllHospitalsByDepartmentId(int departmentId);
+
+    void addHospital(Hospital hospital);
 
 }

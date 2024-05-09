@@ -51,7 +51,9 @@ public class PatientService implements IPatientService {
         dbPatient.setActive(true);
         dbPatient.setCreateDate(LocalDateTime.now());
         dbPatient.setGender(Gender.UNDEFINED);
-        return patientDao.save(dbPatient);
+        Patient savedPatient = patientDao.save(dbPatient);
+        emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
+        return savedPatient;
     }
 
     public CreatedPatientResponse registerPatient(CreatePatientRequest patient) {
