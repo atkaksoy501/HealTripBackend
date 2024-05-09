@@ -343,12 +343,12 @@ public class TestDataCreator {
             department.setDepartmentName(name);
 
             Random random = new Random();
-            List<Integer> hospitalIds = new ArrayList<>();
+            Set<Integer> hospitalIds = new HashSet<>();
             for (int i = 0; i < hospitals.size(); i++) {
                 int randomId = random.nextInt(5) + 1; // This will generate random numbers between 1 and 5
                 hospitalIds.add(randomId);
             }
-            department.setHospital_ids(hospitalIds);
+            department.setHospital_ids(hospitalIds.stream().toList());
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
