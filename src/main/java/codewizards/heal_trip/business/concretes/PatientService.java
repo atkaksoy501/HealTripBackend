@@ -40,6 +40,7 @@ public class PatientService implements IPatientService {
     }
 
     public Patient getPatient(int patient_id) {
+        patientBusinessRules.checkIfUserExists(patient_id);
         return patientDao.findById(patient_id).orElse(null);
     }
 
