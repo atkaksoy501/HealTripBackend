@@ -38,7 +38,7 @@ public class Hospital extends BaseEntity {
     private String contactPhone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "hospital")
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
     private List<HospitalDepartment> departments;
 
     @OneToMany(mappedBy = "hospital")
