@@ -74,4 +74,11 @@ public class RetreatsController {
     public List<GetRetreatByHospitalIdResponse> getRetreatsByHospitalId(@PathVariable int hospitalId) {
         return retreatService.getRetreatsByHospitalId(hospitalId);
     }
+
+    @Operation(summary = "Get Retreat by Name")
+    @GetMapping(value = "/getByName/{retreat_name}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetRetreatByNameResponse getRetreatByName(@PathVariable String retreat_name) {
+        return retreatService.getRetreatByName(retreat_name);
+    }
 }
