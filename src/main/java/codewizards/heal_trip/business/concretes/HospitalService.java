@@ -16,6 +16,7 @@ import codewizards.heal_trip.business.abstracts.IDepartmentService;
 import codewizards.heal_trip.business.abstracts.IHospitalService;
 import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.business.rules.HospitalBusinessRules;
+import codewizards.heal_trip.core.converter.Base64ToByteConverter;
 import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDao;
@@ -91,9 +92,18 @@ public class HospitalService implements IHospitalService {
         List<Integer> hospitalImageIds = hospital.getHospitalImageIds();
         Hospital dbHospital = modelMapperService.forRequest().map(hospital, Hospital.class);
         dbHospital.setHospitalImages(hospitalImageIds.stream().map(imageId -> {
-            HospitalImage hospitalImage = imageService.getHospitalImageById(imageId);
+            HospitalImage hospitalImage = new HospitalImage();
+            hospitalImage.setImage(imageService.getHospitalImageById(imageId).getImage());
+            hospitalImage.setCreateDate(LocalDateTime.now());
             hospitalImage.setHospital(dbHospital);
             return hospitalImage;
+        }).toList());
+        dbHospital.setDepartments(hospital.getDepartment_ids().stream().map(departmentId -> {
+            HospitalDepartment hospitalDepartment = new HospitalDepartment();
+            hospitalDepartment.setHospital(dbHospital);
+            hospitalDepartment.setDepartment(modelMapperService.forRequest().map(departmentService.getById(departmentId), Department.class));
+            hospitalDepartment.setCreateDate(LocalDateTime.now());
+            return hospitalDepartment;
         }).toList());
         dbHospital.setCreateDate(LocalDateTime.now());
         dbHospital.setActive(true);
