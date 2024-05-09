@@ -4,6 +4,7 @@ import codewizards.heal_trip.DTO.UserDTO;
 import codewizards.heal_trip.business.DTOs.requests.booking.CreateBookingRequest;
 import codewizards.heal_trip.business.DTOs.requests.department.AddDepartmentRequest;
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.requests.hospital.AddHospitalRequest;
 import codewizards.heal_trip.business.DTOs.requests.images.AddImageRequestAsBase64;
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.hospital.GotHospitalByIdResponse;
@@ -33,6 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -148,19 +150,28 @@ public class TestDataCreator {
     @Test
     @Order(4)
     void createAddress() throws Exception {
-        List<String> cities = List.of("Ankara", "İstanbul", "İzmir", "Antalya", "Adana", "Bursa", "Eskişehir", "Trabzon",
-                "Samsun", "Konya");
-        List<String> countries = List.of("Turkey", "Germany", "France", "Italy", "Spain", "Portugal", "Greece", "Russia",
-                "Ukraine", "England");
-        List<String> names = Arrays.asList("Akra Hotel", "Akdeniz University Hospital", "Hilton Hotel", "Johns Hopkins Hospital",
-                "Marriott Hotel", "Mayo Clinic Hospital", "Ritz-Carlton Hotel", "Cleveland Clinic Hospital", "Four Seasons Hotel",
-                "Massachusetts General Hospital");
+        List<String> cities = List.of("Ankara", "İstanbul", "İzmir", "Antalya", "Adana",
+                "Ankara", "İstanbul", "İzmir", "Antalya", "Adana",
+                "Ankara", "İstanbul", "İzmir", "Antalya", "Adana");
+//        List<String> countries = List.of("Turkey", "Germany", "France", "Italy", "Spain", "Portugal", "Greece", "Russia",
+//                "Ukraine", "England");
+        List<String> hotelNames = Arrays.asList("Akra Hotel", "Hilton Hotel", "Marriott Hotel", "Ritz-Carlton Hotel",
+                "Four Seasons Hotel", "Sheraton Hotel", "Radisson Hotel", "InterContinental Hotel", "Hyatt Hotel", "Wyndham Hotel");
 
-        for (int i = 0; i < 5; i++) {
+        List<String> hospitalNames = List.of("Akdeniz University Hospital", "Johns Hopkins Hospital", "Mayo Clinic Hospital",
+                "Cleveland Clinic Hospital", "Massachusetts General Hospital");
+
+        for (int i = 0; i < 15; i++) {
             Address address = new Address();
             address.setCity(cities.get(i));
-            address.setCountry(countries.get(i));
-            address.setAddressDetail(names.get(i));
+            address.setCountry("Turkey");
+            if (i < 10) {
+                address.setAddressDetail(hotelNames.get(i));
+            }
+            else {
+                address.setAddressDetail(hospitalNames.get(i - 10));
+            }
+
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -182,7 +193,7 @@ public class TestDataCreator {
                 "Four Seasons Hotel", "Sheraton Hotel", "Radisson Hotel", "InterContinental Hotel", "Hyatt Hotel",
                 "Wyndham Hotel");
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 10; i++) {
 
             byte[] fileContent = FileUtils.readFileToByteArray(new File("src/test/hotelImages/" + i + ".jpeg"));
 
@@ -191,7 +202,7 @@ public class TestDataCreator {
 
 
             Hotel hotel = new Hotel();
-            hotel.setHotelName(names.get(i));
+            hotel.setHotelName(names.get(i - 1));
             hotel.setBedCapacity(100);
             hotel.setContactPhone("1234567890");
             hotel.setAddress(addressService.getById(i));
@@ -251,8 +262,7 @@ public class TestDataCreator {
     @Commit
     void createHospital() throws Exception {
         List<String> names = Arrays.asList("Akdeniz University Hospital", "Johns Hopkins Hospital", "Mayo Clinic Hospital",
-                "Cleveland Clinic Hospital", "Massachusetts General Hospital", "Atakan Hospital", "Burak Hospital", "Onur Hospital",
-                "Sude Hospital", "Aziz Hospital");
+                "Cleveland Clinic Hospital", "Massachusetts General Hospital");
 
         for (int i = 1; i <= 5; i++) {
 
@@ -263,26 +273,22 @@ public class TestDataCreator {
 
 
             Hospital hospital = new Hospital();
-            hospital.setHospitalName(names.get(i));
+            hospital.setHospitalName(names.get(i - 1));
             hospital.setBed_capacity(1000);
             hospital.setContactPhone("1234567890");
-            hospital.setAddress(addressService.getById(i));
+            hospital.setAddress(addressService.getById(i + 10));
             hospital.setActive(true);
+            hospital.setCreateDate(LocalDateTime.now());
             hospital.setDoctors(doctorService.getAllDoctors().stream().map(doctor -> modelMapperService.forResponse().map(doctor, Doctor.class)).toList());
             List<HospitalImage> hospitalImages = new ArrayList<>();
             hospitalImages.add(hospitalImage);
             hospital.setHospitalImages(hospitalImages);
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            String hospitalJson = objectMapper.writeValueAsString(hospital);
+//            AddHospitalRequest addHospitalRequest = new AddHospitalRequest();
+//            modelMapperService.forRequest().map(hospital, addHospitalRequest);
+//            addHospitalRequest.setHospitalImageIds(hospital.getHospitalImages().stream().map(HospitalImage::getId).toList());
 
-            ResultActions result = mockMvc.perform(post(BASE_URL + "/hospital/add")
-                    .headers(createHeader())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(hospitalJson));
-
-            result.andExpect(status().isCreated());
+            hospitalService.addHospital(hospital);
         }
     }
 
@@ -360,21 +366,31 @@ public class TestDataCreator {
     @Transactional
     @Commit
     void createDoctor() throws Exception {
-        List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz");
-        List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu");
+        List<String> names = List.of("Atakan", "Burak", "Onur", "Sude", "Aziz", "Alp", "Ilgaz", "Süleyman", "Ali", "Mehmet");
+        List<String> surnames = List.of("Aksoy", "Erten", "Doğan", "Karaben", "Yolcu", "Aktürk", "Kara", "Keskin", "Kılıç", "Koçak");
         List<String> descriptions = List.of("Dr. Atakan Aksoy, a distinguished figure within the Aesthetic Surgery department at Johns Hopkins Hospital, brings a wealth of experience and a deep academic background to his practice. Hailing from Istanbul, Turkey, Dr. Aksoy was inspired by his family's medical heritage and pursued his passion for medicine from a young age. He completed his undergraduate studies at Istanbul University with distinction before earning his medical degree with honors from Hacettepe University Faculty of Medicine. Dr. Aksoy underwent rigorous training in general surgery at a prestigious medical institution, refining his surgical skills and cultivating a profound commitment to patient care. Following his residency, he pursued specialized training in aesthetic surgery through a highly competitive fellowship program, solidifying his expertise in cosmetic procedures. Dr. Aksoy is dedicated to advancing the field through his extensive research endeavors, contributing to esteemed journals. In his clinical practice, he emphasizes personalized care, tailoring treatments to each patient's individual needs and goals. As a faculty member, Dr. Aksoy is deeply invested in mentoring and educating the next generation of surgeons, fostering a culture of excellence and innovation. Actively involved in professional organizations such as the American Society of Plastic Surgeons and the American Society for Aesthetic Plastic Surgery, Dr. Atakan Aksoy is widely recognized for his clinical excellence and contributions to the field. He embodies the pinnacle of professionalism and expertise in aesthetic surgery, shaping its future through his leadership and dedication.",
                 "Dr. Burak Erten, a highly regarded practitioner with over a decade of experience, holds a prominent position in the Hair Treatments department at Mayo Clinic Hospital. Graduating with honors from Akdeniz University, Dr. Erten has pursued continuous learning and specialization throughout his career. He completed his residency in dermatology at a distinguished medical institution, where he acquired a robust foundation in dermatological care. Dr. Erten furthered his expertise through additional training and specialization in hair treatments, focusing on addressing a wide range of hair-related conditions. His scholarly achievements are underscored by a dedication to research, with numerous publications and presentations in esteemed medical journals and conferences. Known for his patient-centered approach, Dr. Erten ensures personalized treatment plans tailored to the specific needs of each individual. His reputation for excellence has attracted patients from around the globe, including notable figures such as professional athletes seeking his specialized care. In addition to his clinical responsibilities, Dr. Erten is actively engaged in teaching and mentoring medical students, residents, and fellows, imparting his knowledge and expertise to the next generation of healthcare professionals. He maintains active involvement in professional organizations related to dermatology and hair treatments, remaining at the forefront of advancements in the field. Dr. Burak Erten's unwavering commitment to excellence in hair treatments, coupled with his extensive academic background and clinical experience, establishes him as a trusted authority at Mayo Clinic Hospital and within the broader medical community.",
                 "Dr. Onur Doğan is a highly respected practitioner in the Dental Treatments department at Cleveland Clinic Hospital, renowned for his expertise and dedication to providing exceptional dental care. Graduating with top honors from Koç University's esteemed dental school, Dr. Doğan pursued advanced training in various dental specialties, honing his skills in diagnosis, treatment, and management of oral health issues. With years of experience in the field, he has established himself as a leader in dental treatments, offering a comprehensive range of services to his patients. Dr. Doğan's commitment to excellence extends beyond his clinical practice; he actively contributes to dental research, with several publications in reputable journals. Patients from all walks of life, including high-profile individuals and celebrities, seek out Dr. Doğan's services for his exceptional care and personalized approach. As a faculty member, he is deeply invested in education and mentorship, guiding the next generation of dental professionals. Dr. Doğan remains at the forefront of advancements in dental treatments, staying actively engaged in professional organizations and continuing education activities. His unwavering dedication to patient care and clinical excellence makes him a valued member of the Cleveland Clinic Hospital and a trusted resource in the field of dental treatments.",
                 "Dr. Sude Karaben is a distinguished practitioner in the Metabolic Surgery department at Massachusetts General Hospital, recognized for her expertise and commitment to improving patients' lives through innovative surgical interventions. Graduating with top honors from Antalya Bilim University's esteemed medical school, Dr. Karaben pursued advanced training in metabolic surgery, specializing in procedures aimed at treating obesity and metabolic disorders. With years of experience in the field, she has become a leading authority in metabolic surgery, offering state-of-the-art treatments to her patients. Dr. Karaben's dedication to advancing the field is evident through her active involvement in research, with numerous publications and presentations in prestigious medical forums. Patients from around the world seek out Dr. Karaben's expertise for her compassionate care and outstanding outcomes. As a faculty member, she is deeply committed to educating and mentoring the next generation of surgeons, imparting her knowledge and skills to medical students, residents, and fellows. Dr. Karaben remains at the forefront of advancements in metabolic surgery, actively participating in professional organizations and continuing education activities. Her unwavering dedication to patient care and clinical excellence makes her a valued member of Massachusetts General Hospital and a trusted leader in the field of metabolic surgery.",
-                "Dr. Aziz Yolcu is a distinguished practitioner in the Eye Diseases department at Atakan Hospital, renowned for his expertise and commitment to preserving and restoring vision for his patients. Graduating with top honors from Antalya Bilim University's esteemed medical school, Dr. Yolcu pursued advanced training in ophthalmology, specializing in the diagnosis and treatment of various eye diseases. With years of experience in the field, he has established himself as a leading authority in ophthalmology, offering comprehensive eye care services to his patients. Dr. Yolcu's dedication to advancing the field is evident through his active involvement in research, with numerous publications and presentations in reputable medical journals and conferences. Patients from all walks of life seek out Dr. Yolcu's expertise for his compassionate care and exceptional outcomes. As a faculty member, he is deeply committed to educating and mentoring the next generation of ophthalmologists, sharing his knowledge and skills with medical students, residents, and fellows. Dr. Yolcu remains at the forefront of advancements in eye diseases, actively participating in professional organizations and continuing education activities. His unwavering dedication to patient care and clinical excellence makes him a valued member of Atakan Hospital and a trusted leader in the field of eye diseases.");
+                "Dr. Aziz Yolcu is a distinguished practitioner in the Eye Diseases department at Atakan Hospital, renowned for his expertise and commitment to preserving and restoring vision for his patients. Graduating with top honors from Antalya Bilim University's esteemed medical school, Dr. Yolcu pursued advanced training in ophthalmology, specializing in the diagnosis and treatment of various eye diseases. With years of experience in the field, he has established himself as a leading authority in ophthalmology, offering comprehensive eye care services to his patients. Dr. Yolcu's dedication to advancing the field is evident through his active involvement in research, with numerous publications and presentations in reputable medical journals and conferences. Patients from all walks of life seek out Dr. Yolcu's expertise for his compassionate care and exceptional outcomes. As a faculty member, he is deeply committed to educating and mentoring the next generation of ophthalmologists, sharing his knowledge and skills with medical students, residents, and fellows. Dr. Yolcu remains at the forefront of advancements in eye diseases, actively participating in professional organizations and continuing education activities. His unwavering dedication to patient care and clinical excellence makes him a valued member of Atakan Hospital and a trusted leader in the field of eye diseases.",
+                "",
+                "",
+                "",
+                "",
+                "");
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             byte[] fileContent = Files.readAllBytes(Paths.get("src/test/doctorImages/" + (i + 1) + ".jpeg"));
             CreateDoctorRequest doctor = new CreateDoctorRequest();
             doctor.setDoctorImage(ByteToBase64Converter.convert(fileContent));
             doctor.setDoctorName("Dr. " + names.get(i) + " " + surnames.get(i));
-            doctor.setDepartment_id(i + 1);
-            doctor.setHospital_id(i + 1);
+            if (i > 4) {
+                doctor.setDepartment_id(i - 4);
+                doctor.setHospital_id(i - 4);
+            } else {
+                doctor.setDepartment_id(i + 1);
+                doctor.setHospital_id(i + 1);
+            }
             doctor.setExperience_year(10);
             doctor.setDescription(descriptions.get(i));
 
