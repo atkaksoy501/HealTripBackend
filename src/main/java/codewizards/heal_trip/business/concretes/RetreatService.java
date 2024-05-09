@@ -16,6 +16,7 @@ import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.RetreatDao;
 import codewizards.heal_trip.entities.Department;
+import codewizards.heal_trip.entities.Hospital;
 import codewizards.heal_trip.entities.Retreat;
 import codewizards.heal_trip.entities.RetreatImage;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,9 @@ public class RetreatService implements IRetreatService {
         DepartmentForRetreatResponse department = new DepartmentForRetreatResponse();
         department.setId(retreat.getDepartment().getId());
         department.setDepartmentName(retreat.getDepartment().getDepartmentName());
-        List<HospitalForDepartmentResponse> hospitals = retreat.getDepartment().getHospitals().stream().map(h -> {
+        List<HospitalForDepartmentResponse> hospitals = retreat.getDepartment().getHospitals().stream()
+                .filter(h -> h.getHospital().isActive())
+                .map(h -> {
             HospitalForDepartmentResponse hospital = modelMapperService.forResponse().map(h.getHospital(), HospitalForDepartmentResponse.class);
             hospital.setId(h.getHospital().getId());
             hospital.setDoctors(h.getHospital().getDoctors().stream().map(d -> {
