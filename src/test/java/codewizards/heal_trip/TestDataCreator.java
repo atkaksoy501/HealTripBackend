@@ -270,6 +270,7 @@ public class TestDataCreator {
 
             HospitalImage hospitalImage = new HospitalImage();
             hospitalImage.setImage(fileContent);
+            hospitalImage.setCreateDate(LocalDateTime.now());
 
 
             Hospital hospital = new Hospital();
@@ -281,6 +282,7 @@ public class TestDataCreator {
             hospital.setCreateDate(LocalDateTime.now());
             hospital.setDoctors(doctorService.getAllDoctors().stream().map(doctor -> modelMapperService.forResponse().map(doctor, Doctor.class)).toList());
             List<HospitalImage> hospitalImages = new ArrayList<>();
+            hospitalImage.setHospital(hospital);
             hospitalImages.add(hospitalImage);
             hospital.setHospitalImages(hospitalImages);
 
