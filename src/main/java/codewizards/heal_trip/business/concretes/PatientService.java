@@ -47,7 +47,7 @@ public class PatientService implements IPatientService {
         patientBusinessRules.checkIfUserExistsBefore(patient.getEmail());
         Patient dbPatient = modelMapperService.forRequest().map(patient, Patient.class);
         dbPatient.setPassword(passwordEncoder.encode(patient.getPassword()));
-        dbPatient.setRoles("PATIENT");
+        dbPatient.setRoles("ROLE_PATIENT");
         dbPatient.setActive(true);
         dbPatient.setCreateDate(LocalDateTime.now());
         dbPatient.setGender(Gender.UNDEFINED);
