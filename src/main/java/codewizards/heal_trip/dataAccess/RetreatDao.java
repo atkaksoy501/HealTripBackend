@@ -9,4 +9,5 @@ public interface RetreatDao extends JpaRepository<Retreat, Integer> {
     // get retreats by department id
     List<Retreat> findByDepartmentId(int departmentId);
     List<Retreat> findByDepartmentHospitalsHospitalId(int hospitalId);
+    Retreat findByRetreatNameIgnoreCase(String retreatName);
 }
