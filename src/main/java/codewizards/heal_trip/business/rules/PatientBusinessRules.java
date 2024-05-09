@@ -26,14 +26,15 @@ public class PatientBusinessRules extends UserBusinessRules{
     @Override
     public void checkIfUserExistsBefore(String email) {
         Optional<Patient> patient = patientDao.findByEmail(email);
-        if (patient.isPresent()) {
+        if (patient.isPresent() && patient.get().isActive()) {
             throw new BusinessException(UserMessages.USER_ALREADY_EXISTS);
         }
     }
 
     @Override
     public void checkIfUserExists(int id) {
-        if (!patientDao.existsById(id)) {
+        Optional<Patient> patient = patientDao.findById(id);
+        if (patient.isEmpty() || !patient.get().isActive()){
             throw new BusinessException(UserMessages.USER_NOT_FOUND);
         }
     }
