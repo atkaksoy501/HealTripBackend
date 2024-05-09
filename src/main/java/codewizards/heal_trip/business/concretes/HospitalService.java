@@ -91,6 +91,7 @@ public class HospitalService implements IHospitalService {
     public AddedHospitalResponse registerHospital(AddHospitalRequest hospital) {
         List<Integer> hospitalImageIds = hospital.getHospitalImageIds();
         Hospital dbHospital = modelMapperService.forRequest().map(hospital, Hospital.class);
+        dbHospital.setId(0);
         dbHospital.setHospitalImages(hospitalImageIds.stream().map(imageId -> {
             HospitalImage hospitalImage = new HospitalImage();
             hospitalImage.setImage(imageService.getHospitalImageById(imageId).getImage());
