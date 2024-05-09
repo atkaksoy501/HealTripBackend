@@ -20,10 +20,7 @@ import codewizards.heal_trip.core.converter.ByteToBase64Converter;
 import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HospitalDao;
 import codewizards.heal_trip.dataAccess.HospitalDepartmentDao;
-import codewizards.heal_trip.entities.Department;
-import codewizards.heal_trip.entities.Hospital;
-import codewizards.heal_trip.entities.HospitalDepartment;
-import codewizards.heal_trip.entities.HospitalImage;
+import codewizards.heal_trip.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -73,8 +70,9 @@ public class HospitalService implements IHospitalService {
             Department department = hospitalDepartment.getDepartment();
             return modelMapperService.forRequest().map(department, DepartmentForHospitalDepartmentResponse.class);
         }).toList());
-        response.setDoctors(hospital.getDoctors().stream().map(
-                doctor -> {
+        response.setDoctors(hospital.getDoctors().stream()
+                .filter(Doctor::isActive)
+                .map(doctor -> {
                     DoctorDTO doctorDTO = new DoctorDTO();
                     doctorDTO.setId(doctor.getId());
                     doctorDTO.setDoctorName(doctor.getDoctorName());
@@ -151,7 +149,9 @@ public class HospitalService implements IHospitalService {
     public List<GotHospitalsByDepartmentIdResponse> getAllHospitalsByDepartmentId(int departmentId) {
         hospitalBusinessRules.checkIfHospitalsDepartmentExists(departmentId);
         List<HospitalDepartment> hospitalDepartments = hospitalDepartmentDao.getAllByDepartmentId(departmentId);
-        return hospitalDepartments.stream().map(HospitalDepartment::getHospital).toList().stream().map(hospital -> {
+        return hospitalDepartments.stream().map(HospitalDepartment::getHospital).toList().stream()
+                .filter(Hospital::isActive)
+                .map(hospital -> {
             GotHospitalsByDepartmentIdResponse response = new GotHospitalsByDepartmentIdResponse();
             response.setId(hospital.getId());
             response.setHospitalName(hospital.getHospitalName());
