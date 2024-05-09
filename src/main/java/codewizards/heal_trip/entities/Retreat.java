@@ -24,7 +24,7 @@ public class Retreat extends BaseEntity {
     private int id;
 
     @Column(name = "retreat_name")
-    private String retreat_name;
+    private String retreatName;
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")

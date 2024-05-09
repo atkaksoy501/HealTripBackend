@@ -22,4 +22,6 @@ public interface IRetreatService {
     List<GotRetreatByDepartmentIdResponse> getRetreatsByDepartmentId(int departmentId);
 
     List<GetRetreatByHospitalIdResponse> getRetreatsByHospitalId(int hospitalId);
+
+    GetRetreatByNameResponse getRetreatByName(String retreat_name);
 }

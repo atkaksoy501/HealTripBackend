@@ -64,7 +64,7 @@ public class EmailService implements IEmailService {
         text += "Start Date: " + booking.getStartDate() + "\n";
         text += "End Date: " + booking.getEndDate() + "\n";
 //        text += "Doctor Name: " + booking.getDoctor().getDoctorName() + "\n";
-        text += "Retreat Name: " + booking.getRetreat().getRetreat_name() + "\n";
+        text += "Retreat Name: " + booking.getRetreat().getRetreatName() + "\n";
         text += "Hospital Name: " + booking.getHospital().getHospitalName() + "\n";
         Address address = booking.getHospital().getAddress();
         text += "Hospital Address: " + address.getAddressDetail() + "\n";

@@ -42,7 +42,7 @@ public class RetreatService implements IRetreatService {
         Retreat retreat = retreatDao.findById(retreat_id).orElse(null);
         GetRetreatByIdResponse response = new GetRetreatByIdResponse();
         response.setId(retreat.getId());
-        response.setRetreat_name(retreat.getRetreat_name());
+        response.setRetreat_name(retreat.getRetreatName());
         response.setDescription(retreat.getDescription());
         response.setImage(modelMapperService.forResponse().map(retreat.getImage(), GetImageResponse.class));
         DepartmentForRetreatResponse department = new DepartmentForRetreatResponse();
@@ -68,7 +68,7 @@ public class RetreatService implements IRetreatService {
     public AddedRetreatResponse addRetreat(AddRetreatRequest retreat) {
         Retreat dbRetreat = new Retreat();
         dbRetreat.setDescription(retreat.getDescription());
-        dbRetreat.setRetreat_name(retreat.getRetreat_name());
+        dbRetreat.setRetreatName(retreat.getRetreat_name());
 
         RetreatImage image = imageService.getRetreatImageById(retreat.getImageId());
         dbRetreat.setImage(image);
@@ -94,7 +94,7 @@ public class RetreatService implements IRetreatService {
         Retreat dbRetreat = retreatDao.findById(retreat_id).orElse(null);
         if (dbRetreat != null) {
             if (retreat.getRetreat_name() != null)
-                dbRetreat.setRetreat_name(retreat.getRetreat_name());
+                dbRetreat.setRetreatName(retreat.getRetreat_name());
             if (retreat.getDescription() != null)
                 dbRetreat.setDescription(retreat.getDescription());
             if (retreat.getImageId() != 0) {
@@ -120,7 +120,7 @@ public class RetreatService implements IRetreatService {
         List<Retreat> retreats = retreatDao.findByDepartmentId(departmentId);
         List<GotRetreatByDepartmentIdResponse> response = new ArrayList<>();
         for (Retreat retreat : retreats) {
-            response.add(new GotRetreatByDepartmentIdResponse(retreat.getId(), retreat.getRetreat_name(), retreat.getDescription(),
+            response.add(new GotRetreatByDepartmentIdResponse(retreat.getId(), retreat.getRetreatName(), retreat.getDescription(),
                     modelMapperService.forResponse().map(retreat.getImage(), GetImageResponse.class)));
         }
         return response;
@@ -131,5 +131,13 @@ public class RetreatService implements IRetreatService {
         retreatBusinessRules.checkIfRetreatsHospitalExists(hospitalId);
         List<Retreat> retreats = retreatDao.findByDepartmentHospitalsHospitalId(hospitalId);
         return retreats.stream().map(retreat -> modelMapperService.forResponse().map(retreat, GetRetreatByHospitalIdResponse.class)).toList();
+    }
+
+    @Override
+    public GetRetreatByNameResponse getRetreatByName(String retreat_name) {
+        retreatBusinessRules.checkIfRetreatExistsByName(retreat_name);
+        Retreat retreat = retreatDao.findByRetreatNameIgnoreCase(retreat_name);
+        GetRetreatByNameResponse response = modelMapperService.forResponse().map(retreat, GetRetreatByNameResponse.class);
+        return response;
     }
 }
