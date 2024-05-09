@@ -21,14 +21,14 @@ public class EmailsController {
     private final IEmailService emailService;
 
     @Operation(summary = "Send Email")
-    @GetMapping("/send")
+    @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
     public void sendEmail(@Valid @RequestBody SendEmailRequest sendEmailRequest) {
         emailService.sendContactEmail(sendEmailRequest);
     }
 
     @Operation(summary = "Send Welcome Email")
-    @GetMapping("/sendWelcome")
+    @PostMapping("/sendWelcome")
     public ResponseEntity<String> sendWelcomeEmail(String to, String firstName) throws IllegalArgumentException {
         try {
             emailService.sendWelcomeEmail(to, firstName);
@@ -39,7 +39,7 @@ public class EmailsController {
     }
 
     @Operation(summary = "Send Appointment Email")
-    @GetMapping("/sendAppointment")
+    @PostMapping("/sendAppointment")
     public ResponseEntity<String> sendAppointmentEmail(@Valid @RequestBody Booking booking) throws IllegalArgumentException {
         try {
             emailService.sendAppointmentEmail(booking);
