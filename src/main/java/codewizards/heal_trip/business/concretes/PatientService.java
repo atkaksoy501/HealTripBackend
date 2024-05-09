@@ -62,7 +62,7 @@ public class PatientService implements IPatientService {
         dbPatient.setActive(true);
         dbPatient.setCreateDate(LocalDateTime.now());
         CreatedPatientResponse response = modelMapperService.forResponse().map(patientDao.save(dbPatient), CreatedPatientResponse.class);
-//        emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
+        emailService.sendWelcomeEmail(patient.getEmail(), patient.getFirst_name());
         return response;
     }
 
