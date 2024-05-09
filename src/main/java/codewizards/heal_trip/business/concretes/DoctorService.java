@@ -56,8 +56,9 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public List<DoctorDTOWithHospital> getAllDoctors() {
-        return doctorDao.findAll().stream().map(
-                doctorDbDtoConverter::toDto
-        ).toList();
+        return doctorDao.findAll().stream()
+                .filter(Doctor::isActive)
+                .map(doctorDbDtoConverter::toDto)
+                .toList();
     }
 }
