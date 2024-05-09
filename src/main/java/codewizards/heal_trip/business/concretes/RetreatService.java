@@ -135,6 +135,7 @@ public class RetreatService implements IRetreatService {
 
     @Override
     public GetRetreatByNameResponse getRetreatByName(String retreat_name) {
+        retreatBusinessRules.checkIfRetreatExistsByName(retreat_name);
         Retreat retreat = retreatDao.findByRetreatNameIgnoreCase(retreat_name);
         GetRetreatByNameResponse response = modelMapperService.forResponse().map(retreat, GetRetreatByNameResponse.class);
         return response;
