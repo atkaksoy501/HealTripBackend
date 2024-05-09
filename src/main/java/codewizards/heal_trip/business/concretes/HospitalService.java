@@ -157,4 +157,8 @@ public class HospitalService implements IHospitalService {
             return response;
         }).toList();
     }
+
+    public void addHospital(Hospital hospital) {
+        hospitalDao.save(hospital);
+    }
 }
