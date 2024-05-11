@@ -14,9 +14,5 @@ public class GetRetreatByNameResponse {
 
     private String retreat_name;
 
-    private DepartmentForRetreatResponse department;
-
-    private String description;
-
     private GetImageResponse image;
 }
