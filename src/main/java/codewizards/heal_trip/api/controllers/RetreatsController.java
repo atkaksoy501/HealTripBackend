@@ -1,6 +1,7 @@
 package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
+import codewizards.heal_trip.business.DTOs.requests.retreat.GetRetreatByNameRequest;
 import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.business.abstracts.IRetreatService;
@@ -76,9 +77,9 @@ public class RetreatsController {
     }
 
     @Operation(summary = "Get Retreat by Name")
-    @GetMapping(value = "/getByName/{retreat_name}")
+    @PostMapping(value = "/getByName")
     @ResponseStatus(HttpStatus.OK)
-    public GetRetreatByNameResponse getRetreatByName(@PathVariable String retreat_name) {
-        return retreatService.getRetreatByName(retreat_name);
+    public List<GetRetreatByNameResponse> getRetreatByName(@Valid @RequestBody GetRetreatByNameRequest retreatNames) {
+        return retreatService.getRetreatByName(retreatNames);
     }
 }
