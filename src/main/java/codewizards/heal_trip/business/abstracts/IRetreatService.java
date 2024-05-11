@@ -1,6 +1,7 @@
 package codewizards.heal_trip.business.abstracts;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
+import codewizards.heal_trip.business.DTOs.requests.retreat.GetRetreatByNameRequest;
 import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.retreat.*;
 import codewizards.heal_trip.entities.Retreat;
@@ -23,5 +24,5 @@ public interface IRetreatService {
 
     List<GetRetreatByHospitalIdResponse> getRetreatsByHospitalId(int hospitalId);
 
-    GetRetreatByNameResponse getRetreatByName(String retreat_name);
+    List<GetRetreatByNameResponse> getRetreatByName(GetRetreatByNameRequest retreatNames);
 }
