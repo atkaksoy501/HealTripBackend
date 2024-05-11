@@ -1,6 +1,7 @@
 package codewizards.heal_trip.business.concretes;
 
 import codewizards.heal_trip.business.DTOs.requests.retreat.AddRetreatRequest;
+import codewizards.heal_trip.business.DTOs.requests.retreat.GetRetreatByNameRequest;
 import codewizards.heal_trip.business.DTOs.requests.retreat.UpdateRetreatRequest;
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentForRetreatResponse;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorForDepartmentResponse;
@@ -134,10 +135,9 @@ public class RetreatService implements IRetreatService {
     }
 
     @Override
-    public GetRetreatByNameResponse getRetreatByName(String retreat_name) {
-        retreatBusinessRules.checkIfRetreatExistsByName(retreat_name);
-        Retreat retreat = retreatDao.findByRetreatNameIgnoreCase(retreat_name);
-        GetRetreatByNameResponse response = modelMapperService.forResponse().map(retreat, GetRetreatByNameResponse.class);
-        return response;
+    public List<GetRetreatByNameResponse> getRetreatByName(GetRetreatByNameRequest retreatNames) {
+        retreatNames.getRetreatNames().forEach(retreatBusinessRules::checkIfRetreatExistsByName);
+        List<Retreat> retreats = retreatNames.getRetreatNames().stream().map(retreatDao::findByRetreatNameIgnoreCase).toList();
+        return retreats.stream().map(retreat -> modelMapperService.forResponse().map(retreat, GetRetreatByNameResponse.class)).toList();
     }
 }
