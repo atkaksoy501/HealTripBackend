@@ -50,4 +50,7 @@ public class Hospital extends BaseEntity {
     @OneToMany(mappedBy = "hospital", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<HospitalImage> hospitalImages;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
 }

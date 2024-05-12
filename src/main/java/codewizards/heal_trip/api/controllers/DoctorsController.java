@@ -2,6 +2,7 @@ package codewizards.heal_trip.api.controllers;
 
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.requests.doctor.UpdateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.DTOs.responses.doctor.UpdatedDoctorResponse;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
@@ -60,5 +61,23 @@ public class DoctorsController {
     @GetMapping("/getAll")
     public ResponseEntity<List<DoctorDTOWithHospital>> getAllDoctors() {
         return new ResponseEntity<>(doctorService.getAllDoctors(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get all Doctors for AI")
+    @GetMapping("/getAllForAI")
+    public ResponseEntity<List<DoctorDTO>> getAllDoctorsForAI() {
+        return new ResponseEntity<>(doctorService.getAllDoctorsForAI(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get Doctor Count")
+    @GetMapping("/count")
+    public ResponseEntity<Long> getDoctorCount() {
+        return new ResponseEntity<>(doctorService.getDoctorCount(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get All Doctors Descriptions")
+    @GetMapping("/getAllDescriptions")
+    public ResponseEntity<List<String>> getAllDoctorsDescriptions() {
+        return new ResponseEntity<>(doctorService.getAllDoctorsDescriptions(), HttpStatus.OK);
     }
 }
