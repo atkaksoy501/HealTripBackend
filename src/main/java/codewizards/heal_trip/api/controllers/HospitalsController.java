@@ -89,4 +89,10 @@ public class HospitalsController {
     public ResponseEntity<List<String>> getAllHospitalsDescriptions() {
         return new ResponseEntity<>(hospitalService.getAllHospitalsDescriptions(), HttpStatus.OK);
     }
+
+    @Operation(summary = "Get All Hospitals Long Description")
+    @GetMapping("/getAllLongDescriptions")
+    public ResponseEntity<List<String>> getAllHospitalsLongDescriptions() {
+        return new ResponseEntity<>(hospitalService.getAllHospitalsLongDescriptions(), HttpStatus.OK);
+    }
 }
