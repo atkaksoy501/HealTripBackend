@@ -77,4 +77,16 @@ public class HospitalsController {
         else
             return new ResponseEntity<>(hospitals, HttpStatus.OK);
     }
+
+    @Operation(summary = "Get Hospital Count")
+    @GetMapping("/count")
+    public ResponseEntity<Long> getHospitalCount() {
+        return new ResponseEntity<>(hospitalService.getHospitalCount(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get All Hospitals Descriptions")
+    @GetMapping("/getAllDescriptions")
+    public ResponseEntity<List<String>> getAllHospitalsDescriptions() {
+        return new ResponseEntity<>(hospitalService.getAllHospitalsDescriptions(), HttpStatus.OK);
+    }
 }

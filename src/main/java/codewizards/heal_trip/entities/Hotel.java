@@ -43,4 +43,7 @@ public class Hotel extends BaseEntity {
 
     @OneToMany(mappedBy = "hotel", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<HotelImage> hotelImages;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 }

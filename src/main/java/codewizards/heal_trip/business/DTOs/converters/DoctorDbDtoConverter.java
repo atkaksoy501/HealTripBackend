@@ -3,6 +3,7 @@ package codewizards.heal_trip.business.DTOs.converters;
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.requests.doctor.UpdateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.responses.department.DepartmentDTO;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.DTOs.responses.doctor.UpdatedDoctorResponse;
 import codewizards.heal_trip.business.DTOs.responses.doctor.HospitalForDoctorResponse;
@@ -86,6 +87,16 @@ public class DoctorDbDtoConverter {
         dto.setHospital(modelMapperService.forResponse().map(dbObj.getHospital(), HospitalForDoctorResponse.class));
         dto.setDepartment(modelMapperService.forResponse().map(dbObj.getDepartment(), DepartmentDTO.class));
         dto.setDescription(dbObj.getDescription());
+        return dto;
+    }
+
+    public DoctorDTO toDoctorDto(Doctor dbObj) {
+        DoctorDTO dto = new DoctorDTO();
+        dto.setId(dbObj.getId());
+        dto.setExperience_year(dbObj.getExperience_year());
+        dto.setDoctorName(dbObj.getDoctorName());
+        dto.setDoctorImage(ByteToBase64Converter.convert(dbObj.getDoctorImage()));
+        dto.setDepartment(modelMapperService.forResponse().map(dbObj.getDepartment(), DepartmentDTO.class));
         return dto;
     }
 
