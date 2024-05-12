@@ -53,4 +53,7 @@ public class Hospital extends BaseEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "long_description", columnDefinition = "TEXT")
+    private String longDescription;
+
 }

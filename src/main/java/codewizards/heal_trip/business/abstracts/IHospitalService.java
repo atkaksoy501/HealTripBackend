@@ -29,4 +29,6 @@ public interface IHospitalService {
 
     List<String> getAllHospitalsDescriptions();
 
+    List<String> getAllHospitalsLongDescriptions();
+
 }

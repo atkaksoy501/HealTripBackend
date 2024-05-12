@@ -183,4 +183,11 @@ public class HospitalService implements IHospitalService {
                 .map(Hospital::getDescription)
                 .toList();
     }
+
+    public List<String> getAllHospitalsLongDescriptions() {
+        return hospitalDao.findAll().stream()
+                .filter(Hospital::isActive)
+                .map(Hospital::getLongDescription)
+                .toList();
+    }
 }
