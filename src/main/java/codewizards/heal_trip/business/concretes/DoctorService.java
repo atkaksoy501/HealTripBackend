@@ -3,6 +3,7 @@ package codewizards.heal_trip.business.concretes;
 import codewizards.heal_trip.business.DTOs.converters.DoctorDbDtoConverter;
 import codewizards.heal_trip.business.DTOs.requests.doctor.CreateDoctorRequest;
 import codewizards.heal_trip.business.DTOs.requests.doctor.UpdateDoctorRequest;
+import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTO;
 import codewizards.heal_trip.business.DTOs.responses.doctor.DoctorDTOWithHospital;
 import codewizards.heal_trip.business.DTOs.responses.doctor.UpdatedDoctorResponse;
 import codewizards.heal_trip.business.abstracts.IDoctorService;
@@ -59,6 +60,27 @@ public class DoctorService implements IDoctorService {
         return doctorDao.findAll().stream()
                 .filter(Doctor::isActive)
                 .map(doctorDbDtoConverter::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<DoctorDTO> getAllDoctorsForAI() {
+        return doctorDao.findAll().stream()
+                .filter(Doctor::isActive)
+                .map(doctorDbDtoConverter::toDoctorDto)
+                .toList();
+    }
+
+    @Override
+    public Long getDoctorCount() {
+        return doctorDao.count();
+    }
+
+    @Override
+    public List<String> getAllDoctorsDescriptions() {
+        return doctorDao.findAll().stream()
+                .filter(Doctor::isActive)
+                .map(Doctor::getDescription)
                 .toList();
     }
 }

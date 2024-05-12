@@ -14,6 +14,8 @@ public interface IDoctorService {
     DoctorDTOWithHospital registerDoctor(CreateDoctorRequest doctor);
     boolean deleteDoctor(int doctor_id);
     UpdatedDoctorResponse updateDoctor(UpdateDoctorRequest doctor, int id);
-
     List<DoctorDTOWithHospital> getAllDoctors();
+    List<DoctorDTO> getAllDoctorsForAI();
+    Long getDoctorCount();
+    List<String> getAllDoctorsDescriptions();
 }
