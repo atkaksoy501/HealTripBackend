@@ -1,5 +1,6 @@
 package codewizards.heal_trip.api.controllers;
 
+import codewizards.heal_trip.business.DTOs.responses.hotel.GetAllHotelsForAiResponse;
 import codewizards.heal_trip.business.abstracts.IHotelService;
 import codewizards.heal_trip.entities.Hotel;
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,5 +62,17 @@ public class HotelsController {
     @PutMapping("/update/{id}")
     public void update(@Valid @RequestBody Hotel hotel, @PathVariable int id){
         this.hotelService.update(hotel);
+    }
+
+    @Operation(summary = "Get all Hotels For AI")
+    @GetMapping("/getAllForAI")
+    public List<GetAllHotelsForAiResponse> getAllForAI() {
+        return this.hotelService.getAllHotelsForAI();
+    }
+
+    @Operation(summary = "Get all Hotels Count")
+    @GetMapping("/count")
+    public Long getCount() {
+        return this.hotelService.getHotelCount();
     }
 }

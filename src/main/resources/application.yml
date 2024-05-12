@@ -11,7 +11,7 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://healtrip.postgres.database.azure.com:5432/heal_trip?currentSchema=atakan
+    url: jdbc:postgresql://healtrip.postgres.database.azure.com:5432/heal_trip?currentSchema=heal_trip_atakan
     username: codewizards_admin
     password: karamTeam07.
 

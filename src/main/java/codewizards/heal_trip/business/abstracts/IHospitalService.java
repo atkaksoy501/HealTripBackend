@@ -25,4 +25,8 @@ public interface IHospitalService {
 
     void addHospital(Hospital hospital);
 
+    Long getHospitalCount();
+
+    List<String> getAllHospitalsDescriptions();
+
 }
