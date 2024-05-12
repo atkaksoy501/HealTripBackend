@@ -172,4 +172,15 @@ public class HospitalService implements IHospitalService {
     public void addHospital(Hospital hospital) {
         hospitalDao.save(hospital);
     }
+
+    public Long getHospitalCount() {
+        return hospitalDao.count();
+    }
+
+    public List<String> getAllHospitalsDescriptions() {
+        return hospitalDao.findAll().stream()
+                .filter(Hospital::isActive)
+                .map(Hospital::getDescription)
+                .toList();
+    }
 }

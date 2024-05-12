@@ -1,8 +1,10 @@
 package codewizards.heal_trip.business.concretes;
 
+import codewizards.heal_trip.business.DTOs.responses.hotel.GetAllHotelsForAiResponse;
 import codewizards.heal_trip.business.abstracts.IHotelService;
 import codewizards.heal_trip.business.abstracts.IImageService;
 import codewizards.heal_trip.business.rules.HotelBusinessRules;
+import codewizards.heal_trip.core.utilities.mapping.ModelMapperService;
 import codewizards.heal_trip.dataAccess.HotelDao;
 import codewizards.heal_trip.entities.Hotel;
 import codewizards.heal_trip.entities.HotelImage;
@@ -22,6 +24,7 @@ public class HotelService implements IHotelService {
     private final HotelDao hotelDao;
     private final HotelBusinessRules hotelBusinessRules;
     private final IImageService imageService;
+    private final ModelMapperService modelMapperService;
 
     @Override
     public List<Hotel> getAll() {
@@ -70,5 +73,17 @@ public class HotelService implements IHotelService {
     @Override
     public void update(Hotel hotel) {
         this.hotelDao.save(hotel); //todo: implement
+    }
+
+    @Override
+    public List<GetAllHotelsForAiResponse> getAllHotelsForAI() {
+        return this.hotelDao.findAll().stream()
+                .map(hotel -> modelMapperService.forRequest().map(hotel, GetAllHotelsForAiResponse.class))
+                .toList();
+    }
+
+    @Override
+    public Long getHotelCount() {
+        return this.hotelDao.count();
     }
 }
