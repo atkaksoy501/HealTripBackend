@@ -17,7 +17,8 @@ public class SecurityManager implements SecurityService {
             "/retreat/getByDepartmentId/**",
             "/booking/add",
             "/patient/update/**",
-            "/email/send"
+            "/email/send",
+            "retreat/getByName"
     };
 
     private static final String[] SWAGGER_URLS = {
