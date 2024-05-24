@@ -1,3 +1,7 @@
+https://healtrip.azurewebsites.net/swagger-ui/index.html
+username: admin
+password: admin
+
 # HealTripBackend
 
 Yüklenecek uygulamalar:
