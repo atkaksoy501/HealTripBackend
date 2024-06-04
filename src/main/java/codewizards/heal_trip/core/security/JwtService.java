@@ -22,7 +22,6 @@ public class JwtService
     @Value("${jwt.expiration.time}")
     private long EXPIRATION;
 
-    // Boilerplate => Basmakalıp
     public String generateToken(String userName) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userName);
@@ -52,7 +51,7 @@ public class JwtService
                 .getBody();
         return claims.getSubject();
     }
-    // 10:15
+
     private String createToken(Map<String, Object> claims, String userName) {
         return Jwts.builder()
                 .setClaims(claims)
